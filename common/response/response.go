@@ -22,7 +22,7 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 	if err == nil {
 		//成功返回
 		r := &Response{
-			Code:    0,
+			Code:    200,
 			Message: "success",
 			Data:    resp,
 		}

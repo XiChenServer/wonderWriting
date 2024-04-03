@@ -11,10 +11,12 @@ import (
 
 func init() {
 	// 加载 .env 文件中的环境变量
-	if err := godotenv.Load(); err != nil {
+	if err := godotenv.Load("/home/zwm/GolandProjects/wonderWriting/.env"); err != nil {
 		log.Fatal("Error loading .env file")
 	}
 }
+
+var TimeExpiration = 7 * 24 * 60 * 60
 
 func SendEmailVerificationCode(email, verificationCode1 string) error {
 

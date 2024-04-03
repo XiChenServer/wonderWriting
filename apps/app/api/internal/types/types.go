@@ -6,8 +6,6 @@ type VerificationRequest struct {
 }
 
 type VerificationResponse struct {
-	Code    int64  `json:"code"`
-	Message string `json:"message"`
 }
 
 type UserLoginRequest struct {
@@ -16,9 +14,8 @@ type UserLoginRequest struct {
 }
 
 type UserLoginResponse struct {
-	Code    int64   `json:"code"`
-	Message string  `json:"message"`
-	Data    JwtInfo `json:"data"`
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
 }
 
 type JwtInfo struct {
@@ -42,4 +39,9 @@ type UserInfoResponse struct {
 	NickName string `json:"nick_name"`
 	Account  string `json:"account"`
 	Email    string `json:"email"`
+}
+
+type UserForgetPwd struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

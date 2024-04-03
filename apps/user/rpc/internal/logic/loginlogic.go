@@ -49,7 +49,6 @@ func (l *LoginLogic) Login(in *user.UserLoginRequest) (*user.UserLoginResponse, 
 	}
 
 	return &user.UserLoginResponse{
-		Code:    200,
-		Message: "Success",
+		Id: res.UserID,
 	}, nil
 }

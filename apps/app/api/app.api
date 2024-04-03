@@ -3,8 +3,6 @@ type (
 		Email string `json:"email"`
 	}
 	VerificationResponse {
-		Code    int64  `json:"code"`
-		Message string `json:"message"`
 	}
 
 	//用户登录
@@ -13,9 +11,8 @@ type (
 		Password string `json:"password"`
 	}
 	UserLoginResponse {
-		Code    int64   `json:"code"`
-		Message string  `json:"message"`
-		Data    JwtInfo `json:"data"`
+		AccessToken  string `json:"access_token"`
+		AccessExpire int64  `json:"access_expire"`
 	}
 	// jwt信息
 	JwtInfo {
@@ -41,7 +38,7 @@ type (
 		Email    string `json:"email"`
 	}
 	//忘记密码
-	UserForgetPwd{
+	UserForgetPwd {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
@@ -52,7 +49,7 @@ service App{
 	@handler GetEmailVerification
 	post /api/basic/getemailverification(VerificationRequest) returns(VerificationResponse)
 	@handler UserRegister
-	post /api/user/register(UserRegisterRequest) returns (UserInfoResponse)
+	post /api/user/register(UserRegisterRequest) returns (UserRegisterResponse)
 	@handler UserLogin
 	post /api/user/login(UserLoginRequest) returns (UserLoginResponse)
 }

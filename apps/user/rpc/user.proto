@@ -9,8 +9,7 @@ message UserLoginRequest {
   string Password = 2;
 }
 message UserLoginResponse{
-  int64 Code = 1;
-  string Message = 2;
+  int64 Id = 1;
 }
 
 // 用户注册

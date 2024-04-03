@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"calligraphy/common/response"
 	"net/http"
 
 	"calligraphy/apps/app/api/internal/logic"
@@ -19,11 +20,12 @@ func UserRegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewUserRegisterLogic(r.Context(), svcCtx)
 		resp, err := l.UserRegister(&req)
-		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
-		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
-		}
+		response.HttpResult(r, w, resp, err)
+		//if err != nil {
+		//	httpx.ErrorCtx(r.Context(), w, err)
+		//} else {
+		//	httpx.OkJsonCtx(r.Context(), w, resp)
+		//}
 		//response.Response(r, w, resp, err)
 
 	}

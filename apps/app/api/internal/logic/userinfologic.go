@@ -1,7 +1,9 @@
 package logic
 
 import (
+	"calligraphy/apps/user/rpc/types/user"
 	"context"
+	"encoding/json"
 
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
@@ -24,7 +26,17 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 }
 
 func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
+	res, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
+		Id: uid,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &types.UserInfoResponse{
+		Id:       res.Id,
+		NickName: res.NickName,
+		Account:  res.Account,
+		Email:    res.Email,
+	}, nil
 }

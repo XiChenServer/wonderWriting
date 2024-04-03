@@ -1,13 +1,12 @@
 package logic
 
 import (
+	"calligraphy/apps/app/api/internal/svc"
+	"calligraphy/apps/app/api/internal/types"
+	"calligraphy/common/app_redis"
 	"calligraphy/pkg/app_math"
 	"calligraphy/pkg/verification"
 	"context"
-
-	"calligraphy/apps/app/api/internal/svc"
-	"calligraphy/apps/app/api/internal/types"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -32,8 +31,10 @@ func (l *GetEmailVerificationLogic) GetEmailVerification(req *types.Verification
 	if err != nil {
 		return nil, err
 	}
-	return &types.VerificationResponse{
-		Code:    200,
-		Message: "Success",
-	}, nil
+
+	err = app_redis.Redis.SetexCtx(l.ctx, req.Email, code, verification.TimeExpiration)
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"database/sql"
 	"google.golang.org/grpc/status"
+	"time"
 
 	"calligraphy/apps/user/rpc/internal/svc"
 	"calligraphy/apps/user/rpc/types/user"
@@ -47,13 +48,18 @@ func (l *RegisterLogic) Register(in *user.UserRegisterRequest) (*user.UserRegist
 			break
 		}
 	}
-
+	nickName := app_math.GenerateNickname(8)
 	if err == model.ErrNotFound {
+		nowTime := time.Now()
 		newUser := model.Users{
-			Nickname: in.NickName,
-			Account:  account,
-			Email:    email,
-			Password: cryptx.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
+			Nickname:         nickName,
+			Account:          account,
+			Email:            email,
+			Password:         cryptx.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
+			RegistrationTime: nowTime,
+			LastLoginTime:    nowTime,
+			Status:           "Active",
+			Role:             "User",
 		}
 
 		res, err := l.svcCtx.UserModel.Insert(l.ctx, &newUser)
