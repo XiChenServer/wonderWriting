@@ -10,11 +10,6 @@ type VerificationResponse struct {
 	Message string `json:"message"`
 }
 
-type JwtInfo struct {
-	AccessToken  string `json:"accessToken"`
-	AccessExpire int64  `json:"accessExpire"`
-}
-
 type UserLoginRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -26,10 +21,15 @@ type UserLoginResponse struct {
 	Data    JwtInfo `json:"data"`
 }
 
+type JwtInfo struct {
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+}
+
 type UserRegisterRequest struct {
-	NickName string `json:"nickName"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	EmailCode string `json:"email_code"`
 }
 
 type UserRegisterResponse struct {
@@ -39,8 +39,7 @@ type UserRegisterResponse struct {
 
 type UserInfoResponse struct {
 	Id       int64  `json:"id"`
-	NickName string `json:"nickName"`
-	UserName string `json:"userName"`
+	NickName string `json:"nick_name"`
+	Account  string `json:"account"`
 	Email    string `json:"email"`
-	Phone    string `json:"phone"`
 }

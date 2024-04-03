@@ -5,7 +5,7 @@ CREATE TABLE Users (
     -- 用户昵称，不能为空
                        Nickname VARCHAR(255) NOT NULL,
     -- 用户账号，唯一且不能为空
-                       Username VARCHAR(50) UNIQUE NOT NULL,
+                       Account VARCHAR(50) UNIQUE NOT NULL,
     -- 用户邮箱，唯一，可以为空，默认值为NULL
                        Email VARCHAR(255) UNIQUE DEFAULT NULL,
     -- 用户手机号，唯一且不能为空

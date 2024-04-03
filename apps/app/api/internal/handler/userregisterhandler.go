@@ -7,8 +7,6 @@ import (
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
-
-	"api_v2/common/response"
 )
 
 func UserRegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -21,12 +19,12 @@ func UserRegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewUserRegisterLogic(r.Context(), svcCtx)
 		resp, err := l.UserRegister(&req)
-		//if err != nil {
-		//	httpx.ErrorCtx(r.Context(), w, err)
-		//} else {
-		//	httpx.OkJsonCtx(r.Context(), w, resp)
-		//}
-		response.Response(r, w, resp, err)
+		if err != nil {
+			httpx.ErrorCtx(r.Context(), w, err)
+		} else {
+			httpx.OkJsonCtx(r.Context(), w, resp)
+		}
+		//response.Response(r, w, resp, err)
 
 	}
 }

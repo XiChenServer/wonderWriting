@@ -1,6 +1,8 @@
 package logic
 
 import (
+	"calligraphy/pkg/app_math"
+	"calligraphy/pkg/verification"
 	"context"
 
 	"calligraphy/apps/app/api/internal/svc"
@@ -25,6 +27,13 @@ func NewGetEmailVerificationLogic(ctx context.Context, svcCtx *svc.ServiceContex
 
 func (l *GetEmailVerificationLogic) GetEmailVerification(req *types.VerificationRequest) (resp *types.VerificationResponse, err error) {
 	// todo: add your logic here and delete this line
-
-	return
+	code := app_math.GenerateRandomNumber(6)
+	err = verification.SendEmailVerificationCode(req.Email, code)
+	if err != nil {
+		return nil, err
+	}
+	return &types.VerificationResponse{
+		Code:    200,
+		Message: "Success",
+	}, nil
 }
