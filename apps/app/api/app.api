@@ -1,0 +1,62 @@
+type (
+	VerificationRequest {
+		Email string `json:"email"`
+	}
+	VerificationResponse {
+		Code    int64  `json:"code"`
+		Message string `json:"message"`
+	}
+
+	JwtInfo {
+		AccessToken  string `json:"accessToken"`
+		AccessExpire int64  `json:"accessExpire"`
+	}
+
+	//用户登录
+	UserLoginRequest {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	UserLoginResponse {
+		Code    int64   `json:"code"`
+		Message string  `json:"message"`
+		Data    JwtInfo `json:"data"`
+	}
+	//用户注册
+	UserRegisterRequest {
+		NickName string `json:"nickName"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	UserRegisterResponse {
+		Code    int64  `json:"code"`
+		Message string `json:"message"`
+	}
+
+	// 用户信息
+	UserInfoResponse {
+		Id       int64  `json:"id"`
+		NickName string `json:"nickName"`
+		UserName string `json:"userName"`
+		Email    string `json:"email"`
+		Phone    string `json:"phone"`
+	}
+)
+
+service App{
+
+	@handler GetEmailVerification
+	post /api/basic/getemailverification(VerificationRequest) returns(VerificationResponse)
+	@handler UserRegister
+	post /api/user/register(UserRegisterRequest) returns (UserInfoResponse)
+	@handler UserLogin
+	post /api/user/login(UserLoginRequest) returns (UserLoginResponse)
+}
+
+@server(
+	jwt: Auth
+)
+service App{
+	@handler UserInfo
+	post /api/user/userinfo() returns (UserInfoResponse)
+}

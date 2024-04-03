@@ -1,0 +1,34 @@
+type(
+
+
+
+
+
+    JwtInfo{
+        AccessToken  string `json:"accessToken"`
+        AccessExpire int64  `json:"accessExpire"`
+    }
+
+
+    //用户登录
+    UserLoginRequest{
+        Email string `json:"email"`
+        Password string `json:"password"`
+    }
+    UserLoginResponse{
+        Code int64 `json:"code"`
+        Message string `json:"message"`
+        Data JwtInfo `json:"data"`
+    }
+
+    UserRegisterRequest{
+        Email string `json:"email"`
+        Password string `json:"password"`
+    }
+    UserRegisterResponse{
+        Code int64 `json:"code"`
+        Message string `json:"message"`
+    }
+
+
+)
