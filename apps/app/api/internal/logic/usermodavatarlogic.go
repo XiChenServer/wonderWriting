@@ -32,13 +32,6 @@ func (l *UserModAvatarLogic) UserModAvatar(r *http.Request) (resp *types.UserMod
 	// todo: add your logic here and delete this line
 	//从jwt获取id
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	res, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
-		Id: uid,
-	})
-
-	if err != nil {
-		return &types.UserModAvatarResponse{}, err
-	}
 
 	//图片上传到七牛云
 	file, handler, err := r.FormFile("image")
@@ -54,7 +47,7 @@ func (l *UserModAvatarLogic) UserModAvatar(r *http.Request) (resp *types.UserMod
 	}
 	//调用grpc中的服务
 	_, err = l.svcCtx.UserRpc.UserModAvatar(l.ctx, &user.UserModAvatarRequest{
-		Id:  res.Id,
+		Id:  uid,
 		Url: url,
 	})
 	if err != nil {

@@ -32,12 +32,6 @@ func (l *UserModBackgroundLogic) UserModBackground(r *http.Request) (resp *types
 	// todo: add your logic here and delete this line
 	//从jwt获取id
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	res, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
-		Id: uid,
-	})
-	if err != nil {
-		return nil, err
-	}
 
 	// 图片上传到七牛云
 	file, handler, err := r.FormFile("image")
@@ -52,7 +46,7 @@ func (l *UserModBackgroundLogic) UserModBackground(r *http.Request) (resp *types
 	}
 	//调用grpc中的服务
 	_, err = l.svcCtx.UserRpc.UserModBackground(l.ctx, &user.UserModBackgroundRequest{
-		Id:  res.Id,
+		Id:  uid,
 		Url: url,
 	})
 	return &types.UserModBackgroundResponse{}, nil

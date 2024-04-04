@@ -35,10 +35,13 @@ type UserRegisterResponse struct {
 }
 
 type UserInfoResponse struct {
-	Id       int64  `json:"id"`
-	NickName string `json:"nick_name"`
-	Account  string `json:"account"`
-	Email    string `json:"email"`
+	Id               int64  `json:"id"`
+	NickName         string `json:"nick_name"`
+	Account          string `json:"account"`
+	Email            string `json:"email"`
+	AvatarBackground string `json:"avatar_background"`
+	BackgroundImage  string `json:"background_image"`
+	Phone            string `json:"phone"`
 }
 
 type UserForgetPwdRequest struct {
@@ -56,4 +59,18 @@ type UserModPwdRequset struct {
 }
 
 type UserModPwdResponse struct {
+}
+
+type UserModAvatarResponse struct {
+}
+
+type UserModBackgroundResponse struct {
+}
+
+type UserModInfoRequest struct {
+	NickName string `json:"nick_name"`
+	Phone    string `json:"phone"`
+}
+
+type UserModInfoResponse struct {
 }

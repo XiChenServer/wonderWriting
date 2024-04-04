@@ -35,6 +35,9 @@ message UserInfoResponse {
   string NickName = 2;
   string Account = 3;
   string Email = 4;
+  string BackgroundImage = 5;
+  string AvatarBackground = 6;
+  string Phone = 7;
 }
 
 
@@ -55,12 +58,44 @@ message UserModPwdResponse{
 
 }
 
+//用户修改头像
+message UserModAvatarRequest{
+  int64 Id = 1;
+  string Url = 2;
+}
+message UserModAvatarResponse{
+
+}
+//用户修改背景
+message UserModBackgroundRequest{
+  int64 Id = 1;
+  string Url = 2;
+}
+message UserModBackgroundResponse{
+
+}
+
+message UserModInfoRequest {
+  string NickName = 1;
+  string Phone = 2;
+  int64 Id = 3;
+}
+
+
+message UserModInfoResponse {
+
+}
+
+
 service User{
   rpc Login(UserLoginRequest) returns (UserLoginResponse);
   rpc Register(UserRegisterRequest) returns (UserRegisterResponse);
   rpc UserInfo(UserInfoRequest) returns (UserInfoResponse);
   rpc UserForgetPwd(UserForgetPwdRequest) returns (UserForgetPwdResponse);
   rpc UserModPwd(UserModPwdRequest) returns (UserModPwdResponse);
+  rpc UserModAvatar(UserModAvatarRequest) returns (UserModAvatarResponse);
+  rpc UserModBackground(UserModBackgroundRequest) returns (UserModBackgroundResponse);
+  rpc UserModInfo(UserModInfoRequest) returns (UserModInfoResponse);
 }
 
 

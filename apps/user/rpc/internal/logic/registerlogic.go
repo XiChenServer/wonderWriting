@@ -60,6 +60,14 @@ func (l *RegisterLogic) Register(in *user.UserRegisterRequest) (*user.UserRegist
 			LastLoginTime:    nowTime,
 			Status:           "Active",
 			Role:             "User",
+			AvatarBackground: sql.NullString{
+				String: "AvatarBackground/97e4cf398c1c453f98f8135b202479d6.jpeg",
+				Valid:  true,
+			},
+			BackgroundImage: sql.NullString{
+				String: "BackgroundImage/kpmg3R46Q2.jpg",
+				Valid:  true,
+			},
 		}
 
 		res, err := l.svcCtx.UserModel.Insert(l.ctx, &newUser)

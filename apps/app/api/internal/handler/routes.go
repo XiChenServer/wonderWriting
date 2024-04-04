@@ -47,6 +47,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/api/user/modpwd",
 				Handler: UserModPwdHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/user/modavatar",
+				Handler: UserModAvatarHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/user/modbackground",
+				Handler: UserModBackgroundHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/api/user/modinfo",
+				Handler: UserModInfoHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 	)

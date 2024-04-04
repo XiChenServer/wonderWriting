@@ -2,6 +2,7 @@ package logic
 
 import (
 	"calligraphy/apps/user/model"
+	"calligraphy/pkg/qiniu"
 	"context"
 	"google.golang.org/grpc/status"
 
@@ -37,9 +38,12 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	}
 
 	return &user.UserInfoResponse{
-		Id:       res.UserID,
-		NickName: res.Account,
-		Account:  res.Account,
-		Email:    res.Email.String,
+		Id:               res.UserID,
+		NickName:         res.Nickname,
+		Account:          res.Account,
+		Email:            res.Email.String,
+		AvatarBackground: qiniu.ImgUrl + res.AvatarBackground.String,
+		BackgroundImage:  qiniu.ImgUrl + res.BackgroundImage.String,
+		Phone:            res.Phone,
 	}, nil
 }

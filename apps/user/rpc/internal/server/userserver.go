@@ -46,3 +46,18 @@ func (s *UserServer) UserModPwd(ctx context.Context, in *user.UserModPwdRequest)
 	l := logic.NewUserModPwdLogic(ctx, s.svcCtx)
 	return l.UserModPwd(in)
 }
+
+func (s *UserServer) UserModAvatar(ctx context.Context, in *user.UserModAvatarRequest) (*user.UserModAvatarResponse, error) {
+	l := logic.NewUserModAvatarLogic(ctx, s.svcCtx)
+	return l.UserModAvatar(in)
+}
+
+func (s *UserServer) UserModBackground(ctx context.Context, in *user.UserModBackgroundRequest) (*user.UserModBackgroundResponse, error) {
+	l := logic.NewUserModBackgroundLogic(ctx, s.svcCtx)
+	return l.UserModBackground(in)
+}
+
+func (s *UserServer) UserModInfo(ctx context.Context, in *user.UserModInfoRequest) (*user.UserModInfoResponse, error) {
+	l := logic.NewUserModInfoLogic(ctx, s.svcCtx)
+	return l.UserModInfo(in)
+}

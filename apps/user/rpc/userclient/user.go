@@ -13,16 +13,22 @@ import (
 )
 
 type (
-	UserForgetPwdRequest  = user.UserForgetPwdRequest
-	UserForgetPwdResponse = user.UserForgetPwdResponse
-	UserInfoRequest       = user.UserInfoRequest
-	UserInfoResponse      = user.UserInfoResponse
-	UserLoginRequest      = user.UserLoginRequest
-	UserLoginResponse     = user.UserLoginResponse
-	UserModPwdRequest     = user.UserModPwdRequest
-	UserModPwdResponse    = user.UserModPwdResponse
-	UserRegisterRequest   = user.UserRegisterRequest
-	UserRegisterResponse  = user.UserRegisterResponse
+	UserForgetPwdRequest      = user.UserForgetPwdRequest
+	UserForgetPwdResponse     = user.UserForgetPwdResponse
+	UserInfoRequest           = user.UserInfoRequest
+	UserInfoResponse          = user.UserInfoResponse
+	UserLoginRequest          = user.UserLoginRequest
+	UserLoginResponse         = user.UserLoginResponse
+	UserModAvatarRequest      = user.UserModAvatarRequest
+	UserModAvatarResponse     = user.UserModAvatarResponse
+	UserModBackgroundRequest  = user.UserModBackgroundRequest
+	UserModBackgroundResponse = user.UserModBackgroundResponse
+	UserModInfoRequest        = user.UserModInfoRequest
+	UserModInfoResponse       = user.UserModInfoResponse
+	UserModPwdRequest         = user.UserModPwdRequest
+	UserModPwdResponse        = user.UserModPwdResponse
+	UserRegisterRequest       = user.UserRegisterRequest
+	UserRegisterResponse      = user.UserRegisterResponse
 
 	User interface {
 		Login(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
@@ -30,6 +36,9 @@ type (
 		UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
 		UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error)
 		UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error)
+		UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error)
+		UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error)
+		UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error)
 	}
 
 	defaultUser struct {
@@ -66,4 +75,19 @@ func (m *defaultUser) UserForgetPwd(ctx context.Context, in *UserForgetPwdReques
 func (m *defaultUser) UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UserModPwd(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserModAvatar(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserModBackground(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserModInfo(ctx, in, opts...)
 }

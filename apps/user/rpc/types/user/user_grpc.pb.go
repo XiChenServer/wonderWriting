@@ -19,11 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_Login_FullMethodName         = "/user.User/Login"
-	User_Register_FullMethodName      = "/user.User/Register"
-	User_UserInfo_FullMethodName      = "/user.User/UserInfo"
-	User_UserForgetPwd_FullMethodName = "/user.User/UserForgetPwd"
-	User_UserModPwd_FullMethodName    = "/user.User/UserModPwd"
+	User_Login_FullMethodName             = "/user.User/Login"
+	User_Register_FullMethodName          = "/user.User/Register"
+	User_UserInfo_FullMethodName          = "/user.User/UserInfo"
+	User_UserForgetPwd_FullMethodName     = "/user.User/UserForgetPwd"
+	User_UserModPwd_FullMethodName        = "/user.User/UserModPwd"
+	User_UserModAvatar_FullMethodName     = "/user.User/UserModAvatar"
+	User_UserModBackground_FullMethodName = "/user.User/UserModBackground"
+	User_UserModInfo_FullMethodName       = "/user.User/UserModInfo"
 )
 
 // UserClient is the client API for User service.
@@ -35,6 +38,9 @@ type UserClient interface {
 	UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
 	UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error)
 	UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error)
+	UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error)
+	UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error)
+	UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error)
 }
 
 type userClient struct {
@@ -90,6 +96,33 @@ func (c *userClient) UserModPwd(ctx context.Context, in *UserModPwdRequest, opts
 	return out, nil
 }
 
+func (c *userClient) UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error) {
+	out := new(UserModAvatarResponse)
+	err := c.cc.Invoke(ctx, User_UserModAvatar_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error) {
+	out := new(UserModBackgroundResponse)
+	err := c.cc.Invoke(ctx, User_UserModBackground_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error) {
+	out := new(UserModInfoResponse)
+	err := c.cc.Invoke(ctx, User_UserModInfo_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -99,6 +132,9 @@ type UserServer interface {
 	UserInfo(context.Context, *UserInfoRequest) (*UserInfoResponse, error)
 	UserForgetPwd(context.Context, *UserForgetPwdRequest) (*UserForgetPwdResponse, error)
 	UserModPwd(context.Context, *UserModPwdRequest) (*UserModPwdResponse, error)
+	UserModAvatar(context.Context, *UserModAvatarRequest) (*UserModAvatarResponse, error)
+	UserModBackground(context.Context, *UserModBackgroundRequest) (*UserModBackgroundResponse, error)
+	UserModInfo(context.Context, *UserModInfoRequest) (*UserModInfoResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -120,6 +156,15 @@ func (UnimplementedUserServer) UserForgetPwd(context.Context, *UserForgetPwdRequ
 }
 func (UnimplementedUserServer) UserModPwd(context.Context, *UserModPwdRequest) (*UserModPwdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserModPwd not implemented")
+}
+func (UnimplementedUserServer) UserModAvatar(context.Context, *UserModAvatarRequest) (*UserModAvatarResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserModAvatar not implemented")
+}
+func (UnimplementedUserServer) UserModBackground(context.Context, *UserModBackgroundRequest) (*UserModBackgroundResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserModBackground not implemented")
+}
+func (UnimplementedUserServer) UserModInfo(context.Context, *UserModInfoRequest) (*UserModInfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserModInfo not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -224,6 +269,60 @@ func _User_UserModPwd_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserModAvatar_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserModAvatarRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserModAvatar(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserModAvatar_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserModAvatar(ctx, req.(*UserModAvatarRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserModBackground_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserModBackgroundRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserModBackground(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserModBackground_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserModBackground(ctx, req.(*UserModBackgroundRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserModInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserModInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserModInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserModInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserModInfo(ctx, req.(*UserModInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -250,6 +349,18 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserModPwd",
 			Handler:    _User_UserModPwd_Handler,
+		},
+		{
+			MethodName: "UserModAvatar",
+			Handler:    _User_UserModAvatar_Handler,
+		},
+		{
+			MethodName: "UserModBackground",
+			Handler:    _User_UserModBackground_Handler,
+		},
+		{
+			MethodName: "UserModInfo",
+			Handler:    _User_UserModInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
