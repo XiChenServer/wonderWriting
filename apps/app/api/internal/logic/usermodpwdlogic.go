@@ -11,21 +11,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UserInfoLogic struct {
+type UserModPwdLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfoLogic {
-	return &UserInfoLogic{
+func NewUserModPwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserModPwdLogic {
+	return &UserModPwdLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
+func (l *UserModPwdLogic) UserModPwd(req *types.UserModPwdRequset) (resp *types.UserModPwdResponse, err error) {
+	// todo: add your logic here and delete this line
 	//从jwt中获取id
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	res, err := l.svcCtx.UserRpc.UserInfo(l.ctx, &user.UserInfoRequest{
@@ -34,10 +35,13 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
 	if err != nil {
 		return nil, err
 	}
-	return &types.UserInfoResponse{
+	//调用rpc
+	_, err = l.svcCtx.UserRpc.UserModPwd(l.ctx, &user.UserModPwdRequest{
 		Id:       res.Id,
-		NickName: res.NickName,
-		Account:  res.Account,
-		Email:    res.Email,
-	}, nil
+		Password: req.Password,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &types.UserModPwdResponse{}, nil
 }

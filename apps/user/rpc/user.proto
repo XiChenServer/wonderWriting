@@ -37,10 +37,30 @@ message UserInfoResponse {
   string Email = 4;
 }
 
+
+//用户忘记密码
+message UserForgetPwdRequest{
+  string Email = 1;
+}
+message UserForgetPwdResponse{
+  int64 Id = 1;
+}
+
+//用户修改密码
+message UserModPwdRequest{
+  int64 Id = 1;
+  string Password = 2;
+}
+message UserModPwdResponse{
+
+}
+
 service User{
   rpc Login(UserLoginRequest) returns (UserLoginResponse);
   rpc Register(UserRegisterRequest) returns (UserRegisterResponse);
   rpc UserInfo(UserInfoRequest) returns (UserInfoResponse);
+  rpc UserForgetPwd(UserForgetPwdRequest) returns (UserForgetPwdResponse);
+  rpc UserModPwd(UserModPwdRequest) returns (UserModPwdResponse);
 }
 
 

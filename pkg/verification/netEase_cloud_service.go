@@ -16,7 +16,7 @@ func init() {
 	}
 }
 
-var TimeExpiration = 7 * 24 * 60 * 60
+var TimeExpiration = 5 * 60
 
 func SendEmailVerificationCode(email, verificationCode1 string) error {
 

@@ -36,5 +36,5 @@ func (l *GetEmailVerificationLogic) GetEmailVerification(req *types.Verification
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return &types.VerificationResponse{}, nil
 }

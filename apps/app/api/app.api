@@ -38,26 +38,47 @@ type (
 		Email    string `json:"email"`
 	}
 	//忘记密码
-	UserForgetPwd {
-		Email    string `json:"email"`
+	UserForgetPwdRequest {
+		Email     string `json:"email"`
+		EmailCode string `json:"email_code"`
+	}
+	UserForgetPwdResponse {
+		AccessToken  string `json:"access_token"`
+		AccessExpire int64  `json:"access_expire"`
+	}
+
+	//忘记密码之后修改密码
+	UserModPwdRequset {
 		Password string `json:"password"`
+	}
+	UserModPwdResponse {
 	}
 )
 
 service App{
-
+	// 获取邮箱验证码
 	@handler GetEmailVerification
 	post /api/basic/getemailverification(VerificationRequest) returns(VerificationResponse)
+	//用户注册
 	@handler UserRegister
 	post /api/user/register(UserRegisterRequest) returns (UserRegisterResponse)
+	//用户登录
 	@handler UserLogin
 	post /api/user/login(UserLoginRequest) returns (UserLoginResponse)
+	//用户忘记密码
+	@handler UserForgetPwd
+	post /api/user/forgetpwd(UserForgetPwdRequest) returns (UserForgetPwdResponse)
 }
 
+//
 @server(
 	jwt: Auth
 )
 service App{
+	//获取用户信息
 	@handler UserInfo
 	get /api/user/userinfo() returns (UserInfoResponse)
+	// 修改用户密码
+	@handler UserModPwd
+	post /api/user/modpwd(UserModPwdRequset) returns (UserModPwdResponse)
 }

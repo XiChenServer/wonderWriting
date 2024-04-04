@@ -36,3 +36,13 @@ func (s *UserServer) UserInfo(ctx context.Context, in *user.UserInfoRequest) (*u
 	l := logic.NewUserInfoLogic(ctx, s.svcCtx)
 	return l.UserInfo(in)
 }
+
+func (s *UserServer) UserForgetPwd(ctx context.Context, in *user.UserForgetPwdRequest) (*user.UserForgetPwdResponse, error) {
+	l := logic.NewUserForgetPwdLogic(ctx, s.svcCtx)
+	return l.UserForgetPwd(in)
+}
+
+func (s *UserServer) UserModPwd(ctx context.Context, in *user.UserModPwdRequest) (*user.UserModPwdResponse, error) {
+	l := logic.NewUserModPwdLogic(ctx, s.svcCtx)
+	return l.UserModPwd(in)
+}

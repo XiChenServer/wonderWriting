@@ -19,9 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	User_Login_FullMethodName    = "/user.User/Login"
-	User_Register_FullMethodName = "/user.User/Register"
-	User_UserInfo_FullMethodName = "/user.User/UserInfo"
+	User_Login_FullMethodName         = "/user.User/Login"
+	User_Register_FullMethodName      = "/user.User/Register"
+	User_UserInfo_FullMethodName      = "/user.User/UserInfo"
+	User_UserForgetPwd_FullMethodName = "/user.User/UserForgetPwd"
+	User_UserModPwd_FullMethodName    = "/user.User/UserModPwd"
 )
 
 // UserClient is the client API for User service.
@@ -31,6 +33,8 @@ type UserClient interface {
 	Login(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
 	Register(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 	UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
+	UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error)
+	UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error)
 }
 
 type userClient struct {
@@ -68,6 +72,24 @@ func (c *userClient) UserInfo(ctx context.Context, in *UserInfoRequest, opts ...
 	return out, nil
 }
 
+func (c *userClient) UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error) {
+	out := new(UserForgetPwdResponse)
+	err := c.cc.Invoke(ctx, User_UserForgetPwd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error) {
+	out := new(UserModPwdResponse)
+	err := c.cc.Invoke(ctx, User_UserModPwd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -75,6 +97,8 @@ type UserServer interface {
 	Login(context.Context, *UserLoginRequest) (*UserLoginResponse, error)
 	Register(context.Context, *UserRegisterRequest) (*UserRegisterResponse, error)
 	UserInfo(context.Context, *UserInfoRequest) (*UserInfoResponse, error)
+	UserForgetPwd(context.Context, *UserForgetPwdRequest) (*UserForgetPwdResponse, error)
+	UserModPwd(context.Context, *UserModPwdRequest) (*UserModPwdResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -90,6 +114,12 @@ func (UnimplementedUserServer) Register(context.Context, *UserRegisterRequest) (
 }
 func (UnimplementedUserServer) UserInfo(context.Context, *UserInfoRequest) (*UserInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserInfo not implemented")
+}
+func (UnimplementedUserServer) UserForgetPwd(context.Context, *UserForgetPwdRequest) (*UserForgetPwdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserForgetPwd not implemented")
+}
+func (UnimplementedUserServer) UserModPwd(context.Context, *UserModPwdRequest) (*UserModPwdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserModPwd not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -158,6 +188,42 @@ func _User_UserInfo_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserForgetPwd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserForgetPwdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserForgetPwd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserForgetPwd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserForgetPwd(ctx, req.(*UserForgetPwdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserModPwd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserModPwdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserModPwd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserModPwd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserModPwd(ctx, req.(*UserModPwdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +242,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserInfo",
 			Handler:    _User_UserInfo_Handler,
+		},
+		{
+			MethodName: "UserForgetPwd",
+			Handler:    _User_UserForgetPwd_Handler,
+		},
+		{
+			MethodName: "UserModPwd",
+			Handler:    _User_UserModPwd_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

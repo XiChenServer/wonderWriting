@@ -13,17 +13,23 @@ import (
 )
 
 type (
-	UserInfoRequest      = user.UserInfoRequest
-	UserInfoResponse     = user.UserInfoResponse
-	UserLoginRequest     = user.UserLoginRequest
-	UserLoginResponse    = user.UserLoginResponse
-	UserRegisterRequest  = user.UserRegisterRequest
-	UserRegisterResponse = user.UserRegisterResponse
+	UserForgetPwdRequest  = user.UserForgetPwdRequest
+	UserForgetPwdResponse = user.UserForgetPwdResponse
+	UserInfoRequest       = user.UserInfoRequest
+	UserInfoResponse      = user.UserInfoResponse
+	UserLoginRequest      = user.UserLoginRequest
+	UserLoginResponse     = user.UserLoginResponse
+	UserModPwdRequest     = user.UserModPwdRequest
+	UserModPwdResponse    = user.UserModPwdResponse
+	UserRegisterRequest   = user.UserRegisterRequest
+	UserRegisterResponse  = user.UserRegisterResponse
 
 	User interface {
 		Login(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
 		Register(ctx context.Context, in *UserRegisterRequest, opts ...grpc.CallOption) (*UserRegisterResponse, error)
 		UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error)
+		UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error)
+		UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error)
 	}
 
 	defaultUser struct {
@@ -50,4 +56,14 @@ func (m *defaultUser) Register(ctx context.Context, in *UserRegisterRequest, opt
 func (m *defaultUser) UserInfo(ctx context.Context, in *UserInfoRequest, opts ...grpc.CallOption) (*UserInfoResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UserInfo(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserForgetPwd(ctx context.Context, in *UserForgetPwdRequest, opts ...grpc.CallOption) (*UserForgetPwdResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserForgetPwd(ctx, in, opts...)
+}
+
+func (m *defaultUser) UserModPwd(ctx context.Context, in *UserModPwdRequest, opts ...grpc.CallOption) (*UserModPwdResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserModPwd(ctx, in, opts...)
 }

@@ -41,7 +41,19 @@ type UserInfoResponse struct {
 	Email    string `json:"email"`
 }
 
-type UserForgetPwd struct {
-	Email    string `json:"email"`
+type UserForgetPwdRequest struct {
+	Email     string `json:"email"`
+	EmailCode string `json:"email_code"`
+}
+
+type UserForgetPwdResponse struct {
+	AccessToken  string `json:"access_token"`
+	AccessExpire int64  `json:"access_expire"`
+}
+
+type UserModPwdRequset struct {
 	Password string `json:"password"`
+}
+
+type UserModPwdResponse struct {
 }
