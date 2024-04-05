@@ -33,7 +33,7 @@ type PostDelResponse{
 
 // 查看自己的所有帖子
 type LookPostByOwnRequest{
-    UserId uint `json:"user_id"`
+
 }
 type LookPostByOwnResponses{
     PostData []PostInfo `json:"post_data"`

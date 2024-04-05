@@ -1,12 +1,11 @@
 package user
 
 import (
+	"calligraphy/common/response"
 	"net/http"
 
-	"api_v2/common/response"
 	"calligraphy/apps/app/api/internal/logic/user"
 	"calligraphy/apps/app/api/internal/svc"
-	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 func UserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
@@ -18,7 +17,7 @@ func UserInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		//} else {
 		//	httpx.OkJsonCtx(r.Context(), w, resp)
 		//}
-		response.Response(r, w, resp, err)
+		response.HttpResult(r, w, resp, err)
 
 	}
 }

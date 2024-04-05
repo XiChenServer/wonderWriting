@@ -1,7 +1,10 @@
 package user
 
 import (
+	"calligraphy/apps/user/rpc/types/user"
+	"calligraphy/common/jwtx"
 	"context"
+	"time"
 
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
@@ -25,6 +28,25 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 
 func (l *UserLoginLogic) UserLogin(req *types.UserLoginRequest) (resp *types.UserLoginResponse, err error) {
 	// todo: add your logic here and delete this line
+	// 调用rpc，查询用户是否存在
+	res, err := l.svcCtx.UserRpc.Login(l.ctx, &user.UserLoginRequest{
+		Email:    req.Email,
+		Password: req.Password,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return
+	//生成jwt
+	now := time.Now().Unix()
+	accessExpire := l.svcCtx.Config.Auth.AccessExpire
+	accessToken, err := jwtx.GetToken(l.svcCtx.Config.Auth.AccessSecret, now, accessExpire, res.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &types.UserLoginResponse{
+		AccessToken:  accessToken,
+		AccessExpire: accessExpire,
+	}, nil
+
 }

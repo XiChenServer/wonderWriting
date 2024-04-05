@@ -26,7 +26,6 @@ type PostDelResponse struct {
 }
 
 type LookPostByOwnRequest struct {
-	UserId uint `json:"user_id"`
 }
 
 type LookPostByOwnResponses struct {

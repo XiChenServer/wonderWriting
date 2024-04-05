@@ -45,6 +45,10 @@ func (*Post) DeletePost(dao *gorm.DB, post_id uint32) (*Post, error) {
 	if err != nil {
 		return nil, err
 	}
+	err = dao.Where("id = ?", post_id).Delete(&Post{}).Error
+	if err != nil {
+		return nil, err
+	}
 	err = dao.Where("post_id = ?", post_id).Delete(&Comment{}).Error
 	if err != nil {
 		return nil, err
@@ -66,12 +70,12 @@ func (*Post) LookAllPosts(dao *gorm.DB) ([]*Post, error) {
 	return posts, nil
 }
 
-// 查看自己的帖子
+// LookPostByOwn 查看自己的帖子
 func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
-	var post []*Post
-	err := dao.Where("user_id = ?", userId).First(&post).Error
+	var posts []*Post
+	err := dao.Find(&posts).Error
 	if err != nil {
 		return nil, err
 	}
-	return post, nil
+	return posts, nil
 }

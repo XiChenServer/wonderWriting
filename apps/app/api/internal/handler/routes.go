@@ -88,6 +88,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/create/post",
 				Handler: community.UsercretePostHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/delete/post",
+				Handler: community.UserDelPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/look/postbyown",
+				Handler: community.UserLookPostByOwnHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/community"),

@@ -74,4 +74,15 @@ service App{
 	@doc "user create post"
 	@handler UsercretePost
 	post /create/post() returns (PostCreateResponse)
+
+	//用户创建帖子
+	@doc "user del post"
+	@handler UserDelPost
+	post /delete/post(PostDelRequest) returns (PostDelResponse)
+
+	//用户查看自己的帖子
+	@doc "user see post oneself"
+	@handler UserLookPostByOwn
+	get /look/postbyown(LookPostByOwnRequest) returns (LookPostByOwnResponses)
+
 }
