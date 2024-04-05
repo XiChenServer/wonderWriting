@@ -1,14 +1,12 @@
 package community
 
 import (
+	"calligraphy/apps/app/api/internal/svc"
+	"calligraphy/apps/app/api/internal/types"
 	"calligraphy/apps/community/rpc/types/community"
 	"context"
 	"encoding/json"
 	"fmt"
-
-	"calligraphy/apps/app/api/internal/svc"
-	"calligraphy/apps/app/api/internal/types"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -33,23 +31,28 @@ func (l *UserLookPostByOwnLogic) UserLookPostByOwn(req *types.LookPostByOwnReque
 	if err != nil {
 		return nil, err
 	}
+
 	//调用rpc进行查找数据
 	res, err := l.svcCtx.CommunityRpc.CommunityLookPostByOwn(l.ctx, &community.CommunityLookPostByOwnRequest{UserId: uint32(uid)})
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("4")
 	//进行转换数据
-	var postData []types.PostInfo
+	var postData []*types.PostInfo
 	for _, v := range res.PostData {
-		newPostData := types.PostInfo{
-			Id:         uint(v.Id),
-			UserId:     uint(v.UserId),
-			LikeCount:  uint(v.LikeCount),
-			Content:    v.Content,
-			ImageUrls:  v.ImageUrls,
-			CreateTime: int32(v.CreateTime),
+		newPostData := &types.PostInfo{
+			Id:           uint(v.Id),
+			UserId:       uint(v.UserId),
+			LikeCount:    uint(v.LikeCount),
+			Content:      v.Content,
+			ImageUrls:    v.ImageUrls,
+			CreateTime:   int32(v.CreateTime),
+			CollectCount: uint(v.CollectCount),
+			ContentCount: uint(v.ContentCount),
 		}
-		fmt.Println("123", newPostData)
+		fmt.Println(v.LikeCount)
+		fmt.Println(newPostData.LikeCount)
 		postData = append(postData, newPostData)
 	}
 	return &types.LookPostByOwnResponses{PostData: postData}, err

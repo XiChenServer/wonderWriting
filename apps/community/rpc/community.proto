@@ -13,6 +13,8 @@ message PostInfo{
   repeated string Image_urls = 5;
   uint32 CreateTime = 6;//创建时间
   uint32 DeleteTime = 7;//删除时间
+  uint32 ContentCount = 8;
+  uint32 CollectCount = 9;
 }
 
 // 帖子创建
@@ -51,10 +53,83 @@ message CommunityLookAllPostsResponse{
   repeated PostInfo PostData = 1;
 }
 
+//点赞帖子
+message CommunityLikePostRequest{
+  uint32 UserId = 2;
+  uint32 PostId = 1;
+}
+message CommunityLikePostResponse{
+  uint32 LikeId = 1;
+}
 
+//取消点赞
+message CommunityCancelLikePostRequest{
+  uint32 LikeId = 1;
+  uint32 UserId = 2;
+  uint32 PostId = 3;
+}
+message CommunityCancelLikePostResponse{
+
+}
+//收藏帖子
+message CommunityCollectPostRequest{
+  uint32 PostId = 1;
+  uint32 UserId = 2;
+}
+message CommunityCollectPostResponse{
+  uint32 CollectId = 1;
+}
+
+//取消收藏
+message CommunityCancelCollectPostRequest{
+  uint32 CollectId = 1;
+  uint32 UserId = 2;
+  uint32 PostId = 3;
+}
+message CommunityCancelCollectPostResponse{
+
+}
+
+
+
+//评论帖子
+message CommunityContentPostRequest{
+  uint32 PostId = 1;
+  string Content = 2;
+  uint32 UserId = 3;
+}
+message CommunityContentPostResponse{
+  uint32 ContentId = 1;
+}
+
+//取消评论
+message CommunityCancelContentPostRequest{
+  uint32 ContentId = 1;
+  uint32 UserId = 2;
+  uint32 PostId = 3;
+}
+message CommunityCancelContentPostResponse{
+
+}
+
+// 定义社区服务
 service Community {
+// 定义点赞服务
+  rpc LikePost(CommunityLikePostRequest) returns (CommunityLikePostResponse);
+  rpc CancelLikePost(CommunityCancelLikePostRequest) returns (CommunityCancelLikePostResponse);
+
+// 定义收藏服务
+
+  rpc CollectPost(CommunityCollectPostRequest) returns (CommunityCollectPostResponse);
+  rpc CancelCollectPost(CommunityCancelCollectPostRequest) returns (CommunityCancelCollectPostResponse);
+
+// 定义评论服务
+  rpc CommentPost(CommunityContentPostRequest) returns (CommunityContentPostResponse);
+  rpc CancelCommentPost(CommunityCancelContentPostRequest) returns (CommunityCancelContentPostResponse);
+  // 定义帖子服务
   rpc CommunityCreatePost(CommunityCreatePostRequest) returns (CommunityCreatePostResponse);
   rpc CommunityDelPost(CommunityDelPostRequest) returns (CommunityDelPostResponse);
   rpc CommunityLookPostByOwn(CommunityLookPostByOwnRequest) returns (CommunityLookPostByOwnResponses);
   rpc CommunityLookAllPosts(CommunityLookAllPostsRequest) returns (CommunityLookAllPostsResponse);
 }
+

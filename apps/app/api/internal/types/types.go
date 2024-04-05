@@ -2,13 +2,15 @@
 package types
 
 type PostInfo struct {
-	Id         uint     `json:"id"`
-	UserId     uint     `json:"user_id"`
-	LikeCount  uint     `json:"like_count"`
-	Content    string   `json:"content"`
-	ImageUrls  []string `json:"image_urls"`
-	CreateTime int32    `json:"create_time"`
-	DeleteTime int32    `json:"delete_time"`
+	Id           uint     `json:"id"`
+	UserId       uint     `json:"user_id"`
+	ContentCount uint     `json:"content_count"`
+	LikeCount    uint     `json:"like_count"`
+	CollectCount uint     `json:"collect_count"`
+	Content      string   `json:"content"`
+	ImageUrls    []string `json:"image_urls"`
+	CreateTime   int32    `json:"create_time"`
+	DeleteTime   int32    `json:"delete_time"`
 }
 
 type PostCreateRequest struct {
@@ -29,11 +31,60 @@ type LookPostByOwnRequest struct {
 }
 
 type LookPostByOwnResponses struct {
-	PostData []PostInfo `json:"post_data"`
+	PostData []*PostInfo `json:"post_data"`
 }
 
 type LookAllPostsResponse struct {
-	PostData []PostInfo `json:"post_data"`
+	PostData []*PostInfo `json:"post_data"`
+}
+
+type LikePostRequest struct {
+	PostId uint `json:"post_id"`
+}
+
+type LikePostResponse struct {
+	LikeId uint `json:"like_id"`
+}
+
+type CancelLikePostRequest struct {
+	LikeId uint `json:"like_id"`
+	PostId uint `json:"post_id"`
+}
+
+type CancelLikePostResponse struct {
+}
+
+type CommentPostRequest struct {
+	PostId  uint   `json:"post_id"`
+	Content string `json:"content"`
+}
+
+type CommentPostResponse struct {
+	CommentId uint `json:"comment_id"`
+}
+
+type CancelCommentPostRequest struct {
+	PostId    uint `json:"post_id"`
+	CommentId uint `json:"comment_id"`
+}
+
+type CancelCommentPostResponse struct {
+}
+
+type CollectPostRequest struct {
+	PostId uint `json:"post_id"`
+}
+
+type CollectPostResponse struct {
+	CollectId uint `json:"collect_id"`
+}
+
+type CancelCollectPostRequest struct {
+	PostId    uint `json:"post_id"`
+	CollectId uint `json:"collect_id"`
+}
+
+type CancelCollectPostResponse struct {
 }
 
 type VerificationRequest struct {

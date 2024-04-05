@@ -4,14 +4,17 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// Post 帖子表模型
 type Post struct {
 	gorm.Model
-	UserID    uint        `json:"user_id"`                         // 用户ID，JSON序列化时的字段名为"user_id"
-	Content   string      `gorm:"type:text" json:"content"`        // 帖子内容，JSON序列化时的字段名为"content"
-	Images    []PostImage `gorm:"foreignKey:PostID" json:"images"` // 帖子图片，外键关联到PostImage表的PostID字段，JSON序列化时的字段名为"images"
-	Likes     []Like      `gorm:"foreignKey:PostID" json:"likes"`  // 帖子点赞，外键关联到Like表的PostID字段，JSON序列化时的字段名为"likes"
-	LikeCount uint        `json:"like_count"`
+	UserID          uint        `json:"user_id"`                              // 用户ID，JSON序列化时的字段名为"user_id"
+	Content         string      `gorm:"type:text" json:"content"`             // 帖子内容，JSON序列化时的字段名为"content"
+	Images          []PostImage `gorm:"foreignKey:PostID" json:"images"`      // 帖子图片，外键关联到PostImage表的PostID字段，JSON序列化时的字段名为"images"
+	Likes           []Like      `gorm:"foreignKey:PostID" json:"likes"`       // 帖子点赞，外键关联到Like表的PostID字段，JSON序列化时的字段名为"likes"
+	LikeCount       uint        `json:"like_count"`                           // 帖子点赞数量
+	CollectionCount uint        `json:"collection_count"`                     // 帖子收藏数量
+	Collections     []Collect   `gorm:"foreignKey:PostID" json:"collections"` // 帖子收藏，多对多关联，使用中间表post_collections
+	CommentCount    uint        `gorm:"-" json:"comment_count"`               // 帖子评论数量
+	Comments        []Comment   `gorm:"foreignKey:PostID" json:"comment"`     // 帖子评论，外键关联到Comment表的PostID字段，JSON序列化时的字段名为"comment"
 }
 
 // CreatePost 创建帖子
@@ -57,6 +60,10 @@ func (*Post) DeletePost(dao *gorm.DB, post_id uint32) (*Post, error) {
 	if err != nil {
 		return nil, err
 	}
+	err = dao.Where("post_id = ?", post_id).Delete(&Collect{}).Error
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
@@ -73,7 +80,7 @@ func (*Post) LookAllPosts(dao *gorm.DB) ([]*Post, error) {
 // LookPostByOwn 查看自己的帖子
 func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
 	var posts []*Post
-	err := dao.Find(&posts).Error
+	err := dao.Where("user_id = ?", userId).Find(&posts).Error
 	if err != nil {
 		return nil, err
 	}

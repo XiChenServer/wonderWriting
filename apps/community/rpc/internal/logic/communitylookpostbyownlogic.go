@@ -2,11 +2,9 @@ package logic
 
 import (
 	"calligraphy/apps/community/model"
-	"context"
-	"fmt"
-
 	"calligraphy/apps/community/rpc/internal/svc"
 	"calligraphy/apps/community/rpc/types/community"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -28,11 +26,15 @@ func NewCommunityLookPostByOwnLogic(ctx context.Context, svcCtx *svc.ServiceCont
 func (l *CommunityLookPostByOwnLogic) CommunityLookPostByOwn(in *community.CommunityLookPostByOwnRequest) (*community.CommunityLookPostByOwnResponses, error) {
 	// todo: add your logic here and delete this line
 	// 创建 Post 和 PostImage 操作实例
-	postOperations := model.Post{}
+	//postOperations := model.Post{}
 	postImageOperations := model.PostImage{}
-	fmt.Println("4")
+	var res []model.Post
 	// 查询所有帖子信息
-	res, err := postOperations.LookPostByOwn(l.svcCtx.DB, uint(in.UserId))
+	//res, err := postOperations.LookPostByOwn(l.svcCtx.DB, uint(in.UserId))
+	//if err != nil {
+	//	return nil, err
+	//}
+	err := l.svcCtx.DB.Where("user_id = ?", in.UserId).Find(&res).Error
 	if err != nil {
 		return nil, err
 	}
@@ -51,20 +53,18 @@ func (l *CommunityLookPostByOwnLogic) CommunityLookPostByOwn(in *community.Commu
 		createTime := uint32(v.CreatedAt.Unix())
 		// 创建新的帖子信息结构体
 		newPost := &community.PostInfo{
-			Id:         uint32(v.ID),
-			UserId:     uint32(v.UserID),
-			LikeCount:  uint32(v.LikeCount),
-			Content:    v.Content,
-			CreateTime: createTime,
-			ImageUrls:  urls,
+			Id:           uint32(v.ID),
+			UserId:       uint32(v.UserID),
+			LikeCount:    uint32(v.LikeCount),
+			Content:      v.Content,
+			CreateTime:   createTime,
+			ImageUrls:    urls,
+			CollectCount: uint32(v.CollectionCount),
+			ContentCount: uint32(v.CommentCount),
 		}
-		fmt.Println(newPost)
+
 		// 将新的帖子信息添加到切片中
 		postInfo = append(postInfo, newPost)
 	}
-
-	// 构建并返回帖子信息响应
-	return &community.CommunityLookPostByOwnResponses{
-		PostData: postInfo,
-	}, nil
+	return &community.CommunityLookPostByOwnResponses{PostData: postInfo}, nil
 }

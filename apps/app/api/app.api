@@ -75,7 +75,7 @@ service App{
 	@handler UsercretePost
 	post /create/post() returns (PostCreateResponse)
 
-	//用户创建帖子
+	//用户删除帖子
 	@doc "user del post"
 	@handler UserDelPost
 	post /delete/post(PostDelRequest) returns (PostDelResponse)
@@ -84,5 +84,35 @@ service App{
 	@doc "user see post oneself"
 	@handler UserLookPostByOwn
 	get /look/postbyown(LookPostByOwnRequest) returns (LookPostByOwnResponses)
+
+	// 点赞请求
+	@doc "点赞请求"
+	@handler LikePost
+	post /like/post(LikePostRequest) returns (LikePostResponse)
+
+	// 取消点赞请求
+	@doc "取消点赞请求"
+	@handler CancelLikePost
+	post /cancel/like(CancelLikePostRequest) returns (CancelLikePostResponse)
+
+	// 评论请求
+	@doc "评论请求"
+	@handler CommentPost
+	post /comment/post(CommentPostRequest) returns (CommentPostResponse)
+
+	// 取消评论请求
+	@doc "取消评论请求"
+	@handler CancelCommentPost
+	post /cancel/comment(CancelCommentPostRequest) returns (CancelCommentPostResponse)
+
+	// 收藏请求
+	@doc "收藏请求"
+	@handler CollectPost
+	post /collect/post(CollectPostRequest) returns (CollectPostResponse)
+
+	// 取消收藏请求
+	@doc "取消收藏请求"
+	@handler CancelCollectPost
+	post /cancel/collect(CancelCollectPostRequest) returns (CancelCollectPostResponse)
 
 }

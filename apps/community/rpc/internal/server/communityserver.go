@@ -22,6 +22,39 @@ func NewCommunityServer(svcCtx *svc.ServiceContext) *CommunityServer {
 	}
 }
 
+// 定义点赞服务
+func (s *CommunityServer) LikePost(ctx context.Context, in *community.CommunityLikePostRequest) (*community.CommunityLikePostResponse, error) {
+	l := logic.NewLikePostLogic(ctx, s.svcCtx)
+	return l.LikePost(in)
+}
+
+func (s *CommunityServer) CancelLikePost(ctx context.Context, in *community.CommunityCancelLikePostRequest) (*community.CommunityCancelLikePostResponse, error) {
+	l := logic.NewCancelLikePostLogic(ctx, s.svcCtx)
+	return l.CancelLikePost(in)
+}
+
+func (s *CommunityServer) CollectPost(ctx context.Context, in *community.CommunityCollectPostRequest) (*community.CommunityCollectPostResponse, error) {
+	l := logic.NewCollectPostLogic(ctx, s.svcCtx)
+	return l.CollectPost(in)
+}
+
+func (s *CommunityServer) CancelCollectPost(ctx context.Context, in *community.CommunityCancelCollectPostRequest) (*community.CommunityCancelCollectPostResponse, error) {
+	l := logic.NewCancelCollectPostLogic(ctx, s.svcCtx)
+	return l.CancelCollectPost(in)
+}
+
+// 定义评论服务
+func (s *CommunityServer) CommentPost(ctx context.Context, in *community.CommunityContentPostRequest) (*community.CommunityContentPostResponse, error) {
+	l := logic.NewCommentPostLogic(ctx, s.svcCtx)
+	return l.CommentPost(in)
+}
+
+func (s *CommunityServer) CancelCommentPost(ctx context.Context, in *community.CommunityCancelContentPostRequest) (*community.CommunityCancelContentPostResponse, error) {
+	l := logic.NewCancelCommentPostLogic(ctx, s.svcCtx)
+	return l.CancelCommentPost(in)
+}
+
+// 定义帖子服务
 func (s *CommunityServer) CommunityCreatePost(ctx context.Context, in *community.CommunityCreatePostRequest) (*community.CommunityCreatePostResponse, error) {
 	l := logic.NewCommunityCreatePostLogic(ctx, s.svcCtx)
 	return l.CommunityCreatePost(in)

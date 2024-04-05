@@ -98,6 +98,36 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/look/postbyown",
 				Handler: community.UserLookPostByOwnHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/like/post",
+				Handler: community.LikePostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/cancel/like",
+				Handler: community.CancelLikePostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/comment/post",
+				Handler: community.CommentPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/cancel/comment",
+				Handler: community.CancelCommentPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/collect/post",
+				Handler: community.CollectPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/cancel/collect",
+				Handler: community.CancelCollectPostHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/community"),

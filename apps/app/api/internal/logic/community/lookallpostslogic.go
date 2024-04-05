@@ -1,12 +1,11 @@
 package community
 
 import (
+	"calligraphy/apps/app/api/internal/svc"
+	"calligraphy/apps/app/api/internal/types"
 	"calligraphy/apps/community/rpc/types/community"
 	"context"
 	"fmt"
-
-	"calligraphy/apps/app/api/internal/svc"
-	"calligraphy/apps/app/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -34,17 +33,21 @@ func (l *LookAllPostsLogic) LookAllPosts() (resp *types.LookAllPostsResponse, er
 		return nil, err
 	}
 	//进行转换数据
-	var postData []types.PostInfo
+	var postData []*types.PostInfo
 	for _, v := range res.PostData {
-		newPostData := types.PostInfo{
-			Id:         uint(v.Id),
-			UserId:     uint(v.UserId),
-			LikeCount:  uint(v.LikeCount),
-			Content:    v.Content,
-			ImageUrls:  v.ImageUrls,
-			CreateTime: int32(v.CreateTime),
+		newPostData := &types.PostInfo{
+			Id:           uint(v.Id),
+			UserId:       uint(v.UserId),
+			LikeCount:    uint(v.LikeCount),
+			Content:      v.Content,
+			ImageUrls:    v.ImageUrls,
+			CreateTime:   int32(v.CreateTime),
+			CollectCount: uint(v.CollectCount),
+			ContentCount: uint(v.ContentCount),
 		}
-		fmt.Println(newPostData)
+		fmt.Println(v.LikeCount)
+		fmt.Println(newPostData.LikeCount)
+		fmt.Println("123", newPostData)
 		postData = append(postData, newPostData)
 	}
 	return &types.LookAllPostsResponse{PostData: postData}, nil

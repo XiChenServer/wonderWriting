@@ -2,12 +2,9 @@ package logic
 
 import (
 	"calligraphy/apps/community/model"
-	"context"
-	"fmt"
-
 	"calligraphy/apps/community/rpc/internal/svc"
 	"calligraphy/apps/community/rpc/types/community"
-
+	"context"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -51,14 +48,15 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		createTime := uint32(v.CreatedAt.Unix())
 		// 创建新的帖子信息结构体
 		newPost := &community.PostInfo{
-			Id:         uint32(v.ID),
-			UserId:     uint32(v.UserID),
-			LikeCount:  uint32(v.LikeCount),
-			Content:    v.Content,
-			CreateTime: createTime,
-			ImageUrls:  urls,
+			Id:           uint32(v.ID),
+			UserId:       uint32(v.UserID),
+			LikeCount:    uint32(v.LikeCount),
+			Content:      v.Content,
+			CreateTime:   createTime,
+			ImageUrls:    urls,
+			CollectCount: uint32(v.CollectionCount),
+			ContentCount: uint32(v.CommentCount),
 		}
-		fmt.Println(newPost)
 		// 将新的帖子信息添加到切片中
 		postInfo = append(postInfo, newPost)
 	}
