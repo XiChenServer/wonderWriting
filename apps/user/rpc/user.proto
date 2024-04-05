@@ -38,6 +38,11 @@ message UserInfoResponse {
   string BackgroundImage = 5;
   string AvatarBackground = 6;
   string Phone = 7;
+  int64 PostCount = 8;
+  int64 FollowCount = 9;
+  int64 FansCount = 10;
+  int64 LikeCount = 11;
+  int64 PointCount = 12;
 }
 
 

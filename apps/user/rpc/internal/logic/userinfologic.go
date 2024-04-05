@@ -45,5 +45,10 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 		AvatarBackground: qiniu.ImgUrl + res.AvatarBackground.String,
 		BackgroundImage:  qiniu.ImgUrl + res.BackgroundImage.String,
 		Phone:            res.Phone,
+		PointCount:       res.PointCount,
+		PostCount:        res.PointCount,
+		FansCount:        res.FansCount,
+		FollowCount:      res.FollowCount,
+		LikeCount:        res.LikeCount,
 	}, nil
 }

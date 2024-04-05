@@ -12,6 +12,11 @@ CREATE TABLE Users (
                        Role ENUM('User', 'Admin') DEFAULT 'User', -- 用户角色，枚举类型，默认为普通用户角色
                        BackgroundImage VARCHAR(255) DEFAULT NULL, -- 用户背景图片，可以为空，默认为NULL
                        AvatarBackground VARCHAR(255) DEFAULT NULL, -- 头像背景图片，可以为空，默认为NULL
+                       PostCount INT DEFAULT 0, -- 帖子数，默认为0
+                       FollowCount INT DEFAULT 0, -- 关注数，默认为0
+                       FansCount INT DEFAULT 0, -- 粉丝数，默认为0
+                       LikeCount INT DEFAULT 0, -- 获赞数，默认为0
+                       PointCount INT DEFAULT 0, -- 积分数，默认为0
                        PRIMARY KEY (`UserID`)
 );
 

@@ -1,3 +1,4 @@
+import "apis/community.api"
 type (
 	VerificationRequest {
 		Email string `json:"email"`
@@ -39,6 +40,11 @@ type (
 		AvatarBackground string `json:"avatar_background"`
 		BackgroundImage  string `json:"background_image"`
 		Phone            string `json:"phone"`
+		PostCount        int64  `json:"post_count"`
+		FollowCount      int64  `json:"follow_count"`
+		FansCount        int64  `json:"fans_count"`
+		LikeCount        int64  `json:"like_count"`
+		PointCount       int64  `json:"point_count"`
 	}
 	//忘记密码
 	UserForgetPwdRequest {
@@ -108,4 +114,31 @@ service App{
 	//用户修改信息
 	@handler UserModInfo
 	post /api/user/modinfo(UserModInfoRequest) returns(UserModInfoResponse)
+}
+
+//=====================================> communoty <=======================================
+//no need login
+
+@server (
+	prefix: community
+	group: community
+)
+service App{
+	//用户查看所有的帖子
+	@doc "user look all post"
+	@handler LookAllPosts
+	get /look/allposts() returns (LookAllPostsResponse)
+}
+
+//need login
+@server (
+	prefix: /community
+	group: community
+	jwt: Auth
+)
+service App{
+	//用户创建帖子
+	@doc "user create post"
+	@handler UsercretePost
+	post /create/post() returns (PostCreateResponse)
 }

@@ -1,0 +1,45 @@
+
+info(
+    title :"社区管理"
+    desc: "用户看帖发帖评论，然后来提升自己"
+    version: "v1"
+)
+//  帖子信息
+type PostInfo{
+    Id uint `json:"id"`
+    UserId uint  `json:"user_id"`
+    LikeCount uint  `json:"like_count"`
+    Content string `json:"content"`
+    ImageUrls []string `json:"image_urls"`
+    CreateTime int32 `json:"create_time"`
+    DeleteTime int32 `json:"delete_time"`
+}
+
+
+// 帖子创建
+type PostCreateRequest{
+//    Content string `json:"content"`
+}
+type PostCreateResponse{
+     PostId uint `json:"post_id"`
+}
+
+//帖子删除
+type PostDelRequest{
+    PostId uint `json:"post_id"`
+}
+type PostDelResponse{
+}
+
+// 查看自己的所有帖子
+type LookPostByOwnRequest{
+    UserId uint `json:"user_id"`
+}
+type LookPostByOwnResponses{
+    PostData []PostInfo `json:"post_data"`
+}
+
+//用户查看所有的帖子
+type LookAllPostsResponse{
+    PostData []PostInfo `json:"post_data"`
+}

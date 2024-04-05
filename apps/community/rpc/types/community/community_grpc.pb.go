@@ -22,6 +22,7 @@ const (
 	Community_CommunityCreatePost_FullMethodName    = "/community.Community/CommunityCreatePost"
 	Community_CommunityDelPost_FullMethodName       = "/community.Community/CommunityDelPost"
 	Community_CommunityLookPostByOwn_FullMethodName = "/community.Community/CommunityLookPostByOwn"
+	Community_CommunityLookAllPosts_FullMethodName  = "/community.Community/CommunityLookAllPosts"
 )
 
 // CommunityClient is the client API for Community service.
@@ -31,6 +32,7 @@ type CommunityClient interface {
 	CommunityCreatePost(ctx context.Context, in *CommunityCreatePostRequest, opts ...grpc.CallOption) (*CommunityCreatePostResponse, error)
 	CommunityDelPost(ctx context.Context, in *CommunityDelPostRequest, opts ...grpc.CallOption) (*CommunityDelPostResponse, error)
 	CommunityLookPostByOwn(ctx context.Context, in *CommunityLookPostByOwnRequest, opts ...grpc.CallOption) (*CommunityLookPostByOwnResponses, error)
+	CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error)
 }
 
 type communityClient struct {
@@ -68,6 +70,15 @@ func (c *communityClient) CommunityLookPostByOwn(ctx context.Context, in *Commun
 	return out, nil
 }
 
+func (c *communityClient) CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error) {
+	out := new(CommunityLookAllPostsResponse)
+	err := c.cc.Invoke(ctx, Community_CommunityLookAllPosts_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommunityServer is the server API for Community service.
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
@@ -75,6 +86,7 @@ type CommunityServer interface {
 	CommunityCreatePost(context.Context, *CommunityCreatePostRequest) (*CommunityCreatePostResponse, error)
 	CommunityDelPost(context.Context, *CommunityDelPostRequest) (*CommunityDelPostResponse, error)
 	CommunityLookPostByOwn(context.Context, *CommunityLookPostByOwnRequest) (*CommunityLookPostByOwnResponses, error)
+	CommunityLookAllPosts(context.Context, *CommunityLookAllPostsRequest) (*CommunityLookAllPostsResponse, error)
 	mustEmbedUnimplementedCommunityServer()
 }
 
@@ -90,6 +102,9 @@ func (UnimplementedCommunityServer) CommunityDelPost(context.Context, *Community
 }
 func (UnimplementedCommunityServer) CommunityLookPostByOwn(context.Context, *CommunityLookPostByOwnRequest) (*CommunityLookPostByOwnResponses, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommunityLookPostByOwn not implemented")
+}
+func (UnimplementedCommunityServer) CommunityLookAllPosts(context.Context, *CommunityLookAllPostsRequest) (*CommunityLookAllPostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommunityLookAllPosts not implemented")
 }
 func (UnimplementedCommunityServer) mustEmbedUnimplementedCommunityServer() {}
 
@@ -158,6 +173,24 @@ func _Community_CommunityLookPostByOwn_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Community_CommunityLookAllPosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommunityLookAllPostsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).CommunityLookAllPosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_CommunityLookAllPosts_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).CommunityLookAllPosts(ctx, req.(*CommunityLookAllPostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Community_ServiceDesc is the grpc.ServiceDesc for Community service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -176,6 +209,10 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CommunityLookPostByOwn",
 			Handler:    _Community_CommunityLookPostByOwn_Handler,
+		},
+		{
+			MethodName: "CommunityLookAllPosts",
+			Handler:    _Community_CommunityLookAllPosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

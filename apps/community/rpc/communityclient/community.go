@@ -17,6 +17,8 @@ type (
 	CommunityCreatePostResponse     = community.CommunityCreatePostResponse
 	CommunityDelPostRequest         = community.CommunityDelPostRequest
 	CommunityDelPostResponse        = community.CommunityDelPostResponse
+	CommunityLookAllPostsRequest    = community.CommunityLookAllPostsRequest
+	CommunityLookAllPostsResponse   = community.CommunityLookAllPostsResponse
 	CommunityLookPostByOwnRequest   = community.CommunityLookPostByOwnRequest
 	CommunityLookPostByOwnResponses = community.CommunityLookPostByOwnResponses
 	PostInfo                        = community.PostInfo
@@ -25,6 +27,7 @@ type (
 		CommunityCreatePost(ctx context.Context, in *CommunityCreatePostRequest, opts ...grpc.CallOption) (*CommunityCreatePostResponse, error)
 		CommunityDelPost(ctx context.Context, in *CommunityDelPostRequest, opts ...grpc.CallOption) (*CommunityDelPostResponse, error)
 		CommunityLookPostByOwn(ctx context.Context, in *CommunityLookPostByOwnRequest, opts ...grpc.CallOption) (*CommunityLookPostByOwnResponses, error)
+		CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error)
 	}
 
 	defaultCommunity struct {
@@ -51,4 +54,9 @@ func (m *defaultCommunity) CommunityDelPost(ctx context.Context, in *CommunityDe
 func (m *defaultCommunity) CommunityLookPostByOwn(ctx context.Context, in *CommunityLookPostByOwnRequest, opts ...grpc.CallOption) (*CommunityLookPostByOwnResponses, error) {
 	client := community.NewCommunityClient(m.cli.Conn())
 	return client.CommunityLookPostByOwn(ctx, in, opts...)
+}
+
+func (m *defaultCommunity) CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.CommunityLookAllPosts(ctx, in, opts...)
 }

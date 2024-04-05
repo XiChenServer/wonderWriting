@@ -42,5 +42,10 @@ func (l *UserInfoLogic) UserInfo() (resp *types.UserInfoResponse, err error) {
 		AvatarBackground: res.AvatarBackground,
 		BackgroundImage:  res.BackgroundImage,
 		Phone:            res.Phone,
+		PointCount:       res.PointCount,
+		PostCount:        res.PointCount,
+		FansCount:        res.FansCount,
+		FollowCount:      res.FollowCount,
+		LikeCount:        res.LikeCount,
 	}, nil
 }

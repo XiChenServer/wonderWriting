@@ -36,3 +36,8 @@ func (s *CommunityServer) CommunityLookPostByOwn(ctx context.Context, in *commun
 	l := logic.NewCommunityLookPostByOwnLogic(ctx, s.svcCtx)
 	return l.CommunityLookPostByOwn(in)
 }
+
+func (s *CommunityServer) CommunityLookAllPosts(ctx context.Context, in *community.CommunityLookAllPostsRequest) (*community.CommunityLookAllPostsResponse, error) {
+	l := logic.NewCommunityLookAllPostsLogic(ctx, s.svcCtx)
+	return l.CommunityLookAllPosts(in)
+}

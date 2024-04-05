@@ -42,6 +42,11 @@ type UserInfoResponse struct {
 	AvatarBackground string `json:"avatar_background"`
 	BackgroundImage  string `json:"background_image"`
 	Phone            string `json:"phone"`
+	PostCount        int64  `json:"post_count"`
+	FollowCount      int64  `json:"follow_count"`
+	FansCount        int64  `json:"fans_count"`
+	LikeCount        int64  `json:"like_count"`
+	PointCount       int64  `json:"point_count"`
 }
 
 type UserForgetPwdRequest struct {
@@ -73,4 +78,40 @@ type UserModInfoRequest struct {
 }
 
 type UserModInfoResponse struct {
+}
+
+type PostInfo struct {
+	Id         uint     `json:"id"`
+	UserId     uint     `json:"user_id"`
+	LikeCount  uint     `json:"like_count"`
+	Content    string   `json:"content"`
+	ImageUrls  []string `json:"image_urls"`
+	CreateTime int32    `json:"create_time"`
+	DeleteTime int32    `json:"delete_time"`
+}
+
+type PostCreateRequest struct {
+}
+
+type PostCreateResponse struct {
+	PostId uint `json:"post_id"`
+}
+
+type PostDelRequest struct {
+	PostId uint `json:"post_id"`
+}
+
+type PostDelResponse struct {
+}
+
+type LookPostByOwnRequest struct {
+	UserId uint `json:"user_id"`
+}
+
+type LookPostByOwnResponses struct {
+	PostData []PostInfo `json:"post_data"`
+}
+
+type LookAllPostsResponse struct {
+	PostData []PostInfo `json:"post_data"`
 }

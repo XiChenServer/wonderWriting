@@ -3,18 +3,22 @@ package svc
 import (
 	"calligraphy/apps/community/model"
 	"calligraphy/apps/community/rpc/internal/config"
+	"calligraphy/apps/user/rpc/userclient"
 	"fmt"
 	"github.com/8treenet/gcache"
 	"github.com/8treenet/gcache/option"
-	//"github.com/bluele/gcache"
+	"github.com/zeromicro/go-zero/zrpc"
 
+	//"github.com/bluele/gcache"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
 )
 
 type ServiceContext struct {
-	Config config.Config
-	DB     *gorm.DB
+	Config  config.Config
+	DB      *gorm.DB
+	UserRpc userclient.User
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -35,8 +39,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	gcache.AttachDB(db, &opt, &option.RedisOption{Addr: "localhost:6379"})
 
 	return &ServiceContext{
-		Config: c,
-		DB:     db,
+		Config:  c,
+		DB:      db,
+		UserRpc: userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
 	}
 }
 

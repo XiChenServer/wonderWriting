@@ -1,0 +1,9 @@
+type (
+	GetResponse {
+	}
+)
+
+service community-api{
+	@handler Get
+	get /get() returns (GetResponse)
+}

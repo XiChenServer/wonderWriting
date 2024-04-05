@@ -1,5 +1,5 @@
 Name: community.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:11001
 Etcd:
   Hosts:
   - 127.0.0.1:2379
@@ -18,3 +18,10 @@ MySQL:
 CacheRedis:
   - Host: 127.0.0.1:6379
     Type: node
+
+UserRpc:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379
+    Key: user.rpc
+
