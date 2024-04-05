@@ -1,7 +1,9 @@
 package community
 
 import (
+	"calligraphy/apps/community/rpc/types/community"
 	"context"
+	"fmt"
 
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
@@ -26,5 +28,24 @@ func NewLookAllPostsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Look
 func (l *LookAllPostsLogic) LookAllPosts() (resp *types.LookAllPostsResponse, err error) {
 	// todo: add your logic here and delete this line
 
-	return
+	//调用rpc进行查找数据
+	res, err := l.svcCtx.CommunityRpc.CommunityLookAllPosts(l.ctx, &community.CommunityLookAllPostsRequest{})
+	if err != nil {
+		return nil, err
+	}
+	//进行转换数据
+	var postData []types.PostInfo
+	for _, v := range res.PostData {
+		newPostData := types.PostInfo{
+			Id:         uint(v.Id),
+			UserId:     uint(v.UserId),
+			LikeCount:  uint(v.LikeCount),
+			Content:    v.Content,
+			ImageUrls:  v.ImageUrls,
+			CreateTime: int32(v.CreateTime),
+		}
+		fmt.Println(newPostData)
+		postData = append(postData, newPostData)
+	}
+	return &types.LookAllPostsResponse{PostData: postData}, nil
 }

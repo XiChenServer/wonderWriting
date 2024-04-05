@@ -1,0 +1,85 @@
+
+info(
+    title :"用户管理"
+    desc: "操作用户的一些信息"
+    version: "v1"
+)
+type (
+    VerificationRequest {
+        Email string `json:"email"`
+    }
+    VerificationResponse {
+    }
+
+        //用户登录
+    UserLoginRequest {
+        Email    string `json:"email"`
+        Password string `json:"password"`
+    }
+    UserLoginResponse {
+        AccessToken  string `json:"access_token"`
+        AccessExpire int64  `json:"access_expire"`
+    }
+        // jwt信息
+    JwtInfo {
+        AccessToken  string `json:"access_token"`
+        AccessExpire int64  `json:"access_expire"`
+    }
+        //用户注册
+    UserRegisterRequest {
+        Email     string `json:"email"`
+        Password  string `json:"password"`
+        EmailCode string `json:"email_code"`
+    }
+    UserRegisterResponse {
+        Code    int64  `json:"code"`
+        Message string `json:"message"`
+    }
+
+        // 用户信息
+    UserInfoResponse {
+        Id               int64  `json:"id"`
+        NickName         string `json:"nick_name"`
+        Account          string `json:"account"`
+        Email            string `json:"email"`
+        AvatarBackground string `json:"avatar_background"`
+        BackgroundImage  string `json:"background_image"`
+        Phone            string `json:"phone"`
+        PostCount        int64  `json:"post_count"`
+        FollowCount      int64  `json:"follow_count"`
+        FansCount        int64  `json:"fans_count"`
+        LikeCount        int64  `json:"like_count"`
+        PointCount       int64  `json:"point_count"`
+    }
+        //忘记密码
+    UserForgetPwdRequest {
+        Email     string `json:"email"`
+        EmailCode string `json:"email_code"`
+    }
+    UserForgetPwdResponse {
+        AccessToken  string `json:"access_token"`
+        AccessExpire int64  `json:"access_expire"`
+    }
+
+        //忘记密码之后修改密码
+    UserModPwdRequset {
+        Password string `json:"password"`
+    }
+    UserModPwdResponse {
+    }
+
+        //用户修改头像
+    UserModAvatarResponse {
+    }
+        //用户修改背景
+    UserModBackgroundResponse {
+    }
+
+        // 用户修改信息
+    UserModInfoRequest {
+        NickName string `json:"nick_name"`
+        Phone    string `json:"phone"`
+    }
+    UserModInfoResponse {
+    }
+)

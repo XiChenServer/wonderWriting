@@ -1,23 +1,24 @@
-package handler
+package user
 
 import (
-	"calligraphy/common/response"
 	"net/http"
 
-	"calligraphy/apps/app/api/internal/logic"
+	"api_v2/common/response"
+	"calligraphy/apps/app/api/internal/logic/user"
 	"calligraphy/apps/app/api/internal/svc"
+	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
 func UserModBackgroundHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		l := logic.NewUserModBackgroundLogic(r.Context(), svcCtx)
-		resp, err := l.UserModBackground(r)
+		l := user.NewUserModBackgroundLogic(r.Context(), svcCtx)
+		resp, err := l.UserModBackground()
 		//if err != nil {
 		//	httpx.ErrorCtx(r.Context(), w, err)
 		//} else {
 		//	httpx.OkJsonCtx(r.Context(), w, resp)
 		//}
-		response.HttpResult(r, w, resp, err)
+		response.Response(r, w, resp, err)
 
 	}
 }

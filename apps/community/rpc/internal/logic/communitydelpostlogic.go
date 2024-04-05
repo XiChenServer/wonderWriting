@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"calligraphy/apps/community/model"
 	"context"
 
 	"calligraphy/apps/community/rpc/internal/svc"
@@ -25,6 +26,10 @@ func NewCommunityDelPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *CommunityDelPostLogic) CommunityDelPost(in *community.CommunityDelPostRequest) (*community.CommunityDelPostResponse, error) {
 	// todo: add your logic here and delete this line
-
+	postOperations := model.Post{}
+	_, err := postOperations.DeletePost(l.svcCtx.DB, in.PostId)
+	if err != nil {
+		return nil, err
+	}
 	return &community.CommunityDelPostResponse{}, nil
 }

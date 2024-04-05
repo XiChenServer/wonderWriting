@@ -1,31 +1,32 @@
-package handler
+package user
 
 import (
-	"calligraphy/common/response"
 	"net/http"
 
-	"calligraphy/apps/app/api/internal/logic"
+	"calligraphy/apps/app/api/internal/logic/user"
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
 	"github.com/zeromicro/go-zero/rest/httpx"
+
+	"api_v2/common/response"
 )
 
-func UserForgetPwdHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func UserRegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.UserForgetPwdRequest
+		var req types.UserRegisterRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewUserForgetPwdLogic(r.Context(), svcCtx)
-		resp, err := l.UserForgetPwd(&req)
+		l := user.NewUserRegisterLogic(r.Context(), svcCtx)
+		resp, err := l.UserRegister(&req)
 		//if err != nil {
 		//	httpx.ErrorCtx(r.Context(), w, err)
 		//} else {
 		//	httpx.OkJsonCtx(r.Context(), w, resp)
 		//}
-		response.HttpResult(r, w, resp, err)
+		response.Response(r, w, resp, err)
 
 	}
 }

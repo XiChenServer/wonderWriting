@@ -14,6 +14,7 @@ type Post struct {
 	LikeCount uint        `json:"like_count"`
 }
 
+// CreatePost 创建帖子
 func (*Post) CreatePost(dao *gorm.DB, userId uint, content string, urls []string) (*Post, error) {
 	// 首先创建帖子
 	newPost := &Post{
@@ -36,4 +37,41 @@ func (*Post) CreatePost(dao *gorm.DB, userId uint, content string, urls []string
 	}
 
 	return newPost, nil
+}
+
+// DeletePost 删除帖子
+func (*Post) DeletePost(dao *gorm.DB, post_id uint32) (*Post, error) {
+	err := dao.Where("post_id = ?", post_id).Delete(&PostImage{}).Error
+	if err != nil {
+		return nil, err
+	}
+	err = dao.Where("post_id = ?", post_id).Delete(&Comment{}).Error
+	if err != nil {
+		return nil, err
+	}
+	err = dao.Where("post_id = ?", post_id).Delete(&Like{}).Error
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+// LookAllPosts 查找多有的帖子
+func (*Post) LookAllPosts(dao *gorm.DB) ([]*Post, error) {
+	var posts []*Post
+	err := dao.Find(&posts).Error
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
+}
+
+// 查看自己的帖子
+func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
+	var post []*Post
+	err := dao.Where("user_id = ?", userId).First(&post).Error
+	if err != nil {
+		return nil, err
+	}
+	return post, nil
 }

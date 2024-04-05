@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	community "calligraphy/apps/app/api/internal/handler/community"
+	user "calligraphy/apps/app/api/internal/handler/user"
 	"calligraphy/apps/app/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -15,56 +16,58 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/basic/getemailverification",
-				Handler: GetEmailVerificationHandler(serverCtx),
+				Path:    "/basic/getemailverification",
+				Handler: user.GetEmailVerificationHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/register",
-				Handler: UserRegisterHandler(serverCtx),
+				Path:    "/register",
+				Handler: user.UserRegisterHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/login",
-				Handler: UserLoginHandler(serverCtx),
+				Path:    "/login",
+				Handler: user.UserLoginHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/forgetpwd",
-				Handler: UserForgetPwdHandler(serverCtx),
+				Path:    "/forgetpwd",
+				Handler: user.UserForgetPwdHandler(serverCtx),
 			},
 		},
+		rest.WithPrefix("/user"),
 	)
 
 	server.AddRoutes(
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/api/user/userinfo",
-				Handler: UserInfoHandler(serverCtx),
+				Path:    "/userinfo",
+				Handler: user.UserInfoHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/modpwd",
-				Handler: UserModPwdHandler(serverCtx),
+				Path:    "/modpwd",
+				Handler: user.UserModPwdHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/modavatar",
-				Handler: UserModAvatarHandler(serverCtx),
+				Path:    "/modavatar",
+				Handler: user.UserModAvatarHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/modbackground",
-				Handler: UserModBackgroundHandler(serverCtx),
+				Path:    "/modbackground",
+				Handler: user.UserModBackgroundHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
-				Path:    "/api/user/modinfo",
-				Handler: UserModInfoHandler(serverCtx),
+				Path:    "/modinfo",
+				Handler: user.UserModInfoHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/user"),
 	)
 
 	server.AddRoutes(
