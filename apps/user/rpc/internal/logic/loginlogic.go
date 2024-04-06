@@ -5,6 +5,7 @@ import (
 	"calligraphy/common/cryptx"
 	"context"
 	"database/sql"
+	"github.com/jinzhu/gorm"
 	"google.golang.org/grpc/status"
 
 	"calligraphy/apps/user/rpc/internal/svc"
@@ -34,9 +35,11 @@ func (l *LoginLogic) Login(in *user.UserLoginRequest) (*user.UserLoginResponse, 
 		String: in.Email,
 		Valid:  true,
 	}
-	res, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
+
+	userModel := &model.User{}
+	res, err := userModel.FindOneByEmail(l.svcCtx.DB, email.String)
 	if err != nil {
-		if err == model.ErrNotFound {
+		if err == gorm.ErrRecordNotFound {
 			return nil, status.Error(100, "用户不存在")
 		}
 		return nil, status.Error(500, err.Error())
@@ -49,6 +52,6 @@ func (l *LoginLogic) Login(in *user.UserLoginRequest) (*user.UserLoginResponse, 
 	}
 
 	return &user.UserLoginResponse{
-		Id: res.UserID,
+		Id: int64(res.UserID),
 	}, nil
 }

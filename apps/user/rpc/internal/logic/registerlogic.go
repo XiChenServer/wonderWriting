@@ -30,62 +30,54 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 }
 
 func (l *RegisterLogic) Register(in *user.UserRegisterRequest) (*user.UserRegisterResponse, error) {
-	// todo: add your logic here and delete this line
+	// 查询用户是否存在
 	email := sql.NullString{
 		String: in.Email,
 		Valid:  true,
 	}
-	// 判断手机号是否已经注册
-	_, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
+
+	// 判断手机号或邮箱是否已经注册
+	res, err := (&model.User{}).FindOneByEmail(l.svcCtx.DB, email.String)
 	if err == nil {
-		return nil, status.Error(100, "该用户已存在")
+		if res != nil {
+			return nil, status.Error(100, "该用户已存在")
+		}
+
 	}
+
+	// 生成随机账号
 	var account string
 	for {
 		account = app_math.GenerateRandomNumber(11)
-		_, err = l.svcCtx.UserModel.FindOneByAccount(l.ctx, account)
-		if err != nil {
+		res, err = (&model.User{}).FindOneByAccount(l.svcCtx.DB, account)
+		if res == nil {
 			break
 		}
 	}
+
+	// 生成随机昵称
 	nickName := app_math.GenerateNickname(8)
-	if err == model.ErrNotFound {
-		nowTime := time.Now()
-		newUser := model.Users{
-			Nickname:         nickName,
-			Account:          account,
-			Email:            email,
-			Password:         cryptx.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
-			RegistrationTime: nowTime,
-			LastLoginTime:    nowTime,
-			Status:           "Active",
-			Role:             "User",
-			AvatarBackground: sql.NullString{
-				String: "AvatarBackground/97e4cf398c1c453f98f8135b202479d6.jpeg",
-				Valid:  true,
-			},
-			BackgroundImage: sql.NullString{
-				String: "BackgroundImage/kpmg3R46Q2.jpg",
-				Valid:  true,
-			},
-		}
-
-		res, err := l.svcCtx.UserModel.Insert(l.ctx, &newUser)
-		if err != nil {
-			return nil, status.Error(500, err.Error())
-		}
-
-		newUser.UserID, err = res.LastInsertId()
-		if err != nil {
-			return nil, status.Error(500, err.Error())
-		}
-
-		return &user.UserRegisterResponse{
-			Code:    200,
-			Message: "Success",
-		}, nil
-
+	// 插入新用户信息
+	nowTime := time.Now()
+	newUser := model.User{
+		Nickname:         nickName,
+		Account:          account,
+		Email:            email.String,
+		Password:         cryptx.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password),
+		RegistrationTime: nowTime.Unix(),
+		LastLoginTime:    nowTime.Unix(),
+		Status:           "Active",
+		Role:             "User",
+		AvatarBackground: "AvatarBackground/97e4cf398c1c453f98f8135b202479d6.jpeg",
+		BackgroundImage:  "BackgroundImage/kpmg3R46Q2.jpg",
 	}
 
-	return nil, status.Error(500, err.Error())
+	err = (&model.User{}).InsertUser(l.svcCtx.DB, &newUser)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+	return &user.UserRegisterResponse{
+		Code:    200,
+		Message: "Success",
+	}, nil
 }

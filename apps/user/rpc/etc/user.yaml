@@ -5,8 +5,14 @@ Etcd:
   - 127.0.0.1:2379
   Key: user.rpc
 
-Mysql:
-  DataSource: root:root@tcp(127.0.0.1:3306)/wonderWriting?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+
+MySQL:
+  Host: 127.0.0.1
+  Port: 3306
+  User: root
+  Password: root
+  Database: wonderWriting
+  TablePrefix: ""
 
 CacheRedis:
   - Host: 127.0.0.1:6379

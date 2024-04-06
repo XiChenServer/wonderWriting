@@ -1,11 +1,10 @@
 package logic
 
 import (
-	"context"
-	"database/sql"
-
+	"calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/internal/svc"
 	"calligraphy/apps/user/rpc/types/user"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -26,15 +25,12 @@ func NewUserForgetPwdLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 
 func (l *UserForgetPwdLogic) UserForgetPwd(in *user.UserForgetPwdRequest) (*user.UserForgetPwdResponse, error) {
 	// todo: add your logic here and delete this line
-	email := sql.NullString{
-		String: in.Email,
-		Valid:  true,
-	}
-	res, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, email)
+
+	res, err := (&model.User{}).FindOneByEmail(l.svcCtx.DB, in.Email)
 	if err != nil {
 		return nil, err
 	}
 	return &user.UserForgetPwdResponse{
-		Id: res.UserID,
+		Id: int64(res.UserID),
 	}, nil
 }

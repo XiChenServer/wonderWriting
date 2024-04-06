@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"calligraphy/apps/user/model"
 	"context"
 
 	"calligraphy/apps/user/rpc/internal/svc"
@@ -27,7 +28,7 @@ func (l *UserModInfoLogic) UserModInfo(in *user.UserModInfoRequest) (*user.UserM
 	// todo: add your logic here and delete this line
 
 	//查询
-	res, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	res, err := (&model.User{}).FindOne(l.svcCtx.DB, uint(in.Id))
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +36,7 @@ func (l *UserModInfoLogic) UserModInfo(in *user.UserModInfoRequest) (*user.UserM
 	res.Phone = in.Phone
 
 	//进行修改
-	err = l.svcCtx.UserModel.Update(l.ctx, res)
+	err = (&model.User{}).UpdateUser(l.svcCtx.DB, uint(in.Id), res)
 	if err != nil {
 		return nil, err
 	}

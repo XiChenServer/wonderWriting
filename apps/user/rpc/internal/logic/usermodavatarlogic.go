@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"calligraphy/apps/user/model"
 	"context"
 	"fmt"
 
@@ -27,16 +28,15 @@ func NewUserModAvatarLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 func (l *UserModAvatarLogic) UserModAvatar(in *user.UserModAvatarRequest) (*user.UserModAvatarResponse, error) {
 	// todo: add your logic here and delete this line
 
-	res, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	res, err := (&model.User{}).FindOne(l.svcCtx.DB, uint(in.Id))
 
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(res.AvatarBackground.String)
-	res.AvatarBackground.String = in.Url
-	res.AvatarBackground.Valid = true
-	fmt.Println(res.AvatarBackground.String)
-	err = l.svcCtx.UserModel.Update(l.ctx, res)
+	fmt.Println(res.AvatarBackground)
+	res.AvatarBackground = in.Url
+
+	err = (&model.User{}).UpdateUser(l.svcCtx.DB, uint(in.Id), res)
 	if err != nil {
 		return nil, err
 	}

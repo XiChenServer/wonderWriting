@@ -29,26 +29,26 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
 	// todo: add your logic here and delete this line
 	// 查询用户是否存在
-	res, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
+	res, err := (&model.User{}).FindOne(l.svcCtx.DB, uint(in.Id))
 	if err != nil {
-		if err == model.ErrNotFound {
+		if res == nil {
 			return nil, status.Error(100, "用户不存在")
 		}
 		return nil, status.Error(500, err.Error())
 	}
 
 	return &user.UserInfoResponse{
-		Id:               res.UserID,
+		Id:               int64(res.UserID),
 		NickName:         res.Nickname,
 		Account:          res.Account,
-		Email:            res.Email.String,
-		AvatarBackground: qiniu.ImgUrl + res.AvatarBackground.String,
-		BackgroundImage:  qiniu.ImgUrl + res.BackgroundImage.String,
+		Email:            res.Email,
+		AvatarBackground: qiniu.ImgUrl + res.AvatarBackground,
+		BackgroundImage:  qiniu.ImgUrl + res.BackgroundImage,
 		Phone:            res.Phone,
-		PointCount:       res.PointCount,
-		PostCount:        res.PointCount,
-		FansCount:        res.FansCount,
-		FollowCount:      res.FollowCount,
-		LikeCount:        res.LikeCount,
+		PointCount:       int64(res.PointCount),
+		PostCount:        int64(res.PostCount),
+		FansCount:        int64(res.FansCount),
+		FollowCount:      int64(res.FollowCount),
+		LikeCount:        int64(res.LikeCount),
 	}, nil
 }
