@@ -32,7 +32,6 @@ func init() {
 
 // UploadToQiNiu 封装上传图片到七牛云然后返回状态和图片的url
 func UploadToQiNiu(file multipart.File, fileSize int64, folderPath, fileName string) (string, error) {
-
 	putPlicy := storage.PutPolicy{
 		Scope: Bucket,
 	}

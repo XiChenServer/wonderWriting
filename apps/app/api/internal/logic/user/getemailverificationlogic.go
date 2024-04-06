@@ -28,11 +28,12 @@ func (l *GetEmailVerificationLogic) GetEmailVerification(req *types.Verification
 	// todo: add your logic here and delete this line
 	code := app_math.GenerateRandomNumber(6)
 	err = verification.SendEmailVerificationCode(req.Email, code)
+
 	if err != nil {
 		return nil, err
 	}
-
 	err = app_redis.Redis.SetexCtx(l.ctx, req.Email, code, verification.TimeExpiration)
+
 	if err != nil {
 		return nil, err
 	}

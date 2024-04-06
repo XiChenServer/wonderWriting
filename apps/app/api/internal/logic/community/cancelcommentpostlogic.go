@@ -31,7 +31,7 @@ func (l *CancelCommentPostLogic) CancelCommentPost(req *types.CancelCommentPostR
 
 	_, err = l.svcCtx.CommunityRpc.CancelCommentPost(l.ctx, &community.CommunityCancelContentPostRequest{PostId: uint32(req.PostId), UserId: uint32(uid), ContentId: uint32(req.CommentId)})
 	if err != nil {
-		return nil, err
+		return &types.CancelCommentPostResponse{}, err
 	}
 	return &types.CancelCommentPostResponse{}, nil
 }

@@ -4,7 +4,10 @@ import (
 	"calligraphy/apps/community/model"
 	"calligraphy/apps/community/rpc/internal/svc"
 	"calligraphy/apps/community/rpc/types/community"
+	userModel "calligraphy/apps/user/model"
+	"calligraphy/pkg/qiniu"
 	"context"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,7 +29,6 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	// 创建 Post 和 PostImage 操作实例
 	postOperations := model.Post{}
 	postImageOperations := model.PostImage{}
-
 	// 查询所有帖子信息
 	res, err := postOperations.LookAllPosts(l.svcCtx.DB)
 	if err != nil {
@@ -44,6 +46,19 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		if err != nil {
 			return nil, err
 		}
+
+		var User userModel.User
+		err = l.svcCtx.DB.Where("user_id = ?", v.UserID).First(&User).Error
+		if err != nil {
+			fmt.Println(err, v.UserID)
+			return nil, err
+		}
+		var userInfo = community.UserSimpleInfo{
+			Id:          uint32(User.UserID),
+			NickName:    User.Nickname,
+			Account:     User.Account,
+			AvatarImage: qiniu.ImgUrl + User.AvatarBackground,
+		}
 		// 将时间类型转换为 Unix 时间戳
 		createTime := uint32(v.CreatedAt.Unix())
 		// 创建新的帖子信息结构体
@@ -56,6 +71,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 			ImageUrls:    urls,
 			CollectCount: uint32(v.CollectionCount),
 			ContentCount: uint32(v.CommentCount),
+			UserInfo:     &userInfo,
 		}
 		// 将新的帖子信息添加到切片中
 		postInfo = append(postInfo, newPost)

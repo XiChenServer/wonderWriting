@@ -23,11 +23,12 @@ type ServiceContext struct {
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	db, err := gorm.Open("mysql", getDSN(&c))
+
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	db.AutoMigrate(&model.Post{}, &model.PostImage{}, &model.Like{}, &model.Comment{}, &model.Comment{})
+	db.AutoMigrate(&model.Post{}, &model.PostImage{}, &model.Like{}, &model.Comment{}, &model.Collect{})
 
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -14,6 +15,14 @@ type Comment struct {
 
 }
 
+func (*Comment) FindComment(DB *gorm.DB, post_id uint) (*[]Comment, error) {
+	var comments []Comment
+	if err := DB.Where("post_id = ?", post_id).Find(&comments).Error; err != nil {
+		return nil, err
+	}
+	return &comments, nil
+}
+
 // CommentPost 在数据库中创建一条评论记录并原子更新帖子的评论数量
 func (*Comment) CommentPost(DB *gorm.DB, postID, userID uint, content string) (*Comment, error) {
 	// 开始事务
@@ -25,6 +34,8 @@ func (*Comment) CommentPost(DB *gorm.DB, postID, userID uint, content string) (*
 		UserID:  userID,
 		Content: content,
 	}
+	fmt.Println(userID)
+	fmt.Println(comment)
 	if err := tx.Create(comment).Error; err != nil {
 		tx.Rollback()
 		return nil, err

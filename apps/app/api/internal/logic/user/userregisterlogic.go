@@ -29,16 +29,16 @@ func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (*types
 	// 进行验证码验证
 	v, err := app_redis.Redis.GetCtx(l.ctx, req.Email)
 	if err != nil {
-		return nil, err
+		return &types.UserRegisterResponse{}, err
 	}
 	if v != req.EmailCode {
-		return nil, fmt.Errorf("验证码不匹配")
+		return &types.UserRegisterResponse{}, fmt.Errorf("验证码不匹配")
 	}
 
 	// 删除 Redis 中的验证码信息
 	_, err = app_redis.Redis.DelCtx(l.ctx, req.Email)
 	if err != nil {
-		return nil, err
+		return &types.UserRegisterResponse{}, err
 	}
 
 	// 调用 RPC 注册用户
@@ -47,7 +47,7 @@ func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (*types
 		Password: req.Password,
 	})
 	if err != nil {
-		return nil, err
+		return &types.UserRegisterResponse{}, err
 	}
 
 	// 注册成功，返回空响应

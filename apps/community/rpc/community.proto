@@ -15,7 +15,38 @@ message PostInfo{
   uint32 DeleteTime = 7;//删除时间
   uint32 ContentCount = 8;
   uint32 CollectCount = 9;
+  UserSimpleInfo UserInfo = 10;
 }
+
+// 用户的简单信息
+message UserSimpleInfo{
+  uint32 Id = 1;
+  string NickName  = 2;
+  string Account = 3;
+  string AvatarImage = 4;
+}
+
+
+// 评论的信息
+message CommentInfo{
+  uint32 id = 1;
+  int32 CreateTime = 2;
+  uint32 PostId = 3;
+  string Comment = 5;
+  UserSimpleInfo UserInfo = 6;
+}
+
+
+//评论的查看
+message LookCommentRequest{
+  uint32 PostId = 1;
+}
+message LookCommentResponse{
+  repeated CommentInfo CommentDatas = 1;
+}
+
+
+
 
 // 帖子创建
 message CommunityCreatePostRequest {
@@ -131,5 +162,10 @@ service Community {
   rpc CommunityDelPost(CommunityDelPostRequest) returns (CommunityDelPostResponse);
   rpc CommunityLookPostByOwn(CommunityLookPostByOwnRequest) returns (CommunityLookPostByOwnResponses);
   rpc CommunityLookAllPosts(CommunityLookAllPostsRequest) returns (CommunityLookAllPostsResponse);
+
+  //查看帖子的评论
+  rpc LookComment(LookCommentRequest) returns (LookCommentResponse);
+
 }
 
+//  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

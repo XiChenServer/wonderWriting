@@ -27,7 +27,7 @@ func NewCancelLikePostLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ca
 func (l *CancelLikePostLogic) CancelLikePost(in *community.CommunityCancelLikePostRequest) (*community.CommunityCancelLikePostResponse, error) {
 	// todo: add your logic here and delete this line
 	Operations := &model.Like{}
-	err := Operations.CancelLikePost(l.svcCtx.DB, uint(in.LikeId), uint(in.PostId))
+	err := Operations.CancelLikePost(l.svcCtx.DB, uint(in.LikeId), uint(in.PostId), uint(in.UserId))
 	if err != nil {
 		return nil, err
 	}

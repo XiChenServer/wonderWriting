@@ -6,6 +6,7 @@ info(
 )
 //  帖子信息
 type PostInfo{
+    UserInfo UserSimpleInfo `json:"user_info"`
     Id uint `json:"id"`
     UserId uint  `json:"user_id"`
     ContentCount uint  `json:"content_count"`
@@ -16,6 +17,14 @@ type PostInfo{
     CreateTime int32 `json:"create_time"`
     DeleteTime int32 `json:"delete_time"`
 }
+
+type UserSimpleInfo{
+    Id uint `json:"user_id"`
+    NickName string `json:"nick_name"`
+    Account string `json:"account"`
+    AvatarImage string `json:"avatar_image"`
+}
+
 
 
 // 帖子创建
@@ -104,4 +113,22 @@ type CancelCollectPostRequest struct {
 
 // 取消收藏响应消息
 type CancelCollectPostResponse struct {
+}
+
+// 评论的信息
+type CommentInfo{
+    Id uint `json:"id"`
+    CreateTime int32 `json:"create_time"`
+    PostId uint `json:"post_id"`
+    Comment string `json:"comment"`
+    UserInfo UserSimpleInfo `json:"user_info"`
+}
+
+//查看用户评论信息
+type LookCommentRequest{
+    PostId uint `json:"post_id"`
+}
+
+type LookCommentResponse{
+    CommentData []*CommentInfo `json:"comment_data"`
 }

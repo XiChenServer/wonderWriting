@@ -34,7 +34,7 @@ func (l *CommentPostLogic) CommentPost(req *types.CommentPostRequest) (resp *typ
 		Content: req.Content,
 	})
 	if err != nil {
-		return nil, err
+		return &types.CommentPostResponse{}, err
 	}
 	return &types.CommentPostResponse{CommentId: uint(res.ContentId)}, nil
 }

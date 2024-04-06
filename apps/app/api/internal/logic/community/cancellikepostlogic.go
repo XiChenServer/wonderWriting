@@ -35,7 +35,7 @@ func (l *CancelLikePostLogic) CancelLikePost(req *types.CancelLikePostRequest) (
 		PostId: uint32(req.PostId),
 	})
 	if err != nil {
-		return nil, err
+		return &types.CancelLikePostResponse{}, err
 	}
 	return &types.CancelLikePostResponse{}, nil
 }

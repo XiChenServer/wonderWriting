@@ -30,11 +30,17 @@ func (l *LookAllPostsLogic) LookAllPosts() (resp *types.LookAllPostsResponse, er
 	//调用rpc进行查找数据
 	res, err := l.svcCtx.CommunityRpc.CommunityLookAllPosts(l.ctx, &community.CommunityLookAllPostsRequest{})
 	if err != nil {
-		return nil, err
+		return &types.LookAllPostsResponse{}, err
 	}
 	//进行转换数据
 	var postData []*types.PostInfo
 	for _, v := range res.PostData {
+		var userInfo = types.UserSimpleInfo{
+			Id:          uint(v.UserInfo.Id),
+			NickName:    v.UserInfo.NickName,
+			Account:     v.UserInfo.Account,
+			AvatarImage: v.UserInfo.AvatarImage,
+		}
 		newPostData := &types.PostInfo{
 			Id:           uint(v.Id),
 			UserId:       uint(v.UserId),
@@ -44,6 +50,7 @@ func (l *LookAllPostsLogic) LookAllPosts() (resp *types.LookAllPostsResponse, er
 			CreateTime:   int32(v.CreateTime),
 			CollectCount: uint(v.CollectCount),
 			ContentCount: uint(v.ContentCount),
+			UserInfo:     userInfo,
 		}
 		fmt.Println(v.LikeCount)
 		fmt.Println(newPostData.LikeCount)

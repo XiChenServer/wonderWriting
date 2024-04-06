@@ -84,5 +84,7 @@ func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return posts, nil
+
 }

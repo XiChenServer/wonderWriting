@@ -1,11 +1,10 @@
 package logic
 
 import (
-	"context"
-
 	"calligraphy/apps/community/model"
 	"calligraphy/apps/community/rpc/internal/svc"
 	"calligraphy/apps/community/rpc/types/community"
+	"context"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -28,6 +27,7 @@ func (l *CommunityCreatePostLogic) CommunityCreatePost(in *community.CommunityCr
 
 	postOperations := model.Post{}
 	res, err := postOperations.CreatePost(l.svcCtx.DB, uint(in.UserId), in.Content, in.ImageUrls)
+
 	if err != nil {
 		return nil, err
 	}

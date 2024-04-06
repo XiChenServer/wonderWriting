@@ -61,6 +61,10 @@ service App{
 	@doc "user look all post"
 	@handler LookAllPosts
 	get /look/allposts() returns (LookAllPostsResponse)
+	//查看评论
+	@doc "查看评论请求"
+	@handler LookComment
+	post /look/comment(LookCommentRequest) returns (LookCommentResponse)
 }
 
 //need login

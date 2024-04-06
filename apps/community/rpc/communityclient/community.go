@@ -13,6 +13,7 @@ import (
 )
 
 type (
+	CommentInfo                        = community.CommentInfo
 	CommunityCancelCollectPostRequest  = community.CommunityCancelCollectPostRequest
 	CommunityCancelCollectPostResponse = community.CommunityCancelCollectPostResponse
 	CommunityCancelContentPostRequest  = community.CommunityCancelContentPostRequest
@@ -33,7 +34,10 @@ type (
 	CommunityLookAllPostsResponse      = community.CommunityLookAllPostsResponse
 	CommunityLookPostByOwnRequest      = community.CommunityLookPostByOwnRequest
 	CommunityLookPostByOwnResponses    = community.CommunityLookPostByOwnResponses
+	LookCommentRequest                 = community.LookCommentRequest
+	LookCommentResponse                = community.LookCommentResponse
 	PostInfo                           = community.PostInfo
+	UserSimpleInfo                     = community.UserSimpleInfo
 
 	Community interface {
 		// 定义点赞服务
@@ -49,6 +53,8 @@ type (
 		CommunityDelPost(ctx context.Context, in *CommunityDelPostRequest, opts ...grpc.CallOption) (*CommunityDelPostResponse, error)
 		CommunityLookPostByOwn(ctx context.Context, in *CommunityLookPostByOwnRequest, opts ...grpc.CallOption) (*CommunityLookPostByOwnResponses, error)
 		CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error)
+		// 查看帖子的评论
+		LookComment(ctx context.Context, in *LookCommentRequest, opts ...grpc.CallOption) (*LookCommentResponse, error)
 	}
 
 	defaultCommunity struct {
@@ -113,4 +119,10 @@ func (m *defaultCommunity) CommunityLookPostByOwn(ctx context.Context, in *Commu
 func (m *defaultCommunity) CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error) {
 	client := community.NewCommunityClient(m.cli.Conn())
 	return client.CommunityLookAllPosts(ctx, in, opts...)
+}
+
+// 查看帖子的评论
+func (m *defaultCommunity) LookComment(ctx context.Context, in *LookCommentRequest, opts ...grpc.CallOption) (*LookCommentResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.LookComment(ctx, in, opts...)
 }

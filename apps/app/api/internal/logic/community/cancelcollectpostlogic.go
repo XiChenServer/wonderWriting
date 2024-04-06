@@ -30,7 +30,7 @@ func (l *CancelCollectPostLogic) CancelCollectPost(req *types.CancelCollectPostR
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	_, err = l.svcCtx.CommunityRpc.CancelCollectPost(l.ctx, &community.CommunityCancelCollectPostRequest{PostId: uint32(req.PostId), UserId: uint32(uid), CollectId: uint32(req.CollectId)})
 	if err != nil {
-		return nil, err
+		return &types.CancelCollectPostResponse{}, err
 	}
 	return &types.CancelCollectPostResponse{}, nil
 }

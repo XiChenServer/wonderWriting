@@ -36,6 +36,7 @@ func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCre
 		err = errors.New("Field 'content' is required")
 		return &types.PostCreateResponse{}, err
 	}
+
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	var urls []string
 	// 解析表单，获取多个文件字段
@@ -53,7 +54,7 @@ func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCre
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
 		if err != nil {
-			fmt.Println(err)
+
 			return &types.PostCreateResponse{}, err
 		}
 		defer file.Close()
@@ -68,6 +69,7 @@ func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCre
 		// 处理上传成功的情况，比如保存 URL 或其他操作
 		fmt.Println("Uploaded file:", url)
 	}
+	fmt.Println("1")
 	//调用rpc的接口
 	res, err := l.svcCtx.CommunityRpc.CommunityCreatePost(l.ctx, &community.CommunityCreatePostRequest{
 		UserId:    uint32(uid),

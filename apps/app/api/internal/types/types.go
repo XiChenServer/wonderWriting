@@ -2,15 +2,23 @@
 package types
 
 type PostInfo struct {
-	Id           uint     `json:"id"`
-	UserId       uint     `json:"user_id"`
-	ContentCount uint     `json:"content_count"`
-	LikeCount    uint     `json:"like_count"`
-	CollectCount uint     `json:"collect_count"`
-	Content      string   `json:"content"`
-	ImageUrls    []string `json:"image_urls"`
-	CreateTime   int32    `json:"create_time"`
-	DeleteTime   int32    `json:"delete_time"`
+	UserInfo     UserSimpleInfo `json:"user_info"`
+	Id           uint           `json:"id"`
+	UserId       uint           `json:"user_id"`
+	ContentCount uint           `json:"content_count"`
+	LikeCount    uint           `json:"like_count"`
+	CollectCount uint           `json:"collect_count"`
+	Content      string         `json:"content"`
+	ImageUrls    []string       `json:"image_urls"`
+	CreateTime   int32          `json:"create_time"`
+	DeleteTime   int32          `json:"delete_time"`
+}
+
+type UserSimpleInfo struct {
+	Id          uint   `json:"user_id"`
+	NickName    string `json:"nick_name"`
+	Account     string `json:"account"`
+	AvatarImage string `json:"avatar_image"`
 }
 
 type PostCreateRequest struct {
@@ -85,6 +93,22 @@ type CancelCollectPostRequest struct {
 }
 
 type CancelCollectPostResponse struct {
+}
+
+type CommentInfo struct {
+	Id         uint           `json:"id"`
+	CreateTime int32          `json:"create_time"`
+	PostId     uint           `json:"post_id"`
+	Comment    string         `json:"comment"`
+	UserInfo   UserSimpleInfo `json:"user_info"`
+}
+
+type LookCommentRequest struct {
+	PostId uint `json:"post_id"`
+}
+
+type LookCommentResponse struct {
+	CommentData []*CommentInfo `json:"comment_data"`
 }
 
 type VerificationRequest struct {

@@ -33,7 +33,7 @@ func (l *CollectPostLogic) CollectPost(req *types.CollectPostRequest) (resp *typ
 		UserId: uint32(uid),
 	})
 	if err != nil {
-		return nil, err
+		return &types.CollectPostResponse{}, err
 	}
 	return &types.CollectPostResponse{CollectId: uint(res.CollectId)}, nil
 }

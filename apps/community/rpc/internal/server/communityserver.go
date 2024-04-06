@@ -74,3 +74,9 @@ func (s *CommunityServer) CommunityLookAllPosts(ctx context.Context, in *communi
 	l := logic.NewCommunityLookAllPostsLogic(ctx, s.svcCtx)
 	return l.CommunityLookAllPosts(in)
 }
+
+// 查看帖子的评论
+func (s *CommunityServer) LookComment(ctx context.Context, in *community.LookCommentRequest) (*community.LookCommentResponse, error) {
+	l := logic.NewLookCommentLogic(ctx, s.svcCtx)
+	return l.LookComment(in)
+}
