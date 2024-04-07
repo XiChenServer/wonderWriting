@@ -41,8 +41,10 @@ message PostPopularityRankingsResponse{
 service home{
   //帖子每日的排行榜
   rpc PostPopularityRankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse);
+  //用户人气排行榜
   rpc UserPopularityRankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse);
 }
 
 //  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
 //  goctl rpc protoc ./rpc/home.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
+//

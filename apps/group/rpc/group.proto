@@ -1,0 +1,56 @@
+syntax = "proto3";
+package group;
+option go_package = "./group";
+
+// 开启打卡记录
+message StartCheckRequest {
+  uint32 user_id = 1;
+}
+message StartCheckResponse {
+  uint32 check_id = 1;
+  uint32 user_id = 2;
+  int32 continuous_days = 3;
+  int32 create_time = 4;
+  int32 last_check_in_time = 5;
+}
+
+// 书法记录的简单信息
+message RecordSimpleInfo {
+  uint32 record_id = 1;
+  uint32 user_id = 2;
+  string content = 3;
+  string image = 4;
+  float score = 5;
+  int32 create_time = 6;
+}
+
+// 上传书法信息
+message CreateRecordRequest {
+  uint32 user_id = 1;
+  string content = 2;
+  string image = 3;
+  float score = 4;
+}
+message CreateRecordResponse {
+  RecordSimpleInfo record_info = 1;
+}
+
+// 查看某人的书法记录
+message LookRecordByUserIdRequest {
+  uint32 user_id = 1;
+}
+message LookRecordByUserIdResponse {
+  repeated RecordSimpleInfo record_info = 1;
+}
+
+service Group {
+  // 开启签到
+  rpc StartCheck(StartCheckRequest) returns (StartCheckResponse);
+  // 上传书法记录
+  rpc CreateRecord(CreateRecordRequest) returns (CreateRecordResponse);
+  // 查看某人的书法记录
+  rpc LookRecordByUserId(LookRecordByUserIdRequest) returns (LookRecordByUserIdResponse);
+}
+
+
+//    goctl rpc protoc ./rpc/group.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
