@@ -221,3 +221,42 @@ type PostPopularityRankingsRequest struct {
 type PostPopularityRankingsResponse struct {
 	PostPopularData []*PostPopularityInfo `json:"post_popular_data"`
 }
+
+type StartCheckRequest struct {
+}
+
+type StartCheckResponse struct {
+	CheckId         uint32 `json:"check_id"`
+	UserId          uint32 `json:"user_id"`
+	ContinuousDays  int32  `json:"continuous_days"`
+	CreateTime      int32  `json:"create_time"`
+	LastCheckInTime int32  `json:"last_check_in_time"`
+}
+
+type RecordSimpleInfo struct {
+	RecordId   uint32  `json:"record_id"`
+	UserId     uint32  `json:"user_id"`
+	Content    string  `json:"content"`
+	Image      string  `json:"image"`
+	Score      float32 `json:"score"`
+	CreateTime int32   `json:"create_time"`
+}
+
+type CreateRecordRequest struct {
+	UserId  uint32  `json:"user_id"`
+	Content string  `json:"content"`
+	Image   string  `json:"image"`
+	Score   float32 `json:"score"`
+}
+
+type CreateRecordResponse struct {
+	RecordInfo RecordSimpleInfo `json:"record_info"`
+}
+
+type LookRecordByUserIdRequest struct {
+	UserId uint32 `json:"user_id"`
+}
+
+type LookRecordByUserIdResponse struct {
+	RecordInfo []*RecordSimpleInfo `json:"record_info"`
+}

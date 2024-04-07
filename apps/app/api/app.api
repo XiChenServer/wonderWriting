@@ -2,6 +2,7 @@ import (
 	"apis/community.api"
 	"apis/user.api"
 	"apis/home.api"
+	"apis/group.api"
 )
 
 //========================================> User <============================
@@ -138,5 +139,29 @@ service App{
 	@doc "帖子每日榜单"
 	@handler PostPopularityRankings
 	get /post/popularity/rankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse)
+}
 
+//=====================================> group <=======================================
+//need login
+
+@server (
+	prefix: /group
+	group: group
+	jwt: Auth
+)
+service App{
+	// 开启打卡
+	@doc "开启打卡"
+	@handler StartCheck
+	get /start/check(StartCheckRequest) returns (StartCheckResponse)
+
+	//上传书法信息
+	@doc "上传书法"
+	@handler CreateRecord
+	post /create/record() returns (CreateRecordResponse)
+
+	//查看某人的书法信息
+	@doc "查看某人的书法信息"
+	@handler LookRecordByUser
+	post /look/recordbyuser(LookRecordByUserIdRequest) returns (LookRecordByUserIdResponse)
 }

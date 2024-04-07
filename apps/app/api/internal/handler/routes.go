@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	community "calligraphy/apps/app/api/internal/handler/community"
+	group "calligraphy/apps/app/api/internal/handler/group"
 	home "calligraphy/apps/app/api/internal/handler/home"
 	user "calligraphy/apps/app/api/internal/handler/user"
 	"calligraphy/apps/app/api/internal/svc"
@@ -153,5 +154,27 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/home"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/start/check",
+				Handler: group.StartCheckHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/create/record",
+				Handler: group.CreateRecordHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/look/recordbyuser",
+				Handler: group.LookRecordByUserHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/group"),
 	)
 }

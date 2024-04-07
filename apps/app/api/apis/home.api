@@ -1,4 +1,10 @@
-//# 用户人气的简单信息
+info(
+    title :"主页"
+    desc: "排行榜，和一些信息的推荐"
+    version: "v1"
+)
+
+    //# 用户人气的简单信息
 type UserPopularInfo struct {
 UserId    uint32 `json:"user_id"`
 NickName  string `json:"nick_name"`

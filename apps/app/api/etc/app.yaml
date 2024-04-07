@@ -32,3 +32,9 @@ HomeRpc:
     Hosts:
       - 127.0.0.1:2379
     Key: home.rpc
+
+GroupRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: group.rpc

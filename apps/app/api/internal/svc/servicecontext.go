@@ -3,6 +3,7 @@ package svc
 import (
 	"calligraphy/apps/app/api/internal/config"
 	"calligraphy/apps/community/rpc/communityclient"
+	"calligraphy/apps/group/rpc/groupclient"
 	"calligraphy/apps/home/rpc/homeclient"
 	"calligraphy/apps/user/rpc/userclient"
 	"github.com/zeromicro/go-zero/zrpc"
@@ -13,6 +14,7 @@ type ServiceContext struct {
 	UserRpc      userclient.User
 	CommunityRpc communityclient.Community
 	HomeRpc      homeclient.Home
+	GroupRpc     groupclient.Group
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -21,5 +23,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc:      userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
 		CommunityRpc: communityclient.NewCommunity(zrpc.MustNewClient(c.CommunityRpc)),
 		HomeRpc:      homeclient.NewHome(zrpc.MustNewClient(c.HomeRpc)),
+		GroupRpc:     groupclient.NewGroup(zrpc.MustNewClient(c.GroupRpc)),
 	}
 }

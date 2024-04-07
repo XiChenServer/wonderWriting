@@ -1,0 +1,50 @@
+info(
+    title :"成长打卡模块"
+    desc: "用户的每日成绩"
+    version: "v1"
+)
+//开启打卡
+type StartCheckRequest{
+
+}
+type StartCheckResponse {
+    CheckId uint32 `json:"check_id"`
+    UserId uint32 `json:"user_id"`
+    ContinuousDays int32  `json:"continuous_days"`
+    CreateTime int32  `json:"create_time"`
+    LastCheckInTime int32 `json:"last_check_in_time"`
+}
+
+
+// RecordSimpleInfo 书法记录的简单信息
+type RecordSimpleInfo struct {
+    RecordId   uint32  `json:"record_id"`
+    UserId     uint32  `json:"user_id"`
+    Content    string  `json:"content"`
+    Image      string  `json:"image"`
+    Score      float32 `json:"score"`
+    CreateTime int32   `json:"create_time"`
+}
+
+// CreateRecordRequest 上传书法信息请求
+type CreateRecordRequest struct {
+    UserId  uint32  `json:"user_id"`
+    Content string  `json:"content"`
+    Image   string  `json:"image"`
+    Score   float32 `json:"score"`
+}
+
+// CreateRecordResponse 上传书法信息响应
+type CreateRecordResponse struct {
+    RecordInfo RecordSimpleInfo `json:"record_info"`
+}
+
+// LookRecordByUserIdRequest 查看某人的书法记录请求
+type LookRecordByUserIdRequest struct {
+    UserId uint32 `json:"user_id"`
+}
+
+// LookRecordByUserIdResponse 查看某人的书法记录响应
+type LookRecordByUserIdResponse struct {
+    RecordInfo []*RecordSimpleInfo `json:"record_info"`
+}
