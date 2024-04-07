@@ -1,0 +1,29 @@
+Name: home.rpc
+ListenOn: 0.0.0.0:11002
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: home.rpc
+
+
+MySQL:
+  Host: 127.0.0.1
+  Port: 3306
+  User: root
+  Password: root
+  Database: wonderWriting
+  TablePrefix: ""
+
+
+
+UserRpc:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379
+    Key: user.rpc
+
+CommunityRpc:
+  Etcd:
+    Hosts:
+    - 127.0.0.1:2379
+    Key: community.rpc

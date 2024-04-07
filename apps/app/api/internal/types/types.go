@@ -189,3 +189,35 @@ type UserModInfoRequest struct {
 
 type UserModInfoResponse struct {
 }
+
+type UserPopularInfo struct {
+	UserId    uint32 `json:"user_id"`
+	NickName  string `json:"nick_name"`
+	Account   string `json:"account"`
+	LikeCount int64  `json:"like_count"`
+	Avatar    string `json:"avatar"`
+}
+
+type UserPopularityRankingsRequest struct {
+}
+
+type UserPopularityRankingsResponse struct {
+	UserPopularData []*UserPopularInfo `json:"user_popular_data"`
+}
+
+type PostPopularityInfo struct {
+	PostId          uint32           `json:"post_id"`
+	Content         string           `json:"content"`
+	LikeCont        int64            `json:"like_count"`
+	CollectionCount int64            `json:"collection_count"`
+	CommentCount    int64            `json:"comment_count"`
+	PopularInfo     *UserPopularInfo `json:"popular_info"`
+	PostImage       []string         `json:"post_image"`
+}
+
+type PostPopularityRankingsRequest struct {
+}
+
+type PostPopularityRankingsResponse struct {
+	PostPopularData []*PostPopularityInfo `json:"post_popular_data"`
+}

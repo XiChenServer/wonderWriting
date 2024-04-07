@@ -26,3 +26,9 @@ CommunityRpc:
     Hosts:
       - 127.0.0.1:2379
     Key: community.rpc
+
+HomeRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: home.rpc

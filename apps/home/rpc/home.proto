@@ -1,0 +1,48 @@
+syntax = "proto3";
+package home;
+option go_package = "./home";
+
+// 用户人气的简单信息
+message UserPopularInfo{
+  uint32 UserId = 1;
+  string NickName = 2;
+  string Account = 3;
+  int64  LikeCount = 4;
+  string Avatar = 5;
+}
+
+
+//用户人气排行榜
+message UserPopularityRankingsRequest{
+}
+
+message UserPopularityRankingsResponse{
+  repeated UserPopularInfo UserPopularData = 1;
+}
+
+//帖子的简单信息
+message PostPopularityInfo{
+  uint32 PostId = 1;
+  string Content = 2;
+  int64 LikeCont = 3;
+  int64 CollectionCount = 4;
+  int64 CommentCount = 5;
+  UserPopularInfo PopularInfo = 6;
+  repeated string PostImage = 7;
+}
+//帖子获赞每日排行榜
+message PostPopularityRankingsRequest{
+
+}
+message PostPopularityRankingsResponse{
+  repeated PostPopularityInfo  PostPopularData = 1;
+}
+
+service home{
+  //帖子每日的排行榜
+  rpc PostPopularityRankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse);
+  rpc UserPopularityRankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse);
+}
+
+//  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
+//  goctl rpc protoc ./rpc/home.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

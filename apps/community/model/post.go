@@ -17,6 +17,16 @@ type Post struct {
 	Comments        []Comment   `gorm:"foreignKey:PostID" json:"comment"`     // 帖子评论，外键关联到Comment表的PostID字段，JSON序列化时的字段名为"comment"
 }
 
+// GetTopLikedUsers 获取获赞数前一千名的用户
+func (m *Post) GetTopLikedPosts(db *gorm.DB) ([]Post, error) {
+	var users []Post
+	result := db.Order("like_count DESC").Limit(1000).Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return users, nil
+}
+
 // CreatePost 创建帖子
 func (*Post) CreatePost(dao *gorm.DB, userId uint, content string, urls []string) (*Post, error) {
 	// 首先创建帖子

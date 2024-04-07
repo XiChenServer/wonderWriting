@@ -79,3 +79,13 @@ func (m *User) UpdateUser(db *gorm.DB, id uint, updateData *User) error {
 	}
 	return nil
 }
+
+// GetTopLikedUsers 获取获赞数前一千名的用户
+func (m *User) GetTopLikedUsers(db *gorm.DB) ([]User, error) {
+	var users []User
+	result := db.Order("like_count DESC").Limit(1000).Find(&users)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return users, nil
+}

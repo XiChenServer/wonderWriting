@@ -1,6 +1,7 @@
 import (
 	"apis/community.api"
 	"apis/user.api"
+	"apis/home.api"
 )
 
 //========================================> User <============================
@@ -118,5 +119,24 @@ service App{
 	@doc "取消收藏请求"
 	@handler CancelCollectPost
 	post /cancel/collect(CancelCollectPostRequest) returns (CancelCollectPostResponse)
+}
+
+//=====================================> home <=======================================
+//no need login
+
+@server (
+	prefix: /home
+	group: home
+)
+service App{
+	// 用户人气榜单
+	@doc "用户人气榜单"
+	@handler UserPopularityRankings
+	get /user/popularity/rankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse)
+
+	// 帖子每日榜单
+	@doc "帖子每日榜单"
+	@handler PostPopularityRankings
+	get /post/popularity/rankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse)
 
 }
