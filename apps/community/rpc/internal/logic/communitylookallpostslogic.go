@@ -7,7 +7,9 @@ import (
 	userModel "calligraphy/apps/user/model"
 	"calligraphy/pkg/qiniu"
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/jinzhu/gorm"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -25,17 +27,23 @@ func NewCommunityLookAllPostsLogic(ctx context.Context, svcCtx *svc.ServiceConte
 	}
 }
 
+// RPC方法：查看所有帖子（带缓存）
 func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.CommunityLookAllPostsRequest) (*community.CommunityLookAllPostsResponse, error) {
 	// 提取分页参数
 	page := int(in.Page)
 	pageSize := int(in.PageSize)
 
-	// 创建 Post 和 PostImage 操作实例
-	postOperations := model.Post{}
-	postImageOperations := model.PostImage{}
+	// 构建缓存键
+	cacheKey := fmt.Sprintf("posts:%d:%d", page, pageSize)
 
-	// 查询所有帖子信息并进行分页
-	posts, totalCount, err := postOperations.LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
+	// 尝试从缓存中获取数据
+	cachedData, err := getFromCacheLookAll(l, cacheKey)
+	if err == nil {
+		return cachedData, nil // 缓存命中，直接返回缓存数据
+	}
+
+	// 缓存未命中，查询数据库获取数据
+	posts, totalCount, err := (&model.Post{}).LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -47,31 +55,21 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	}
 
 	// 构建用于返回的帖子信息切片
-	var postInfo []*community.PostInfo
+	postInfo := make([]*community.PostInfo, 0, len(posts))
 
 	// 遍历查询到的帖子信息
 	for _, v := range posts {
 		// 查询每个帖子的图片信息
-		urls, err := postImageOperations.FindImageByPostId(l.svcCtx.DB, v.ID)
+		urls, err := (&model.PostImage{}).FindImageByPostId(l.svcCtx.DB, v.ID)
 		if err != nil {
 			return nil, err
 		}
 
-		var User userModel.User
-		err = l.svcCtx.DB.Where("user_id = ?", v.UserID).First(&User).Error
+		// 查询用户信息
+		userInfo, err := getUserInfo(l.svcCtx.DB, int(v.UserID))
 		if err != nil {
-			fmt.Println(err, v.UserID)
 			return nil, err
 		}
-		var userInfo = community.UserSimpleInfo{
-			Id:          uint32(User.UserID),
-			NickName:    User.Nickname,
-			Account:     User.Account,
-			AvatarImage: qiniu.ImgUrl + User.AvatarBackground,
-		}
-
-		// 将时间类型转换为 Unix 时间戳
-		createTime := uint32(v.CreatedAt.Unix())
 
 		// 创建新的帖子信息结构体
 		newPost := &community.PostInfo{
@@ -79,11 +77,11 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 			UserId:       uint32(v.UserID),
 			LikeCount:    uint32(v.LikeCount),
 			Content:      v.Content,
-			CreateTime:   createTime,
+			CreateTime:   uint32(v.CreatedAt.Unix()),
 			ImageUrls:    urls,
 			CollectCount: uint32(v.CollectionCount),
 			ContentCount: uint32(v.CommentCount),
-			UserInfo:     &userInfo,
+			UserInfo:     userInfo,
 		}
 
 		// 将新的帖子信息添加到切片中
@@ -91,7 +89,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	}
 
 	// 构建并返回帖子信息响应，包括分页相关信息
-	return &community.CommunityLookAllPostsResponse{
+	resp := &community.CommunityLookAllPostsResponse{
 		PostData:    postInfo,
 		CurrentPage: uint32(page),
 		PageSize:    uint32(pageSize),
@@ -99,5 +97,52 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		Overflow:    page > int(totalPages),
 		TotalPages:  uint32(totalPages),
 		TotalCount:  uint64(totalCount),
-	}, nil
+	}
+	cacheTime := 60 * 5
+	// 将查询结果存入缓存
+	err = l.svcCtx.RDB.SetexCtx(l.ctx, cacheKey, toJson(resp), cacheTime) // 设置缓存过期时间为5分钟
+	if err != nil {
+		fmt.Println("Failed to set cache:", err)
+	}
+
+	return resp, nil
+}
+
+// 从缓存中获取数据
+func getFromCacheLookAll(l *CommunityLookAllPostsLogic, key string) (*community.CommunityLookAllPostsResponse, error) {
+	val, err := l.svcCtx.RDB.GetCtx(l.ctx, key)
+	if err != nil {
+		return nil, err
+	}
+
+	var data community.CommunityLookAllPostsResponse
+	err = json.Unmarshal([]byte(val), &data)
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
+
+// 查询用户信息
+func getUserInfo(db *gorm.DB, userID int) (*community.UserSimpleInfo, error) {
+	var user userModel.User
+	err := db.Where("user_id = ?", userID).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+
+	userInfo := &community.UserSimpleInfo{
+		Id:          uint32(user.UserID),
+		NickName:    user.Nickname,
+		Account:     user.Account,
+		AvatarImage: qiniu.ImgUrl + user.AvatarBackground,
+	}
+
+	return userInfo, nil
+}
+
+func toJson(v interface{}) string {
+	b, _ := json.Marshal(v)
+	return string(b)
 }

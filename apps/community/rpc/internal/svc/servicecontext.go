@@ -4,9 +4,11 @@ import (
 	"calligraphy/apps/community/model"
 	"calligraphy/apps/community/rpc/internal/config"
 	"calligraphy/apps/user/rpc/userclient"
+	"calligraphy/common/app_redis"
 	"fmt"
 	"github.com/8treenet/gcache"
 	"github.com/8treenet/gcache/option"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 
 	//"github.com/bluele/gcache"
@@ -19,6 +21,7 @@ type ServiceContext struct {
 	Config  config.Config
 	DB      *gorm.DB
 	UserRpc userclient.User
+	RDB     *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -43,6 +46,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config:  c,
 		DB:      db,
 		UserRpc: userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
+		RDB:     app_redis.Redis,
 	}
 }
 
