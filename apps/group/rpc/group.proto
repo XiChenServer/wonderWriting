@@ -38,9 +38,25 @@ message CreateRecordResponse {
 // 查看某人的书法记录
 message LookRecordByUserIdRequest {
   uint32 user_id = 1;
+  // 当前页码
+  uint32 page = 2;
+  // 每页大小
+  uint32 page_size = 3;
 }
 message LookRecordByUserIdResponse {
   repeated RecordSimpleInfo record_info = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
 }
 //检查打卡模式是否开启
 message CheckPunchCardModelRequest {

@@ -14,10 +14,26 @@ message UserPopularInfo{
 
 //用户人气排行榜
 message UserPopularityRankingsRequest{
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
 }
 
 message UserPopularityRankingsResponse{
   repeated UserPopularInfo UserPopularData = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
 }
 
 //帖子的简单信息
@@ -32,10 +48,25 @@ message PostPopularityInfo{
 }
 //帖子获赞每日排行榜
 message PostPopularityRankingsRequest{
-
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
 }
 message PostPopularityRankingsResponse{
   repeated PostPopularityInfo  PostPopularData = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
 }
 
 service home{
@@ -45,6 +76,6 @@ service home{
   rpc UserPopularityRankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse);
 }
 
-//  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
+
 //  goctl rpc protoc ./rpc/home.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
 //

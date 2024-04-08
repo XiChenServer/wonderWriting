@@ -26,7 +26,14 @@ func NewUserPopularityRankingsLogic(ctx context.Context, svcCtx *svc.ServiceCont
 
 func (l *UserPopularityRankingsLogic) UserPopularityRankings(req *types.UserPopularityRankingsRequest) (resp *types.UserPopularityRankingsResponse, err error) {
 	// todo: add your logic here and delete this line
-	res, err := l.svcCtx.HomeRpc.UserPopularityRankings(l.ctx, &home.UserPopularityRankingsRequest{})
+	var pageSize uint32 = 20
+	if req.PageSize > 0 {
+		pageSize = req.PageSize
+	}
+	res, err := l.svcCtx.HomeRpc.UserPopularityRankings(l.ctx, &home.UserPopularityRankingsRequest{
+		Page:     req.Page,
+		PageSize: pageSize,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -41,5 +48,13 @@ func (l *UserPopularityRankingsLogic) UserPopularityRankings(req *types.UserPopu
 		}
 		userPopularData = append(userPopularData, newUserPopularData)
 	}
-	return &types.UserPopularityRankingsResponse{UserPopularData: userPopularData}, nil
+	return &types.UserPopularityRankingsResponse{
+		UserPopularData: userPopularData,
+		CurrentPage:     res.CurrentPage,
+		PageSize:        res.PageSize,
+		Offset:          res.Offset,
+		Overflow:        res.Overflow,
+		TotalPage:       res.TotalPages,
+		TotalCount:      res.TotalCount,
+	}, nil
 }

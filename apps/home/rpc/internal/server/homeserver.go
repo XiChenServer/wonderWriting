@@ -28,6 +28,7 @@ func (s *HomeServer) PostPopularityRankings(ctx context.Context, in *home.PostPo
 	return l.PostPopularityRankings(in)
 }
 
+// 用户人气排行榜
 func (s *HomeServer) UserPopularityRankings(ctx context.Context, in *home.UserPopularityRankingsRequest) (*home.UserPopularityRankingsResponse, error) {
 	l := logic.NewUserPopularityRankingsLogic(ctx, s.svcCtx)
 	return l.UserPopularityRankings(in)

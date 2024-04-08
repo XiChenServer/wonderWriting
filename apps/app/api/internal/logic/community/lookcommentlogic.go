@@ -26,12 +26,15 @@ func NewLookCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LookC
 
 func (l *LookCommentLogic) LookComment(req *types.LookCommentRequest) (resp *types.LookCommentResponse, err error) {
 	// todo: add your logic here and delete this line
-
+	var pageSize uint32 = 20
+	if req.PageSize > 0 {
+		pageSize = req.PageSize
+	}
 	//调用rpc获取数据
 	res, err := l.svcCtx.CommunityRpc.LookComment(l.ctx, &community.LookCommentRequest{
 		PostId:   uint32(req.PostId),
 		Page:     uint32(req.Page),
-		PageSize: req.PageSize,
+		PageSize: pageSize,
 	})
 	if err != nil {
 		return nil, err

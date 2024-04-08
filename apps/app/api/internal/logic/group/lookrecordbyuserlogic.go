@@ -26,7 +26,15 @@ func NewLookRecordByUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *
 
 func (l *LookRecordByUserLogic) LookRecordByUser(req *types.LookRecordByUserIdRequest) (resp *types.LookRecordByUserIdResponse, err error) {
 	// todo: add your logic here and delete this line
-	res, err := l.svcCtx.GroupRpc.LookRecordByUserId(l.ctx, &group.LookRecordByUserIdRequest{UserId: req.UserId})
+	var pageSize uint32 = 20
+	if req.PageSize > 0 {
+		pageSize = req.PageSize
+	}
+	res, err := l.svcCtx.GroupRpc.LookRecordByUserId(l.ctx, &group.LookRecordByUserIdRequest{
+		UserId:   req.UserId,
+		Page:     req.Page,
+		PageSize: pageSize,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -43,5 +51,13 @@ func (l *LookRecordByUserLogic) LookRecordByUser(req *types.LookRecordByUserIdRe
 		recordInfo = append(recordInfo, newRecordInfo)
 	}
 
-	return &types.LookRecordByUserIdResponse{RecordInfo: recordInfo}, nil
+	return &types.LookRecordByUserIdResponse{
+		RecordInfo:  recordInfo,
+		CurrentPage: res.CurrentPage,
+		PageSize:    res.PageSize,
+		Offset:      res.Offset,
+		Overflow:    res.Overflow,
+		TotalPage:   res.TotalPages,
+		TotalCount:  res.TotalCount,
+	}, nil
 }

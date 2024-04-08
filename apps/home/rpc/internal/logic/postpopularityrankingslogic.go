@@ -2,16 +2,14 @@ package logic
 
 import (
 	postModel "calligraphy/apps/community/model"
+	"calligraphy/apps/home/rpc/types/home"
 	userModel "calligraphy/apps/user/model"
-	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
 	"log"
 	"time"
 
 	"calligraphy/apps/home/rpc/internal/svc"
-	"calligraphy/apps/home/rpc/types/home"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -29,7 +27,13 @@ func NewPostPopularityRankingsLogic(ctx context.Context, svcCtx *svc.ServiceCont
 	}
 }
 
-func UpdateCachePost(l *PostPopularityRankingsLogic) {
+var (
+	lastUpdated time.Time
+	cacheKey    = "post_popularity_rankings"
+)
+
+// UpdateCachePost 更新排行榜缓存数据
+func (l *PostPopularityRankingsLogic) UpdateCachePost() {
 	// 从model层获取数据
 	res, err := (&postModel.Post{}).GetTopLikedPosts(l.svcCtx.DB)
 	if err != nil {
@@ -58,7 +62,7 @@ func UpdateCachePost(l *PostPopularityRankingsLogic) {
 				NickName:  userRes.Nickname,
 				Account:   userRes.Account,
 				LikeCount: int64(userRes.LikeCount),
-				Avatar:    qiniu.ImgUrl + userRes.AvatarBackground,
+				Avatar:    "qiniu.ImgUrl" + userRes.AvatarBackground,
 			}
 			newPostPopularData.PopularInfo = newUserInfo
 		}
@@ -78,55 +82,39 @@ func UpdateCachePost(l *PostPopularityRankingsLogic) {
 	response := &home.PostPopularityRankingsResponse{PostPopularData: postPopularData}
 
 	// 将响应数据存入缓存中
-	responseData, err := json.Marshal(response)
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		log.Println("Failed to marshal response data:", err)
 		return
 	}
 
-	postlastUpdated = time.Now() // 更新数据的更新时间
-	seconds := int(time.Minute.Seconds())
-	err = l.svcCtx.RDB.SetexCtx(l.ctx, "post_popularity_rankings", string(responseData), seconds)
+	// 更新数据的更新时间
+	lastUpdated = time.Now()
+
+	// 缓存时间为5分钟
+	cacheTime := 5 * time.Minute
+	err = l.svcCtx.RDB.SetexCtx(l.ctx, cacheKey, string(responseJSON), int(cacheTime.Seconds()))
 	if err != nil {
 		log.Println("Failed to set cache data:", err)
 		return
 	}
 }
 
+// PostPopularityRankings 获取排行榜数据（带分页）
 func (l *PostPopularityRankingsLogic) PostPopularityRankings(in *home.PostPopularityRankingsRequest) (*home.PostPopularityRankingsResponse, error) {
-	// 每分钟更新一次缓存数据
-	ticker := time.NewTicker(time.Minute)
-	defer ticker.Stop()
-
 	// 检查是否需要更新缓存
-	if time.Since(postlastUpdated) > time.Minute {
-		UpdateCachePost(l)
+	if time.Since(lastUpdated) > 10*time.Minute {
+		l.UpdateCachePost()
 	}
 
-	// 使用 Redis 客户端的 Get 方法获取键对应的值
-	value, err := l.svcCtx.RDB.GetCtx(l.ctx, "post_popularity_rankings")
+	// 获取缓存数据
+	value, err := l.svcCtx.RDB.GetCtx(l.ctx, cacheKey)
 	if err != nil {
 		log.Println("Failed to get cache data:", err)
 		return nil, err
 	}
 
-	log.Println("Cached data:", value)
-
-	// 检查获取到的数据是否为空
-	if value == "" {
-		log.Println("Cached data is empty")
-		// 重新刷新缓存数据
-		UpdateCachePost(l)
-
-		// 再次获取最新的缓存数据
-		value, err = l.svcCtx.RDB.GetCtx(l.ctx, "post_popularity_rankings")
-		if err != nil {
-			log.Println("Failed to get cache data after refresh:", err)
-			return nil, err
-		}
-	}
-
-	// 返回缓存数据
+	// 解析缓存数据
 	var response home.PostPopularityRankingsResponse
 	err = json.Unmarshal([]byte(value), &response)
 	if err != nil {
@@ -134,5 +122,49 @@ func (l *PostPopularityRankingsLogic) PostPopularityRankings(in *home.PostPopula
 		return nil, err
 	}
 
-	return &response, nil
+	// 根据请求参数进行分页
+	pageIndex := int(in.Page)
+	pageSize := int(in.PageSize)
+	totalPosts := len(response.PostPopularData)
+
+	// 计算总页数
+	totalPages := totalPosts / pageSize
+	if totalPosts%pageSize != 0 {
+		totalPages++
+	}
+
+	// 计算当前页的起始和结束位置
+	start := (pageIndex - 1) * pageSize
+	end := start + pageSize
+
+	if start >= totalPosts {
+		// 请求的起始位置超出了数据范围，返回空数据
+		return &home.PostPopularityRankingsResponse{
+			PostPopularData: []*home.PostPopularityInfo{},
+			PageSize:        uint32(pageSize),
+			CurrentPage:     uint32(pageIndex),
+			TotalPages:      uint32(totalPages),
+			TotalCount:      uint64(totalPosts),
+
+			Offset:   uint32(start),
+			Overflow: true,
+		}, nil
+	}
+
+	if end > totalPosts {
+		end = totalPosts
+	}
+
+	// 截取分页数据
+	pagedData := response.PostPopularData[start:end]
+
+	return &home.PostPopularityRankingsResponse{
+		PageSize:        uint32(pageSize),
+		CurrentPage:     uint32(pageIndex),
+		TotalPages:      uint32(totalPages),
+		TotalCount:      uint64(totalPosts),
+		PostPopularData: pagedData,
+		Offset:          uint32(start),
+		Overflow:        false,
+	}, nil
 }

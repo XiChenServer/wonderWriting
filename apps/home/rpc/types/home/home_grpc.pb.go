@@ -29,6 +29,7 @@ const (
 type HomeClient interface {
 	// 帖子每日的排行榜
 	PostPopularityRankings(ctx context.Context, in *PostPopularityRankingsRequest, opts ...grpc.CallOption) (*PostPopularityRankingsResponse, error)
+	// 用户人气排行榜
 	UserPopularityRankings(ctx context.Context, in *UserPopularityRankingsRequest, opts ...grpc.CallOption) (*UserPopularityRankingsResponse, error)
 }
 
@@ -64,6 +65,7 @@ func (c *homeClient) UserPopularityRankings(ctx context.Context, in *UserPopular
 type HomeServer interface {
 	// 帖子每日的排行榜
 	PostPopularityRankings(context.Context, *PostPopularityRankingsRequest) (*PostPopularityRankingsResponse, error)
+	// 用户人气排行榜
 	UserPopularityRankings(context.Context, *UserPopularityRankingsRequest) (*UserPopularityRankingsResponse, error)
 	mustEmbedUnimplementedHomeServer()
 }

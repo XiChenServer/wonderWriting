@@ -42,11 +42,19 @@ type CreateRecordResponse struct {
 // LookRecordByUserIdRequest 查看某人的书法记录请求
 type LookRecordByUserIdRequest struct {
     UserId uint32 `json:"user_id"`
+    Page uint32 `json:"page"`
+    PageSize uint32 `json:"page_size"`
 }
 
 // LookRecordByUserIdResponse 查看某人的书法记录响应
 type LookRecordByUserIdResponse struct {
     RecordInfo []*RecordSimpleInfo `json:"record_info"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }
 
 // 检查打卡模式是否开启

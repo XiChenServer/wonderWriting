@@ -27,7 +27,14 @@ func NewPostPopularityRankingsLogic(ctx context.Context, svcCtx *svc.ServiceCont
 func (l *PostPopularityRankingsLogic) PostPopularityRankings(req *types.PostPopularityRankingsRequest) (resp *types.PostPopularityRankingsResponse, err error) {
 	// todo: add your logic here and delete this line
 	//调用rpc获取数据
-	res, err := l.svcCtx.HomeRpc.PostPopularityRankings(l.ctx, &home.PostPopularityRankingsRequest{})
+	var pageSize uint32 = 20
+	if req.PageSize > 0 {
+		pageSize = req.PageSize
+	}
+	res, err := l.svcCtx.HomeRpc.PostPopularityRankings(l.ctx, &home.PostPopularityRankingsRequest{
+		Page:     req.Page,
+		PageSize: pageSize,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -55,5 +62,11 @@ func (l *PostPopularityRankingsLogic) PostPopularityRankings(req *types.PostPopu
 	}
 	return &types.PostPopularityRankingsResponse{
 		PostPopularData: postInfo,
+		CurrentPage:     res.CurrentPage,
+		PageSize:        res.PageSize,
+		Offset:          res.Offset,
+		Overflow:        res.Overflow,
+		TotalPage:       res.TotalPages,
+		TotalCount:      res.TotalCount,
 	}, nil
 }

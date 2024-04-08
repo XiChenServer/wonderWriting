@@ -23,6 +23,7 @@ type (
 	Home interface {
 		// 帖子每日的排行榜
 		PostPopularityRankings(ctx context.Context, in *PostPopularityRankingsRequest, opts ...grpc.CallOption) (*PostPopularityRankingsResponse, error)
+		// 用户人气排行榜
 		UserPopularityRankings(ctx context.Context, in *UserPopularityRankingsRequest, opts ...grpc.CallOption) (*UserPopularityRankingsResponse, error)
 	}
 
@@ -43,6 +44,7 @@ func (m *defaultHome) PostPopularityRankings(ctx context.Context, in *PostPopula
 	return client.PostPopularityRankings(ctx, in, opts...)
 }
 
+// 用户人气排行榜
 func (m *defaultHome) UserPopularityRankings(ctx context.Context, in *UserPopularityRankingsRequest, opts ...grpc.CallOption) (*UserPopularityRankingsResponse, error) {
 	client := home.NewHomeClient(m.cli.Conn())
 	return client.UserPopularityRankings(ctx, in, opts...)

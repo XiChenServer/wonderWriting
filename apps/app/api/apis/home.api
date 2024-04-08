@@ -14,10 +14,19 @@ Avatar    string `json:"avatar"`
 }
 
 //# 用户人气排行榜
-type UserPopularityRankingsRequest struct{}
+type UserPopularityRankingsRequest struct{
+    Page uint32 `json:"page"`
+    PageSize uint32 `json:"page_size"`
+}
 
 type UserPopularityRankingsResponse struct {
-UserPopularData []*UserPopularInfo `json:"user_popular_data"`
+    UserPopularData []*UserPopularInfo `json:"user_popular_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }
 
 //# 帖子的简单信息
@@ -32,8 +41,17 @@ PostImage []string `json:"post_image"`
 }
 
 //# 帖子获赞每日排行榜
-type PostPopularityRankingsRequest struct{}
+type PostPopularityRankingsRequest struct{
+    Page uint32 `json:"page"`
+    PageSize uint32 `json:"page_size"`
+}
 
 type PostPopularityRankingsResponse struct {
-PostPopularData []*PostPopularityInfo `json:"post_popular_data"`
+    PostPopularData []*PostPopularityInfo `json:"post_popular_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }

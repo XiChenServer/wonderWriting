@@ -222,10 +222,18 @@ type UserPopularInfo struct {
 }
 
 type UserPopularityRankingsRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size"`
 }
 
 type UserPopularityRankingsResponse struct {
 	UserPopularData []*UserPopularInfo `json:"user_popular_data"`
+	CurrentPage     uint32             `json:"current_page"`
+	PageSize        uint32             `json:"page_size"`
+	Offset          uint32             `json:"offset"`
+	Overflow        bool               `json:"overflow"`
+	TotalPage       uint32             `json:"total_page"`
+	TotalCount      uint64             `json:"total_count"`
 }
 
 type PostPopularityInfo struct {
@@ -239,10 +247,18 @@ type PostPopularityInfo struct {
 }
 
 type PostPopularityRankingsRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size"`
 }
 
 type PostPopularityRankingsResponse struct {
 	PostPopularData []*PostPopularityInfo `json:"post_popular_data"`
+	CurrentPage     uint32                `json:"current_page"`
+	PageSize        uint32                `json:"page_size"`
+	Offset          uint32                `json:"offset"`
+	Overflow        bool                  `json:"overflow"`
+	TotalPage       uint32                `json:"total_page"`
+	TotalCount      uint64                `json:"total_count"`
 }
 
 type StartCheckRequest struct {
@@ -277,11 +293,19 @@ type CreateRecordResponse struct {
 }
 
 type LookRecordByUserIdRequest struct {
-	UserId uint32 `json:"user_id"`
+	UserId   uint32 `json:"user_id"`
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size"`
 }
 
 type LookRecordByUserIdResponse struct {
-	RecordInfo []*RecordSimpleInfo `json:"record_info"`
+	RecordInfo  []*RecordSimpleInfo `json:"record_info"`
+	CurrentPage uint32              `json:"current_page"`
+	PageSize    uint32              `json:"page_size"`
+	Offset      uint32              `json:"offset"`
+	Overflow    bool                `json:"overflow"`
+	TotalPage   uint32              `json:"total_page"`
+	TotalCount  uint64              `json:"total_count"`
 }
 
 type CheckPunchCardModelRequest struct {

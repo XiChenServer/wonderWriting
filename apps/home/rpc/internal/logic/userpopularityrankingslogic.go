@@ -7,7 +7,6 @@ import (
 	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -34,6 +33,9 @@ var (
 	cachedData      []byte
 )
 
+var totalUsers int // 全局变量，用于保存用户总数
+
+// UpdateCacheUser 更新用户人气排行榜缓存
 func UpdateCacheUser(l *UserPopularityRankingsLogic) {
 	// 从model层获取数据
 	res, err := (&userModel.User{}).GetTopLikedUsers(l.svcCtx.DB)
@@ -56,7 +58,10 @@ func UpdateCacheUser(l *UserPopularityRankingsLogic) {
 	}
 
 	// 构建响应
-	response := &home.UserPopularityRankingsResponse{UserPopularData: userPopularData}
+	response := &home.UserPopularityRankingsResponse{
+		UserPopularData: userPopularData,
+		TotalCount:      uint64(len(userPopularData)), // 计算用户总数
+	}
 
 	// 将响应数据存入缓存中
 	responseData, err := json.Marshal(response)
@@ -65,16 +70,22 @@ func UpdateCacheUser(l *UserPopularityRankingsLogic) {
 		return
 	}
 
-	cachedData = responseData
-	userlastUpdated = time.Now() // 更新数据的更新时间
-	seconds := int(time.Minute.Seconds())
-	err = l.svcCtx.RDB.SetexCtx(l.ctx, "user_popularity_rankings", string(responseData), seconds)
+	// 更新数据的更新时间
+	userlastUpdated = time.Now()
+
+	// 缓存时间为1小时
+	cacheTime := 1 * time.Hour
+	err = l.svcCtx.RDB.SetexCtx(l.ctx, "user_popularity_rankings", string(responseData), int(cacheTime.Seconds()))
 	if err != nil {
 		log.Println("Failed to set cache data:", err)
 		return
 	}
+
+	// 更新全局用户总数变量
+	totalUsers = len(userPopularData)
 }
 
+// UserPopularityRankings 获取用户人气排行榜
 func (l *UserPopularityRankingsLogic) UserPopularityRankings(in *home.UserPopularityRankingsRequest) (*home.UserPopularityRankingsResponse, error) {
 	// 每分钟更新一次缓存数据
 	ticker := time.NewTicker(time.Minute)
@@ -99,7 +110,7 @@ func (l *UserPopularityRankingsLogic) UserPopularityRankings(in *home.UserPopula
 		log.Println("Cached data is empty")
 		// 重新刷新缓存数据
 		UpdateCacheUser(l)
-		fmt.Println("1")
+
 		// 再次获取最新的缓存数据
 		value, err = l.svcCtx.RDB.GetCtx(l.ctx, "user_popularity_rankings")
 		if err != nil {
@@ -116,5 +127,51 @@ func (l *UserPopularityRankingsLogic) UserPopularityRankings(in *home.UserPopula
 		return nil, err
 	}
 
-	return &response, nil
+	// 设置总用户数
+	response.TotalCount = uint64(totalUsers)
+
+	// 根据请求参数进行分页
+	pageIndex := int(in.Page)
+	pageSize := int(in.PageSize)
+	totalUsers := len(response.UserPopularData)
+
+	// 计算总页数
+	totalPages := totalUsers / pageSize
+	if totalUsers%pageSize != 0 {
+		totalPages++
+	}
+
+	// 计算当前页的起始和结束位置
+	start := (pageIndex - 1) * pageSize
+	end := start + pageSize
+
+	if start >= totalUsers {
+		// 请求的起始位置超出了数据范围，返回空数据
+		return &home.UserPopularityRankingsResponse{
+			PageSize:        uint32(pageSize),
+			CurrentPage:     uint32(pageIndex),
+			TotalPages:      uint32(totalPages),
+			TotalCount:      uint64(totalUsers),
+			UserPopularData: []*home.UserPopularInfo{},
+			Offset:          uint32(start),
+			Overflow:        true,
+		}, nil
+	}
+
+	if end > totalUsers {
+		end = totalUsers
+	}
+
+	// 截取分页数据
+	pagedData := response.UserPopularData[start:end]
+
+	return &home.UserPopularityRankingsResponse{
+		PageSize:        uint32(pageSize),
+		CurrentPage:     uint32(pageIndex),
+		TotalPages:      uint32(totalPages),
+		TotalCount:      uint64(totalUsers),
+		UserPopularData: pagedData,
+		Offset:          uint32(start),
+		Overflow:        false,
+	}, nil
 }
