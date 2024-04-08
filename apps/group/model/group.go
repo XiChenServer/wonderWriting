@@ -20,7 +20,23 @@ type RecordContent struct {
 	Score   float64 `gorm:"type:decimal(10,2);default:0" json:"score"`
 }
 
-// 开启打卡记录
+// IsCheckInOpen 检查某人的打卡表是否开启
+func (*CheckIn) IsCheckInOpen(db *gorm.DB, userID uint) (bool, error) {
+	var checkIn CheckIn
+	result := db.Where("user_id = ?", userID).First(&checkIn)
+	if result.Error != nil {
+		// 查询出错，可能是没有对应的打卡记录
+		if result.Error == gorm.ErrRecordNotFound {
+			return false, nil // 没有对应的打卡记录，打卡表未开启
+		}
+		return false, result.Error // 其他错误，返回错误信息
+	}
+
+	// 查询到了打卡记录，打卡表已经开启
+	return true, nil
+}
+
+// CreateCheckIn 开启打卡记录
 func (*CheckIn) CreateCheckIn(db *gorm.DB, userId uint) (*CheckIn, error) {
 	checkIn := &CheckIn{
 		UserID:          userId,

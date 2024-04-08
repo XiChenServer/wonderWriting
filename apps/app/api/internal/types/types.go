@@ -36,14 +36,29 @@ type PostDelResponse struct {
 }
 
 type LookPostByOwnRequest struct {
+	UserId   uint32 `json:"user_id"`
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size"`
 }
 
 type LookPostByOwnResponses struct {
-	PostData []*PostInfo `json:"post_data"`
+	PostData    []*PostInfo `json:"post_data"`
+	CurrentPage uint32      `json:"current_page"`
+	PageSize    uint32      `json:"page_size"`
+	Offset      uint32      `json:"offset"`
+	Overflow    bool        `json:"overflow"`
+	TotalPage   uint32      `json:"total_page"`
+	TotalCount  uint64      `json:"total_count"`
 }
 
 type LookAllPostsResponse struct {
-	PostData []*PostInfo `json:"post_data"`
+	PostData    []*PostInfo `json:"post_data"`
+	CurrentPage uint32      `json:"current_page"`
+	PageSize    uint32      `json:"page_size"`
+	Offset      uint32      `json:"offset"`
+	Overflow    bool        `json:"overflow"`
+	TotalPage   uint32      `json:"total_page"`
+	TotalCount  uint64      `json:"total_count"`
 }
 
 type LikePostRequest struct {
@@ -104,11 +119,19 @@ type CommentInfo struct {
 }
 
 type LookCommentRequest struct {
-	PostId uint `json:"post_id"`
+	PostId   uint   `json:"post_id"`
+	Page     uint   `json:"page"`
+	PageSize uint32 `json:"page_size"`
 }
 
 type LookCommentResponse struct {
 	CommentData []*CommentInfo `json:"comment_data"`
+	CurrentPage uint32         `json:"current_page"`
+	PageSize    uint32         `json:"page_size"`
+	Offset      uint32         `json:"offset"`
+	Overflow    bool           `json:"overflow"`
+	TotalPage   uint32         `json:"total_page"`
+	TotalCount  uint64         `json:"total_count"`
 }
 
 type VerificationRequest struct {
@@ -259,4 +282,11 @@ type LookRecordByUserIdRequest struct {
 
 type LookRecordByUserIdResponse struct {
 	RecordInfo []*RecordSimpleInfo `json:"record_info"`
+}
+
+type CheckPunchCardModelRequest struct {
+}
+
+type CheckPunchCardModelResponse struct {
+	Data bool `json:"data"`
 }

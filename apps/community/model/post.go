@@ -77,14 +77,27 @@ func (*Post) DeletePost(dao *gorm.DB, post_id uint32) (*Post, error) {
 	return nil, nil
 }
 
-// LookAllPosts 查找多有的帖子
-func (*Post) LookAllPosts(dao *gorm.DB) ([]*Post, error) {
+// LookAllPostsWithPagination 查找所有的帖子并进行分页
+func (*Post) LookAllPostsWithPagination(dao *gorm.DB, page, pageSize int) ([]*Post, int64, error) {
 	var posts []*Post
-	err := dao.Find(&posts).Error
+
+	// 计算偏移量
+	offset := (page - 1) * pageSize
+
+	// 查询帖子数据并计算总记录数
+	err := dao.Offset(offset).Limit(pageSize).Find(&posts).Error
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
-	return posts, nil
+
+	// 获取总记录数
+	var totalCount int64
+	err = dao.Model(&Post{}).Count(&totalCount).Error
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return posts, totalCount, nil
 }
 
 // LookPostByOwn 查看自己的帖子

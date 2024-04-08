@@ -68,6 +68,6 @@ func (l *LookCommentLogic) LookComment(in *community.LookCommentRequest) (*commu
 	}
 
 	return &community.LookCommentResponse{
-		CommentDatas: comment,
+		CommentData: comment,
 	}, nil
 }

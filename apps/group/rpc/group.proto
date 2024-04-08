@@ -42,6 +42,13 @@ message LookRecordByUserIdRequest {
 message LookRecordByUserIdResponse {
   repeated RecordSimpleInfo record_info = 1;
 }
+//检查打卡模式是否开启
+message CheckPunchCardModelRequest {
+  uint32 user_id = 1;
+}
+message CheckPunchCardModelResponse {
+  bool data = 1;
+}
 
 service Group {
   // 开启签到
@@ -50,7 +57,10 @@ service Group {
   rpc CreateRecord(CreateRecordRequest) returns (CreateRecordResponse);
   // 查看某人的书法记录
   rpc LookRecordByUserId(LookRecordByUserIdRequest) returns (LookRecordByUserIdResponse);
+  //检查打卡模式是否开启
+  rpc CheckPunchCardModel(CheckPunchCardModelRequest) returns (CheckPunchCardModelResponse);
 }
+
 
 
 //    goctl rpc protoc ./rpc/group.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

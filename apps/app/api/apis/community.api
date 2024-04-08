@@ -44,16 +44,31 @@ type PostDelResponse{
 
 // 查看自己的所有帖子
 type LookPostByOwnRequest{
-
+    UserId uint32  `json:"user_id"`
+    Page uint32 `json:"page"`
+    PageSize uint32 `json:"page_size"`
 }
 type LookPostByOwnResponses{
     PostData []*PostInfo `json:"post_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }
 
 //用户查看所有的帖子
-type LookAllPostsResponse{
-    PostData []*PostInfo `json:"post_data"`
+type LookAllPostsResponse struct {
+    PostData   []*PostInfo `json:"post_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }
+
 // 点赞请求消息
 type LikePostRequest struct {
     PostId uint `json:"post_id"`
@@ -127,8 +142,16 @@ type CommentInfo{
 //查看用户评论信息
 type LookCommentRequest{
     PostId uint `json:"post_id"`
+    Page uint `json:"page"`
+    PageSize uint32 `json:"page_size"`
 }
 
 type LookCommentResponse{
     CommentData []*CommentInfo `json:"comment_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }

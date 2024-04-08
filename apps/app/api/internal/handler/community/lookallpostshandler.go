@@ -11,7 +11,7 @@ import (
 func LookAllPostsHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := community.NewLookAllPostsLogic(r.Context(), svcCtx)
-		resp, err := l.LookAllPosts()
+		resp, err := l.LookAllPosts(r)
 		//if err != nil {
 		//	httpx.ErrorCtx(r.Context(), w, err)
 		//} else {

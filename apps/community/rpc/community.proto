@@ -39,10 +39,26 @@ message CommentInfo{
 
 //评论的查看
 message LookCommentRequest{
-  uint32 PostId = 1;
+  uint32 post_id = 1;
+  // 当前页码
+  uint32 page = 2;
+  // 每页大小
+  uint32 page_size = 3;
 }
 message LookCommentResponse{
-  repeated CommentInfo CommentDatas = 1;
+  repeated CommentInfo comment_data = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
 }
 
 
@@ -69,21 +85,55 @@ message CommunityDelPostResponse{
 
 // 查看自己的所有帖子
 message CommunityLookPostByOwnRequest{
-  uint32 UserId  = 1;
+  uint32 user_id  = 1;
+  // 当前页码
+  uint32 page = 2;
+  // 每页大小
+  uint32 page_size = 3;
 }
 message CommunityLookPostByOwnResponses{
-  repeated PostInfo PostData = 1;
+  // 帖子信息列表
+  repeated PostInfo post_data = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
 }
 
 
-//用户查看所有的帖子
-message CommunityLookAllPostsRequest{
-
+// 用户查看所有帖子的请求消息
+message CommunityLookAllPostsRequest {
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
 }
-message CommunityLookAllPostsResponse{
-  repeated PostInfo PostData = 1;
-}
 
+// 用户查看所有帖子的响应消息
+message CommunityLookAllPostsResponse {
+  // 帖子信息列表
+  repeated PostInfo post_data = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
 //点赞帖子
 message CommunityLikePostRequest{
   uint32 UserId = 2;
@@ -154,9 +204,11 @@ service Community {
   rpc CollectPost(CommunityCollectPostRequest) returns (CommunityCollectPostResponse);
   rpc CancelCollectPost(CommunityCancelCollectPostRequest) returns (CommunityCancelCollectPostResponse);
 
-// 定义评论服务
+  // 定义评论服务
   rpc CommentPost(CommunityContentPostRequest) returns (CommunityContentPostResponse);
   rpc CancelCommentPost(CommunityCancelContentPostRequest) returns (CommunityCancelContentPostResponse);
+
+
   // 定义帖子服务
   rpc CommunityCreatePost(CommunityCreatePostRequest) returns (CommunityCreatePostResponse);
   rpc CommunityDelPost(CommunityDelPostRequest) returns (CommunityDelPostResponse);

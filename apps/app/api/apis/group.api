@@ -48,3 +48,10 @@ type LookRecordByUserIdRequest struct {
 type LookRecordByUserIdResponse struct {
     RecordInfo []*RecordSimpleInfo `json:"record_info"`
 }
+
+// 检查打卡模式是否开启
+type CheckPunchCardModelRequest {
+}
+type CheckPunchCardModelResponse {
+  Data bool `json:"data"`
+}

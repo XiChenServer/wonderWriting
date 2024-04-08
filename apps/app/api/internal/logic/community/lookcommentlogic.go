@@ -26,15 +26,20 @@ func NewLookCommentLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LookC
 
 func (l *LookCommentLogic) LookComment(req *types.LookCommentRequest) (resp *types.LookCommentResponse, err error) {
 	// todo: add your logic here and delete this line
+
 	//调用rpc获取数据
-	res, err := l.svcCtx.CommunityRpc.LookComment(l.ctx, &community.LookCommentRequest{PostId: uint32(req.PostId)})
+	res, err := l.svcCtx.CommunityRpc.LookComment(l.ctx, &community.LookCommentRequest{
+		PostId:   uint32(req.PostId),
+		Page:     uint32(req.Page),
+		PageSize: req.PageSize,
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	//进行数据的转换
 	var commentData []*types.CommentInfo
-	for _, v := range res.CommentDatas {
+	for _, v := range res.CommentData {
 		newCommentData := &types.CommentInfo{
 			Id:         uint(v.Id),
 			CreateTime: v.CreateTime,
@@ -51,6 +56,14 @@ func (l *LookCommentLogic) LookComment(req *types.LookCommentRequest) (resp *typ
 		commentData = append(commentData, newCommentData)
 	}
 
-	return &types.LookCommentResponse{CommentData: commentData}, nil
+	return &types.LookCommentResponse{
+		CommentData: commentData,
+		CurrentPage: res.CurrentPage,
+		PageSize:    res.PageSize,
+		Offset:      res.Offset,
+		Overflow:    res.Overflow,
+		TotalPage:   res.TotalPages,
+		TotalCount:  res.TotalCount,
+	}, nil
 
 }

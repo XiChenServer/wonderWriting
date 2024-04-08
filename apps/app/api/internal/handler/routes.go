@@ -101,7 +101,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: community.UserDelPostHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/look/postbyown",
 				Handler: community.UserLookPostByOwnHandler(serverCtx),
 			},
@@ -172,6 +172,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/look/recordbyuser",
 				Handler: group.LookRecordByUserHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/check/pubcgcard",
+				Handler: group.CheckPunchCardHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

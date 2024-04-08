@@ -39,3 +39,9 @@ func (s *GroupServer) LookRecordByUserId(ctx context.Context, in *group.LookReco
 	l := logic.NewLookRecordByUserIdLogic(ctx, s.svcCtx)
 	return l.LookRecordByUserId(in)
 }
+
+// 检查打卡模式是否开启
+func (s *GroupServer) CheckPunchCardModel(ctx context.Context, in *group.CheckPunchCardModelRequest) (*group.CheckPunchCardModelResponse, error) {
+	l := logic.NewCheckPunchCardModelLogic(ctx, s.svcCtx)
+	return l.CheckPunchCardModel(in)
+}

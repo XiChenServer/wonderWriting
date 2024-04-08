@@ -13,13 +13,15 @@ import (
 )
 
 type (
-	CreateRecordRequest        = group.CreateRecordRequest
-	CreateRecordResponse       = group.CreateRecordResponse
-	LookRecordByUserIdRequest  = group.LookRecordByUserIdRequest
-	LookRecordByUserIdResponse = group.LookRecordByUserIdResponse
-	RecordSimpleInfo           = group.RecordSimpleInfo
-	StartCheckRequest          = group.StartCheckRequest
-	StartCheckResponse         = group.StartCheckResponse
+	CheckPunchCardModelRequest  = group.CheckPunchCardModelRequest
+	CheckPunchCardModelResponse = group.CheckPunchCardModelResponse
+	CreateRecordRequest         = group.CreateRecordRequest
+	CreateRecordResponse        = group.CreateRecordResponse
+	LookRecordByUserIdRequest   = group.LookRecordByUserIdRequest
+	LookRecordByUserIdResponse  = group.LookRecordByUserIdResponse
+	RecordSimpleInfo            = group.RecordSimpleInfo
+	StartCheckRequest           = group.StartCheckRequest
+	StartCheckResponse          = group.StartCheckResponse
 
 	Group interface {
 		// 开启签到
@@ -28,6 +30,8 @@ type (
 		CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
 		// 查看某人的书法记录
 		LookRecordByUserId(ctx context.Context, in *LookRecordByUserIdRequest, opts ...grpc.CallOption) (*LookRecordByUserIdResponse, error)
+		// 检查打卡模式是否开启
+		CheckPunchCardModel(ctx context.Context, in *CheckPunchCardModelRequest, opts ...grpc.CallOption) (*CheckPunchCardModelResponse, error)
 	}
 
 	defaultGroup struct {
@@ -57,4 +61,10 @@ func (m *defaultGroup) CreateRecord(ctx context.Context, in *CreateRecordRequest
 func (m *defaultGroup) LookRecordByUserId(ctx context.Context, in *LookRecordByUserIdRequest, opts ...grpc.CallOption) (*LookRecordByUserIdResponse, error) {
 	client := group.NewGroupClient(m.cli.Conn())
 	return client.LookRecordByUserId(ctx, in, opts...)
+}
+
+// 检查打卡模式是否开启
+func (m *defaultGroup) CheckPunchCardModel(ctx context.Context, in *CheckPunchCardModelRequest, opts ...grpc.CallOption) (*CheckPunchCardModelResponse, error) {
+	client := group.NewGroupClient(m.cli.Conn())
+	return client.CheckPunchCardModel(ctx, in, opts...)
 }

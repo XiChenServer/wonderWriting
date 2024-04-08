@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Group_StartCheck_FullMethodName         = "/group.Group/StartCheck"
-	Group_CreateRecord_FullMethodName       = "/group.Group/CreateRecord"
-	Group_LookRecordByUserId_FullMethodName = "/group.Group/LookRecordByUserId"
+	Group_StartCheck_FullMethodName          = "/group.Group/StartCheck"
+	Group_CreateRecord_FullMethodName        = "/group.Group/CreateRecord"
+	Group_LookRecordByUserId_FullMethodName  = "/group.Group/LookRecordByUserId"
+	Group_CheckPunchCardModel_FullMethodName = "/group.Group/CheckPunchCardModel"
 )
 
 // GroupClient is the client API for Group service.
@@ -34,6 +35,8 @@ type GroupClient interface {
 	CreateRecord(ctx context.Context, in *CreateRecordRequest, opts ...grpc.CallOption) (*CreateRecordResponse, error)
 	// 查看某人的书法记录
 	LookRecordByUserId(ctx context.Context, in *LookRecordByUserIdRequest, opts ...grpc.CallOption) (*LookRecordByUserIdResponse, error)
+	// 检查打卡模式是否开启
+	CheckPunchCardModel(ctx context.Context, in *CheckPunchCardModelRequest, opts ...grpc.CallOption) (*CheckPunchCardModelResponse, error)
 }
 
 type groupClient struct {
@@ -71,6 +74,15 @@ func (c *groupClient) LookRecordByUserId(ctx context.Context, in *LookRecordByUs
 	return out, nil
 }
 
+func (c *groupClient) CheckPunchCardModel(ctx context.Context, in *CheckPunchCardModelRequest, opts ...grpc.CallOption) (*CheckPunchCardModelResponse, error) {
+	out := new(CheckPunchCardModelResponse)
+	err := c.cc.Invoke(ctx, Group_CheckPunchCardModel_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GroupServer is the server API for Group service.
 // All implementations must embed UnimplementedGroupServer
 // for forward compatibility
@@ -81,6 +93,8 @@ type GroupServer interface {
 	CreateRecord(context.Context, *CreateRecordRequest) (*CreateRecordResponse, error)
 	// 查看某人的书法记录
 	LookRecordByUserId(context.Context, *LookRecordByUserIdRequest) (*LookRecordByUserIdResponse, error)
+	// 检查打卡模式是否开启
+	CheckPunchCardModel(context.Context, *CheckPunchCardModelRequest) (*CheckPunchCardModelResponse, error)
 	mustEmbedUnimplementedGroupServer()
 }
 
@@ -96,6 +110,9 @@ func (UnimplementedGroupServer) CreateRecord(context.Context, *CreateRecordReque
 }
 func (UnimplementedGroupServer) LookRecordByUserId(context.Context, *LookRecordByUserIdRequest) (*LookRecordByUserIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LookRecordByUserId not implemented")
+}
+func (UnimplementedGroupServer) CheckPunchCardModel(context.Context, *CheckPunchCardModelRequest) (*CheckPunchCardModelResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckPunchCardModel not implemented")
 }
 func (UnimplementedGroupServer) mustEmbedUnimplementedGroupServer() {}
 
@@ -164,6 +181,24 @@ func _Group_LookRecordByUserId_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Group_CheckPunchCardModel_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckPunchCardModelRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GroupServer).CheckPunchCardModel(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Group_CheckPunchCardModel_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GroupServer).CheckPunchCardModel(ctx, req.(*CheckPunchCardModelRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Group_ServiceDesc is the grpc.ServiceDesc for Group service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -182,6 +217,10 @@ var Group_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LookRecordByUserId",
 			Handler:    _Group_LookRecordByUserId_Handler,
+		},
+		{
+			MethodName: "CheckPunchCardModel",
+			Handler:    _Group_CheckPunchCardModel_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

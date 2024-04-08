@@ -26,23 +26,33 @@ func NewCommunityLookAllPostsLogic(ctx context.Context, svcCtx *svc.ServiceConte
 }
 
 func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.CommunityLookAllPostsRequest) (*community.CommunityLookAllPostsResponse, error) {
+	// 提取分页参数
+	page := int(in.Page)
+	pageSize := int(in.PageSize)
+
 	// 创建 Post 和 PostImage 操作实例
 	postOperations := model.Post{}
 	postImageOperations := model.PostImage{}
-	// 查询所有帖子信息
-	res, err := postOperations.LookAllPosts(l.svcCtx.DB)
+
+	// 查询所有帖子信息并进行分页
+	posts, totalCount, err := postOperations.LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
 	if err != nil {
 		return nil, err
 	}
 
-	// 创建用于返回的帖子信息切片
+	// 计算总页数
+	totalPages := totalCount / int64(pageSize)
+	if totalCount%int64(pageSize) != 0 {
+		totalPages++
+	}
+
+	// 构建用于返回的帖子信息切片
 	var postInfo []*community.PostInfo
 
 	// 遍历查询到的帖子信息
-	for _, v := range res {
+	for _, v := range posts {
 		// 查询每个帖子的图片信息
-		var urls []string
-		urls, err = postImageOperations.FindImageByPostId(l.svcCtx.DB, v.ID)
+		urls, err := postImageOperations.FindImageByPostId(l.svcCtx.DB, v.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -59,8 +69,10 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 			Account:     User.Account,
 			AvatarImage: qiniu.ImgUrl + User.AvatarBackground,
 		}
+
 		// 将时间类型转换为 Unix 时间戳
 		createTime := uint32(v.CreatedAt.Unix())
+
 		// 创建新的帖子信息结构体
 		newPost := &community.PostInfo{
 			Id:           uint32(v.ID),
@@ -73,12 +85,19 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 			ContentCount: uint32(v.CommentCount),
 			UserInfo:     &userInfo,
 		}
+
 		// 将新的帖子信息添加到切片中
 		postInfo = append(postInfo, newPost)
 	}
 
-	// 构建并返回帖子信息响应
+	// 构建并返回帖子信息响应，包括分页相关信息
 	return &community.CommunityLookAllPostsResponse{
-		PostData: postInfo,
+		PostData:    postInfo,
+		CurrentPage: uint32(page),
+		PageSize:    uint32(pageSize),
+		Offset:      uint32((page - 1) * pageSize),
+		Overflow:    page > int(totalPages),
+		TotalPages:  uint32(totalPages),
+		TotalCount:  uint64(totalCount),
 	}, nil
 }

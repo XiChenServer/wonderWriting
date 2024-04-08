@@ -86,10 +86,10 @@ service App{
 	@handler UserDelPost
 	post /delete/post(PostDelRequest) returns (PostDelResponse)
 
-	//用户查看自己的帖子
-	@doc "user see post oneself"
+	//用户查看mourrn的帖子
+	@doc "user see post userId"
 	@handler UserLookPostByOwn
-	get /look/postbyown(LookPostByOwnRequest) returns (LookPostByOwnResponses)
+	post /look/postbyown(LookPostByOwnRequest) returns (LookPostByOwnResponses)
 
 	// 点赞请求
 	@doc "点赞请求"
@@ -164,4 +164,9 @@ service App{
 	@doc "查看某人的书法信息"
 	@handler LookRecordByUser
 	post /look/recordbyuser(LookRecordByUserIdRequest) returns (LookRecordByUserIdResponse)
+
+	//查看某人的签到是否打开
+	@doc "查看某人的签到是否打开"
+	@handler CheckPunchCard
+	post /check/pubcgcard(CheckPunchCardModelRequest) returns (CheckPunchCardModelResponse)
 }
