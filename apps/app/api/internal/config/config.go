@@ -1,7 +1,6 @@
 package config
 
 import (
-	"github.com/zeromicro/go-queue/kq"
 	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 )
@@ -16,11 +15,12 @@ type Config struct {
 	CommunityRpc zrpc.RpcClientConf
 	HomeRpc      zrpc.RpcClientConf
 	GroupRpc     zrpc.RpcClientConf
-	KqPusherConf struct {
-		Brokers []string
-		Topic   string
-	}
-	KqConsumerConf kq.KqConf
+	//KqPusherConf struct {
+	//	Brokers []string
+	//	Topic   string
+	//}
+	//KqConsumerConf kq.KqConf
+	ActivityRpc zrpc.RpcClientConf
 }
 
 //

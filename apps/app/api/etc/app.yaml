@@ -45,17 +45,17 @@ ActivityRpc:
       - 127.0.0.1:2379
     Key: activity.rpc
 
-KqPusherConf:
-  Brokers:
-    - 127.0.0.1:9092
-  Topic: payment-success
-#kq
-KqConsumerConf:
-  Name: kqConsumer
-  Brokers:
-    - 127.0.1:9092
-  Group: kqConsumer
-  Topic: payment-success
-  Offset: first
-  Consumers: 8
-  Processors: 8
+#KqPusherConf:
+#  Brokers:
+#    - 127.0.0.1:9092
+#  Topic: payment-success
+##kq
+#KqConsumerConf:
+#  Name: kqConsumer
+#  Brokers:
+#    - 127.0.1:9092
+#  Group: kqConsumer
+#  Topic: payment-success
+#  Offset: first
+#  Consumers: 8
+#  Processors: 8

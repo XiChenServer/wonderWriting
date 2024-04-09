@@ -29,9 +29,17 @@ func main() {
 
 	serviceGroup := service.NewServiceGroup()
 	defer serviceGroup.Stop()
+	//svctx := context.Background()
+
+	//for _, mq := range mqs.Consumers(c, svctx, ctx) {
+	//	serviceGroup.Add(mq)
+	//}
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
+
+	//serviceGroup.Start()
 	server.Start()
+
 }
 
 //

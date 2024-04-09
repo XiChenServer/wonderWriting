@@ -1,0 +1,11 @@
+Kafka:
+  Name: grab_point_msg,
+  Brokers:
+    - 127.0.0.1:9092
+  Topic: grab_points-topic
+  Group: grab_points-group
+UserRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc

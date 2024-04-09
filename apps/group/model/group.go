@@ -31,7 +31,6 @@ func (*CheckIn) IsCheckInOpen(db *gorm.DB, userID uint) (bool, error) {
 		}
 		return false, result.Error // 其他错误，返回错误信息
 	}
-
 	// 查询到了打卡记录，打卡表已经开启
 	return true, nil
 }

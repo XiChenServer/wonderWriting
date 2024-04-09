@@ -7,6 +7,7 @@ message GrabPointsRequest {
   uint32 user_id = 1;
 }
 message GrabPointsResponse{
+  uint32 remain_amount = 1;
 }
 
 service activity{

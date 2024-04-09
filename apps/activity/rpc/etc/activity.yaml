@@ -1,6 +1,27 @@
 Name: activity.rpc
-ListenOn: 0.0.0.0:8080
+ListenOn: 0.0.0.0:11004
 Etcd:
   Hosts:
   - 127.0.0.1:2379
   Key: activity.rpc
+
+
+UserRpc:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc
+
+Kafka:
+  Addrs:
+    - 127.0.0.1:9092
+  GrabPointsTopic: grab_points-topic
+
+
+MySQL:
+  Host: 127.0.0.1
+  Port: 3306
+  User: root
+  Password: root
+  Database: wonderWriting
+  TablePrefix: ""
