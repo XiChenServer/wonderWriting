@@ -1,0 +1,10 @@
+info(
+    title :"活动管理"
+    desc: "可以发表一些活动，然后吸收用户量"
+    version: "v1"
+)
+
+type GrabPointsRequest{
+}
+type GrabPointsResponse{
+}

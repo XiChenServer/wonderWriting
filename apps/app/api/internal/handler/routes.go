@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	activity "calligraphy/apps/app/api/internal/handler/activity"
 	community "calligraphy/apps/app/api/internal/handler/community"
 	group "calligraphy/apps/app/api/internal/handler/group"
 	home "calligraphy/apps/app/api/internal/handler/home"
@@ -181,5 +182,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/group"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/grab/points",
+				Handler: activity.GrabPointsHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/activity"),
 	)
 }

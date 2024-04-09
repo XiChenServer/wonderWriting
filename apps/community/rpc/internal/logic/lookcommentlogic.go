@@ -72,17 +72,12 @@ func (l *LookCommentLogic) LookComment(in *community.LookCommentRequest) (*commu
 
 // 查询帖子的评论信息并进行分页
 func getComments(db *gorm.DB, postId uint32, page, pageSize int) ([]*community.CommentInfo, int64, error) {
-	var res []model.Comment
-
-	offset := (page - 1) * pageSize
-	err := db.Where("post_id = ?", postId).Offset(offset).Limit(pageSize).Find(&res).Error
+	res, err := (&model.Comment{}).FindCommentsByPage(db, uint(page), uint(pageSize), uint(postId))
 	if err != nil {
 		return nil, 0, err
 	}
-
 	// 获取总记录数
-	var totalCount int64
-	err = db.Model(&model.Comment{}).Where("post_id = ?", postId).Count(&totalCount).Error
+	totalCount, err := (&model.Comment{}).FindCommentCount(db, uint(postId))
 	if err != nil {
 		return nil, 0, err
 	}
@@ -91,7 +86,7 @@ func getComments(db *gorm.DB, postId uint32, page, pageSize int) ([]*community.C
 	var commentInfo []*community.CommentInfo
 
 	// 遍历查询到的评论信息
-	for _, v := range res {
+	for _, v := range *res {
 		// 将 time.Time 转换为 Unix 时间戳 (int64)
 		unixTime := v.CreatedAt.Unix()
 

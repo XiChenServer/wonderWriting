@@ -1,17 +1,16 @@
 package main
 
 import (
-	"encoding/json"
-	"flag"
-	"fmt"
-	"net/http"
-
 	"calligraphy/apps/app/api/internal/config"
 	"calligraphy/apps/app/api/internal/handler"
 	"calligraphy/apps/app/api/internal/svc"
-
+	"encoding/json"
+	"flag"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
+	"net/http"
 )
 
 var configFile = flag.String("f", "etc/app.yaml", "the config file")
@@ -28,9 +27,35 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 
+	serviceGroup := service.NewServiceGroup()
+	defer serviceGroup.Stop()
+
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
 }
+
+//
+//func main() {
+//	flag.Parse()
+//
+//	var c config.Config
+//	conf.MustLoad(*configFile, &c)
+//
+//	server := rest.MustNewServer(c.RestConf)
+//	defer server.Stop()
+//
+//	svcCtx := svc.NewServiceContext(c)
+//	ctx := context.Background()
+//	serviceGroup := service.NewServiceGroup()
+//	defer serviceGroup.Stop()
+//
+//	for _, mq := range mqs.Consumers(c, ctx, svcCtx) {
+//		serviceGroup.Add(mq)
+//	}
+//	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
+//	server.Start()
+//	serviceGroup.Start()
+//}
 
 //jwt认证失败返回给调用者
 

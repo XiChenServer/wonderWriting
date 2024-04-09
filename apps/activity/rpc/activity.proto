@@ -1,0 +1,16 @@
+syntax = "proto3";
+package activity;
+
+option go_package = "./activity";
+
+message GrabPointsRequest {
+  uint32 user_id = 1;
+}
+message GrabPointsResponse{
+}
+
+service activity{
+  rpc GrabPoints(GrabPointsRequest) returns (GrabPointsResponse);
+}
+
+//goctl rpc protoc ./rpc/activity.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

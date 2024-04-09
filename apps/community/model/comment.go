@@ -86,3 +86,25 @@ func (*Comment) CancelCommentPost(DB *gorm.DB, commentID, postID uint) error {
 
 	return err
 }
+
+// FindCommentsByPage 查询评论信息分页
+func (*Comment) FindCommentsByPage(DB *gorm.DB, page, pageSize, postID uint) (*[]Comment, error) {
+	var res []Comment
+
+	offset := (page - 1) * pageSize
+	err := DB.Where("post_id = ?", postID).Offset(offset).Limit(pageSize).Find(&res).Error
+	if err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+// 查询评论的总数
+func (*Comment) FindCommentCount(DB *gorm.DB, postId uint) (int64, error) {
+	var totalCount int64
+	err := DB.Model(Comment{}).Where("post_id = ?", postId).Count(&totalCount).Error
+	if err != nil {
+		return 0, err
+	}
+	return totalCount, nil
+}

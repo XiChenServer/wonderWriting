@@ -3,6 +3,7 @@ import (
 	"apis/user.api"
 	"apis/home.api"
 	"apis/group.api"
+	"apis/activity.api"
 )
 
 //========================================> User <============================
@@ -169,4 +170,18 @@ service App{
 	@doc "查看某人的签到是否打开"
 	@handler CheckPunchCard
 	post /check/pubcgcard(CheckPunchCardModelRequest) returns (CheckPunchCardModelResponse)
+}
+
+//=====================================> activity <=======================================
+//need login
+@server (
+	prefix: /activity
+	group: activity
+	jwt: Auth
+)
+service App{
+	// 每日抢积分
+	@doc "每日抢积分"
+	@handler  GrabPoints
+	get /grab/points(GrabPointsRequest) returns (GrabPointsResponse)
 }
