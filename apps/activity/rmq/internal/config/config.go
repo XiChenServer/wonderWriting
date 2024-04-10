@@ -8,4 +8,12 @@ import (
 type Config struct {
 	Kafka   kq.KqConf
 	UserRpc zrpc.RpcClientConf
+	MySQL   struct {
+		Host        string
+		Port        int
+		User        string
+		Password    string
+		Database    string
+		TablePrefix string
+	}
 }

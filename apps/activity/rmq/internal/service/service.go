@@ -1,15 +1,22 @@
 package service
 
 import (
+	"calligraphy/apps/activity/model"
 	"calligraphy/apps/activity/rmq/internal/config"
+	userModel "calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/userclient"
+	"calligraphy/common/app_redis"
 	"encoding/json"
 	"fmt"
-
+	"github.com/8treenet/gcache"
+	"github.com/8treenet/gcache/option"
+	"github.com/jinzhu/gorm"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 	"log"
 	"sync"
+	"time"
 )
 
 const (
@@ -18,9 +25,10 @@ const (
 )
 
 type Service struct {
-	c       config.Config
-	UserRpc userclient.User
-
+	c        config.Config
+	UserRpc  userclient.User
+	DB       *gorm.DB
+	RDB      *redis.Redis
 	waiter   sync.WaitGroup
 	msgsChan []chan *KafkaData
 }
@@ -30,10 +38,29 @@ type KafkaData struct {
 }
 
 func NewService(c config.Config) *Service {
+	//连接数据库
+	db, err := gorm.Open("mysql", getDSN(&c))
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	defer db.Close() // 在函数结束时关闭数据库连接
+	//初始化程序
+	db.AutoMigrate(&model.UserPoints{})
+	opt := option.DefaultOption{}
+	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200
+	opt.Level = option.LevelSearch //缓存级别，默认LevelSearch。LevelDisable:关闭缓存，LevelModel:模型缓存， LevelSearch:查询缓存
+	opt.AsyncWrite = false         //异步缓存更新, 默认false。 insert update delete 成功后是否异步更新缓存。 ps: affected如果未0，不触发更新。
+	opt.PenetrationSafe = false    //开启防穿透, 默认false。 ps:防击穿强制全局开启。
+
+	//缓存中间件附加到gorm.DB
+	gcache.AttachDB(db, &opt, &option.RedisOption{Addr: "localhost:6379"})
+
 	s := &Service{
 		c:        c,
 		UserRpc:  userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
 		msgsChan: make([]chan *KafkaData, chanCount),
+		DB:       db,
+		RDB:      app_redis.Redis,
 	}
 	for i := 0; i < chanCount; i++ {
 		ch := make(chan *KafkaData, bufferCount)
@@ -46,9 +73,9 @@ func NewService(c config.Config) *Service {
 	return s
 }
 
+// kafka进行抢积分抢积分的活动
 func (s *Service) consume(ch chan *KafkaData) {
 	defer s.waiter.Done()
-
 	for {
 		m, ok := <-ch
 		if !ok {
@@ -56,16 +83,73 @@ func (s *Service) consume(ch chan *KafkaData) {
 		}
 		fmt.Printf("consume msg: %+v\n", m)
 		////检查今天用户是否已经领取
-		//_, err := s.ProductRPC.CheckAndUpdateStock(context.Background(), &product.CheckAndUpdateStockRequest{ProductId: m.Pid})
-		//if err != nil {
-		//	logx.Errorf("s.ProductRPC.CheckAndUpdateStock pid: %d error: %v", m.Pid, err)
-		//	return
-		//}
-		//_, err = s.OrderRPC.CreateOrder(context.Background(), &order.CreateOrderRequest{Uid: m.Uid, Pid: m.Pid})
-		//if err != nil {
-		//	logx.Errorf("CreateOrder uid: %d pid: %d error: %v", m.Uid, m.Pid, err)
-		//}
+		// 检查用户是否已领取
+		claimed, err := CheckUserClaimed(s.RDB, uint(m.Uid))
+		if err != nil {
+			logx.Errorf("failed to check user claimed: %v", err)
+			return
+		}
+		if claimed {
+			// 用户已领取，跳过处理
+			return
+		}
+		// 更新用户领取状态和积分数
+		if err = (&userModel.User{}).UpdatePointsGrab(s.DB, uint(m.Uid)); err != nil {
+			logx.Errorf("failed to update user points: %v", err)
+			return
+		}
+		if err = SetUserClaimed(s.RDB, uint(m.Uid)); err != nil {
+			logx.Errorf("set redis err: %v", err)
+			return
+		}
 	}
+}
+
+// Consume 函数用于处理接收到的消息，并将其发送到对应的消息通道中
+func (s *Service) Consume(_ string, value string) error {
+	logx.Infof("Consume value: %s\n", value)
+	var data []*KafkaData
+	if err := json.Unmarshal([]byte(value), &data); err != nil {
+		return err
+	}
+	for _, d := range data {
+		index := d.Uid % int64(chanCount)
+		fmt.Printf("consume msg index: %d\n, d.Uid: %d\n", index, d.Uid)
+		s.msgsChan[index] <- d
+
+	}
+	return nil
+}
+
+func getDSN(c *config.Config) string {
+	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		c.MySQL.User,
+		c.MySQL.Password,
+		c.MySQL.Host,
+		c.MySQL.Port,
+		c.MySQL.Database,
+	)
+}
+
+// CheckUserClaimed 检查其中有没有存在于redis
+func CheckUserClaimed(redis *redis.Redis, userID uint) (bool, error) {
+	key := fmt.Sprintf("user:%d:claimed", userID)
+	exists, err := redis.Exists(key)
+	if err != nil {
+		return false, err
+	}
+	if exists == true {
+		return true, nil
+	}
+	return false, nil
+}
+
+// SetUserClaimed 将数据放到redis
+func SetUserClaimed(redis *redis.Redis, userID uint) error {
+	key := fmt.Sprintf("user:%d:claimed", userID)
+	value := "true"
+	expiration := 15 * time.Second // 过期时间为一天
+	return redis.Setex(key, value, int(expiration.Seconds()))
 }
 
 //var dtmServer = "etcd://127.0.0.1:2379/dtmservice"
@@ -116,19 +200,3 @@ func (s *Service) consume(ch chan *KafkaData) {
 //		logger.FatalIfError(err)
 //	}
 //}
-
-// Consume 函数用于处理接收到的消息，并将其发送到对应的消息通道中
-func (s *Service) Consume(_ string, value string) error {
-	logx.Infof("Consume value: %s\n", value)
-	var data []*KafkaData
-	if err := json.Unmarshal([]byte(value), &data); err != nil {
-		return err
-	}
-	for _, d := range data {
-		index := d.Uid % int64(chanCount)
-		fmt.Printf("consume msg index: %d\n, d.Uid: %d\n", index, d.Uid)
-		s.msgsChan[index] <- d
-
-	}
-	return nil
-}

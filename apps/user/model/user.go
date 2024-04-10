@@ -89,3 +89,13 @@ func (m *User) GetTopLikedUsers(db *gorm.DB) ([]User, error) {
 	}
 	return users, nil
 }
+
+// UpdatePointsGrab 每日抢积分没人的积分增加100
+func (m *User) UpdatePointsGrab(db *gorm.DB, userID uint) error {
+	// 更新指定用户的积分，增加100积分
+	result := db.Model(&User{}).Where("user_id = ?", userID).Update("point_count", gorm.Expr("point_count + 100"))
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
