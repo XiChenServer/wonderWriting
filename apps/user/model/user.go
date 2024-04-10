@@ -10,7 +10,7 @@ type User struct {
 	Nickname         string `gorm:"not null" json:"nickname"`
 	Account          string `gorm:"unique;not null" json:"account"`
 	Email            string `gorm:"unique;default:null" json:"email"`
-	Phone            string `gorm:"unique;not null" json:"phone"`
+	Phone            string `gorm:"not null" json:"phone"`
 	Password         string `gorm:"not null" json:"-"`
 	RegistrationTime int64  `gorm:"autoCreateTime" json:"registration_time"`
 	LastLoginTime    int64  `gorm:"autoUpdateTime" json:"last_login_time"`

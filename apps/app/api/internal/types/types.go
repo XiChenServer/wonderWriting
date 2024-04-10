@@ -163,8 +163,6 @@ type UserRegisterRequest struct {
 }
 
 type UserRegisterResponse struct {
-	Code    int64  `json:"code"`
-	Message string `json:"message"`
 }
 
 type UserInfoResponse struct {

@@ -27,6 +27,7 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 
 func (l *UserRegisterLogic) UserRegister(req *types.UserRegisterRequest) (*types.UserRegisterResponse, error) {
 	// 进行验证码验证
+	fmt.Println(req.Password, req.Email, req.EmailCode)
 	v, err := app_redis.Redis.GetCtx(l.ctx, req.Email)
 	if err != nil {
 		return &types.UserRegisterResponse{}, err
