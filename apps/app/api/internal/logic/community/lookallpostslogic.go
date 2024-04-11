@@ -6,9 +6,6 @@ import (
 	"calligraphy/apps/community/rpc/types/community"
 	"context"
 	"fmt"
-	"net/http"
-	"strconv"
-
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -26,29 +23,20 @@ func NewLookAllPostsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Look
 	}
 }
 
-func (l *LookAllPostsLogic) LookAllPosts(r *http.Request) (*types.LookAllPostsResponse, error) {
+func (l *LookAllPostsLogic) LookAllPosts(req *types.LookAllPostsRequest) (*types.LookAllPostsResponse, error) {
 	// 获取页码和每页大小参数
-	page := r.FormValue("page")
-	pageNum, err := strconv.Atoi(page)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse page: %v", err)
-	}
 
-	pageSize := r.FormValue("pageSize")
+	pageSize := req.PageSize
 	pageSizeNum := 20 // 默认每页大小为20
-	if pageSize != "" {
-		pageSizeNum, err = strconv.Atoi(pageSize)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse pageSize: %v", err)
-		}
+	if pageSize != 0 {
+		pageSizeNum = int(pageSize)
 	}
 
 	// 调用RPC进行查找数据
-	res, err := l.svcCtx.CommunityRpc.CommunityLookAllPosts(l.ctx, &community.CommunityLookAllPostsRequest{
-		Page:     uint32(pageNum),
-		PageSize: uint32(pageSizeNum),
-	})
+	res, err := l.svcCtx.CommunityRpc.CommunityLookAllPosts(l.ctx, &community.CommunityLookAllPostsRequest{Page: req.Page, PageSize: uint32(pageSizeNum)})
+
 	if err != nil {
+		fmt.Println("321", err.Error())
 		return nil, err
 	}
 

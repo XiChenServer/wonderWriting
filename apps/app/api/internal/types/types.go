@@ -51,6 +51,11 @@ type LookPostByOwnResponses struct {
 	TotalCount  uint64      `json:"total_count"`
 }
 
+type LookAllPostsRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size"`
+}
+
 type LookAllPostsResponse struct {
 	PostData    []*PostInfo `json:"post_data"`
 	CurrentPage uint32      `json:"current_page"`
@@ -163,6 +168,8 @@ type UserRegisterRequest struct {
 }
 
 type UserRegisterResponse struct {
+	Code    int64  `json:"code"`
+	Message string `json:"message"`
 }
 
 type UserInfoResponse struct {

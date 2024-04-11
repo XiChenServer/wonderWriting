@@ -39,11 +39,15 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	// 尝试从缓存中获取数据
 	cachedData, err := getFromCacheLookAll(l, cacheKey)
 	if err == nil {
+
 		return cachedData, nil // 缓存命中，直接返回缓存数据
 	}
 
 	// 缓存未命中，查询数据库获取数据
 	posts, totalCount, err := (&model.Post{}).LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
+	for _, post := range posts {
+		fmt.Println(post.Content)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -53,12 +57,12 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	if totalCount%int64(pageSize) != 0 {
 		totalPages++
 	}
-
 	// 构建用于返回的帖子信息切片
 	postInfo := make([]*community.PostInfo, 0, len(posts))
 
 	// 遍历查询到的帖子信息
 	for _, v := range posts {
+
 		// 查询每个帖子的图片信息
 		urls, err := (&model.PostImage{}).FindImageByPostId(l.svcCtx.DB, v.ID)
 		if err != nil {
@@ -67,7 +71,9 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 
 		// 查询用户信息
 		userInfo, err := getUserInfo(l.svcCtx.DB, int(v.UserID))
+
 		if err != nil {
+			fmt.Println(v.UserID)
 			return nil, err
 		}
 
@@ -84,7 +90,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 			UserInfo:     userInfo,
 		}
 
-		// 将新的帖子信息添加到切片中
+		//将新的帖子信息添加到切片中
 		postInfo = append(postInfo, newPost)
 	}
 
@@ -98,10 +104,12 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		TotalPages:  uint32(totalPages),
 		TotalCount:  uint64(totalCount),
 	}
+
 	cacheTime := 60 * 5
 	// 将查询结果存入缓存
 	err = l.svcCtx.RDB.SetexCtx(l.ctx, cacheKey, toJson(resp), cacheTime) // 设置缓存过期时间为5分钟
 	if err != nil {
+
 		fmt.Println("Failed to set cache:", err)
 	}
 
@@ -127,8 +135,10 @@ func getFromCacheLookAll(l *CommunityLookAllPostsLogic, key string) (*community.
 // 查询用户信息
 func getUserInfo(db *gorm.DB, userID int) (*community.UserSimpleInfo, error) {
 	var user userModel.User
+	fmt.Println(userID)
 	err := db.Where("user_id = ?", userID).First(&user).Error
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
 

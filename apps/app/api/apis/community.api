@@ -58,6 +58,11 @@ type LookPostByOwnResponses{
     TotalCount  uint64     `json:"total_count"`
 }
 
+type LookAllPostsRequest struct{
+    Page uint32 `json:"page"`
+    PageSize uint32 `json:"page_size"`
+}
+
 //用户查看所有的帖子
 type LookAllPostsResponse struct {
     PostData   []*PostInfo `json:"post_data"`

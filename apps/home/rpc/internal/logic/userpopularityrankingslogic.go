@@ -7,6 +7,7 @@ import (
 	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
@@ -87,6 +88,7 @@ func UpdateCacheUser(l *UserPopularityRankingsLogic) {
 
 // UserPopularityRankings 获取用户人气排行榜
 func (l *UserPopularityRankingsLogic) UserPopularityRankings(in *home.UserPopularityRankingsRequest) (*home.UserPopularityRankingsResponse, error) {
+	fmt.Println("123")
 	// 每分钟更新一次缓存数据
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()

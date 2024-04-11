@@ -1,11 +1,10 @@
 package community
 
 import (
-	"calligraphy/apps/community/rpc/types/community"
-	"context"
-
 	"calligraphy/apps/app/api/internal/svc"
 	"calligraphy/apps/app/api/internal/types"
+	"calligraphy/apps/community/rpc/types/community"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,14 +29,15 @@ func (l *LookCommentLogic) LookComment(req *types.LookCommentRequest) (resp *typ
 	if req.PageSize > 0 {
 		pageSize = req.PageSize
 	}
-	//调用rpc获取数据
+
+	//用rpc获取数据
 	res, err := l.svcCtx.CommunityRpc.LookComment(l.ctx, &community.LookCommentRequest{
 		PostId:   uint32(req.PostId),
 		Page:     uint32(req.Page),
 		PageSize: pageSize,
 	})
 	if err != nil {
-		return nil, err
+		return &types.LookCommentResponse{}, err
 	}
 
 	//进行数据的转换

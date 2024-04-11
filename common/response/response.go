@@ -2,6 +2,7 @@ package response
 
 import (
 	"calligraphy/common/xerr"
+	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -20,6 +21,7 @@ type Response struct {
 func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err error) {
 
 	if err == nil {
+
 		//成功返回
 		r := &Response{
 			Code:    200,
@@ -30,18 +32,18 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 	} else {
 		//错误返回
 		errcode := uint32(500)
-		errmsg := "服务器错误"
-
+		//errmsg := "服务器错误"
+		fmt.Println(err.Error())
 		causeErr := errors.Cause(err)                // err类型
 		if e, ok := causeErr.(*xerr.CodeError); ok { //自定义错误类型
 			//自定义CodeError
 			errcode = e.GetErrCode()
-			errmsg = e.GetErrMsg()
+			//errmsg = e.GetErrMsg()
 		} else {
 			if gstatus, ok := status.FromError(causeErr); ok { // grpc err错误
 				grpcCode := uint32(gstatus.Code())
 				errcode = grpcCode
-				errmsg = gstatus.Message()
+				//errmsg = gstatus.Message()
 			}
 		}
 
@@ -49,8 +51,8 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 
 		httpx.WriteJson(w, http.StatusBadRequest, &Response{
 			Code:    errcode,
-			Message: errmsg,
-			Data:    nil,
+			Message: err.Error(),
+			Data:    resp,
 		})
 	}
 }

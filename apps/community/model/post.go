@@ -78,8 +78,8 @@ func (*Post) DeletePost(dao *gorm.DB, post_id uint32) (*Post, error) {
 }
 
 // LookAllPostsWithPagination 查找所有的帖子并进行分页
-func (*Post) LookAllPostsWithPagination(dao *gorm.DB, page, pageSize int) ([]*Post, int64, error) {
-	var posts []*Post
+func (*Post) LookAllPostsWithPagination(dao *gorm.DB, page, pageSize int) ([]Post, int64, error) {
+	var posts []Post
 
 	// 计算偏移量
 	offset := (page - 1) * pageSize

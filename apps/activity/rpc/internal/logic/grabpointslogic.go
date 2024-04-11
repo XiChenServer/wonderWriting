@@ -6,8 +6,11 @@ import (
 	"calligraphy/pkg/batcher"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"github.com/zeromicro/go-zero/core/collection"
 	"github.com/zeromicro/go-zero/core/limit"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"strconv"
@@ -119,6 +122,18 @@ func (l *GrabPointsLogic) GrabPoints(in *activity.GrabPointsRequest) (*activity.
 		logx.Errorf("failed to get points count from Redis: %v", err)
 		return nil, status.Errorf(codes.Internal, "Failed to get points count")
 	}
+	// 检查用户是否已领取
+	claimed, err := CheckUserClaimed(l.svcCtx.RDB, uint(in.UserId))
+	if err != nil {
+		logx.Errorf("failed to check user claimed: %v", err)
+		return &activity.GrabPointsResponse{}, err
+	}
+	if claimed == true {
+		fmt.Println("123")
+		// 用户已领取，跳过处理
+		return &activity.GrabPointsResponse{}, errors.New("用户已经抢过了")
+	}
+	fmt.Println(in.UserId)
 	countNum, _ := strconv.Atoi(count)
 	// 检查当日剩余积分是否充足
 	if countNum <= 0 {
@@ -129,6 +144,31 @@ func (l *GrabPointsLogic) GrabPoints(in *activity.GrabPointsRequest) (*activity.
 	if err := l.batcher.Add(strconv.FormatInt(int64(in.UserId), 10), &KafkaData{Uid: int64(in.UserId)}); err != nil {
 		logx.Errorf("l.batcher.Add uid: %d error: %v", in.UserId, err)
 	}
-
+	time.Sleep(5 * time.Microsecond)
+	// 检查用户是否已领取
+	claimed, err = CheckUserClaimed(l.svcCtx.RDB, uint(in.UserId))
+	if err != nil {
+		logx.Errorf("failed to check user claimed: %v", err)
+		return &activity.GrabPointsResponse{}, err
+	}
+	if claimed == false {
+		fmt.Println("123")
+		// 用户已领取，跳过处理
+		return &activity.GrabPointsResponse{}, errors.New("没有抢到")
+	}
 	return &activity.GrabPointsResponse{}, nil
+}
+
+// CheckUserClaimed 检查其中有没有存在于redis
+func CheckUserClaimed(redis *redis.Redis, userID uint) (bool, error) {
+	key := fmt.Sprintf("user:%d:claimed", userID)
+	exists, err := redis.Exists(key)
+	fmt.Println("1")
+	if err != nil {
+		return false, err
+	}
+	if exists == true {
+		return true, nil
+	}
+	return false, nil
 }

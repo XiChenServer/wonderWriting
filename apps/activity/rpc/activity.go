@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
-	"log"
 	"time"
 
 	"calligraphy/apps/activity/rpc/internal/config"
@@ -60,7 +59,7 @@ func startTimer(ctx *svc.ServiceContext) {
 		// 调用更新积分的逻辑
 		success := updatePointsOneDay(ctx)
 		if !success {
-			log.Println("Failed to update points.")
+			//log.Println("Failed to update points.")
 		}
 	}
 }
