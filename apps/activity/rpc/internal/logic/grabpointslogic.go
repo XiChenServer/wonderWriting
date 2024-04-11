@@ -29,9 +29,8 @@ const (
 )
 
 type GrabPointsLogic struct {
-	ctx    context.Context
-	svcCtx *svc.ServiceContext
-
+	ctx        context.Context
+	svcCtx     *svc.ServiceContext
 	limiter    *limit.PeriodLimit
 	localCache *collection.Cache
 	batcher    *batcher.Batcher
@@ -108,17 +107,21 @@ type KafkaData struct {
 	Uid int64 `json:"uid"`
 }
 
-var PointByOneDay = 10000
-
 func (l *GrabPointsLogic) GrabPoints(in *activity.GrabPointsRequest) (*activity.GrabPointsResponse, error) {
 	// 通过限流器检查是否可以继续抢积分
 	code, _ := l.limiter.Take(strconv.FormatInt(int64(in.UserId), 10))
 	if code == limit.OverQuota {
 		return nil, status.Errorf(codes.OutOfRange, "Number of requests exceeded the limit")
 	}
-
+	// 从 Redis 中获取当日剩余积分数量
+	count, err := l.svcCtx.RDB.Get("point_count_one_day")
+	if err != nil {
+		logx.Errorf("failed to get points count from Redis: %v", err)
+		return nil, status.Errorf(codes.Internal, "Failed to get points count")
+	}
+	countNum, _ := strconv.Atoi(count)
 	// 检查当日剩余积分是否充足
-	if PointByOneDay <= 0 {
+	if countNum <= 0 {
 		return nil, status.Errorf(codes.OutOfRange, "Insufficient stock")
 	}
 
@@ -128,23 +131,4 @@ func (l *GrabPointsLogic) GrabPoints(in *activity.GrabPointsRequest) (*activity.
 	}
 
 	return &activity.GrabPointsResponse{}, nil
-}
-
-func (l *GrabPointsLogic) UpdatePointsOneDay() bool {
-	// 获取当前时间
-	now := time.Now()
-
-	// 确定每天更新积分的时间点（例如每天的凌晨零点）
-	updateTime := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
-
-	// 判断当前时间是否已经过了更新时间，如果已经过了则表示今天已经更新过积分，无需再次更新
-	if now.After(updateTime) {
-		return false
-	}
-
-	// 获取剩余积分数量并更新 PointByOneDay 的值
-	PointByOneDay = 10000
-
-	// 返回更新成功
-	return true
 }

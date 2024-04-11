@@ -16,4 +16,5 @@ type Config struct {
 		Database    string
 		TablePrefix string
 	}
+	ActivityRpc zrpc.RpcClientConf
 }

@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Activity_GrabPoints_FullMethodName = "/activity.activity/GrabPoints"
+	Activity_GrabPoints_FullMethodName        = "/activity.activity/GrabPoints"
+	Activity_SendMessageToUser_FullMethodName = "/activity.activity/SendMessageToUser"
 )
 
 // ActivityClient is the client API for Activity service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ActivityClient interface {
 	GrabPoints(ctx context.Context, in *GrabPointsRequest, opts ...grpc.CallOption) (*GrabPointsResponse, error)
+	SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
 }
 
 type activityClient struct {
@@ -46,11 +48,21 @@ func (c *activityClient) GrabPoints(ctx context.Context, in *GrabPointsRequest, 
 	return out, nil
 }
 
+func (c *activityClient) SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
+	out := new(SendMessageResponse)
+	err := c.cc.Invoke(ctx, Activity_SendMessageToUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ActivityServer is the server API for Activity service.
 // All implementations must embed UnimplementedActivityServer
 // for forward compatibility
 type ActivityServer interface {
 	GrabPoints(context.Context, *GrabPointsRequest) (*GrabPointsResponse, error)
+	SendMessageToUser(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
 	mustEmbedUnimplementedActivityServer()
 }
 
@@ -60,6 +72,9 @@ type UnimplementedActivityServer struct {
 
 func (UnimplementedActivityServer) GrabPoints(context.Context, *GrabPointsRequest) (*GrabPointsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GrabPoints not implemented")
+}
+func (UnimplementedActivityServer) SendMessageToUser(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMessageToUser not implemented")
 }
 func (UnimplementedActivityServer) mustEmbedUnimplementedActivityServer() {}
 
@@ -92,6 +107,24 @@ func _Activity_GrabPoints_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Activity_SendMessageToUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ActivityServer).SendMessageToUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Activity_SendMessageToUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ActivityServer).SendMessageToUser(ctx, req.(*SendMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Activity_ServiceDesc is the grpc.ServiceDesc for Activity service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -102,6 +135,10 @@ var Activity_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GrabPoints",
 			Handler:    _Activity_GrabPoints_Handler,
+		},
+		{
+			MethodName: "SendMessageToUser",
+			Handler:    _Activity_SendMessageToUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

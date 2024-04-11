@@ -10,8 +10,20 @@ message GrabPointsResponse{
   uint32 remain_amount = 1;
 }
 
+// 发送给用户信息
+message SendMessageRequest {
+  uint64 user_id = 1;
+  string message = 2;
+}
+
+message SendMessageResponse {
+  bool success = 1;
+  string error_message = 2;
+}
+
 service activity{
   rpc GrabPoints(GrabPointsRequest) returns (GrabPointsResponse);
+  rpc SendMessageToUser(SendMessageRequest) returns (SendMessageResponse);
 }
 
 //goctl rpc protoc ./rpc/activity.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

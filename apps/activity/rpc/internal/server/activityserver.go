@@ -26,3 +26,8 @@ func (s *ActivityServer) GrabPoints(ctx context.Context, in *activity.GrabPoints
 	l := logic.NewGrabPointsLogic(ctx, s.svcCtx)
 	return l.GrabPoints(in)
 }
+
+func (s *ActivityServer) SendMessageToUser(ctx context.Context, in *activity.SendMessageRequest) (*activity.SendMessageResponse, error) {
+	l := logic.NewSendMessageToUserLogic(ctx, s.svcCtx)
+	return l.SendMessageToUser(in)
+}

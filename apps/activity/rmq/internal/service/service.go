@@ -3,13 +3,17 @@ package service
 import (
 	"calligraphy/apps/activity/model"
 	"calligraphy/apps/activity/rmq/internal/config"
+	"calligraphy/apps/activity/rpc/activityclient"
+	"calligraphy/apps/activity/rpc/types/activity"
 	userModel "calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/userclient"
 	"calligraphy/common/app_redis"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/8treenet/gcache"
 	"github.com/8treenet/gcache/option"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/stores/redis"
@@ -25,16 +29,22 @@ const (
 )
 
 type Service struct {
-	c        config.Config
-	UserRpc  userclient.User
-	DB       *gorm.DB
-	RDB      *redis.Redis
-	waiter   sync.WaitGroup
-	msgsChan []chan *KafkaData
+	c           config.Config
+	UserRpc     userclient.User
+	DB          *gorm.DB
+	RDB         *redis.Redis
+	waiter      sync.WaitGroup
+	msgsChan    []chan *KafkaData
+	ActivityRpc activityclient.Activity
 }
 
 type KafkaData struct {
 	Uid int64 `json:"uid"`
+}
+
+// 定义一个RPC接口，用于向用户发送消息
+type MessageSender interface {
+	SendMessage(userID uint64, message string) error
 }
 
 func NewService(c config.Config) *Service {
@@ -43,7 +53,7 @@ func NewService(c config.Config) *Service {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	defer db.Close() // 在函数结束时关闭数据库连接
+
 	//初始化程序
 	db.AutoMigrate(&model.UserPoints{})
 	opt := option.DefaultOption{}
@@ -56,11 +66,12 @@ func NewService(c config.Config) *Service {
 	gcache.AttachDB(db, &opt, &option.RedisOption{Addr: "localhost:6379"})
 
 	s := &Service{
-		c:        c,
-		UserRpc:  userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
-		msgsChan: make([]chan *KafkaData, chanCount),
-		DB:       db,
-		RDB:      app_redis.Redis,
+		c:           c,
+		UserRpc:     userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
+		msgsChan:    make([]chan *KafkaData, chanCount),
+		DB:          db,
+		RDB:         app_redis.Redis,
+		ActivityRpc: activityclient.NewActivity(zrpc.MustNewClient(c.ActivityRpc)),
 	}
 	for i := 0; i < chanCount; i++ {
 		ch := make(chan *KafkaData, bufferCount)
@@ -90,6 +101,7 @@ func (s *Service) consume(ch chan *KafkaData) {
 			return
 		}
 		if claimed {
+			fmt.Println("123")
 			// 用户已领取，跳过处理
 			return
 		}
@@ -102,6 +114,19 @@ func (s *Service) consume(ch chan *KafkaData) {
 			logx.Errorf("set redis err: %v", err)
 			return
 		}
+		if _, err = s.RDB.Decrby("point_count_one_day", 1); err != nil {
+			logx.Errorf("Decrby redis err: %v", err)
+			return
+		}
+		// 发送成功消息给用户
+		_, err = s.ActivityRpc.SendMessageToUser(context.Background(), &activity.SendMessageRequest{
+			UserId:  uint64(m.Uid),
+			Message: "Congratulations! You have successfully grabbed points.",
+		})
+		if err != nil {
+			logx.Errorf("failed to send message to user: %v", err)
+		}
+
 	}
 }
 
@@ -135,6 +160,7 @@ func getDSN(c *config.Config) string {
 func CheckUserClaimed(redis *redis.Redis, userID uint) (bool, error) {
 	key := fmt.Sprintf("user:%d:claimed", userID)
 	exists, err := redis.Exists(key)
+	fmt.Println("1")
 	if err != nil {
 		return false, err
 	}
@@ -148,6 +174,7 @@ func CheckUserClaimed(redis *redis.Redis, userID uint) (bool, error) {
 func SetUserClaimed(redis *redis.Redis, userID uint) error {
 	key := fmt.Sprintf("user:%d:claimed", userID)
 	value := "true"
+
 	expiration := 15 * time.Second // 过期时间为一天
 	return redis.Setex(key, value, int(expiration.Seconds()))
 }

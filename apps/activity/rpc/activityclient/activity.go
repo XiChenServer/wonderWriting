@@ -13,11 +13,14 @@ import (
 )
 
 type (
-	GrabPointsRequest  = activity.GrabPointsRequest
-	GrabPointsResponse = activity.GrabPointsResponse
+	GrabPointsRequest   = activity.GrabPointsRequest
+	GrabPointsResponse  = activity.GrabPointsResponse
+	SendMessageRequest  = activity.SendMessageRequest
+	SendMessageResponse = activity.SendMessageResponse
 
 	Activity interface {
 		GrabPoints(ctx context.Context, in *GrabPointsRequest, opts ...grpc.CallOption) (*GrabPointsResponse, error)
+		SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
 	}
 
 	defaultActivity struct {
@@ -34,4 +37,9 @@ func NewActivity(cli zrpc.Client) Activity {
 func (m *defaultActivity) GrabPoints(ctx context.Context, in *GrabPointsRequest, opts ...grpc.CallOption) (*GrabPointsResponse, error) {
 	client := activity.NewActivityClient(m.cli.Conn())
 	return client.GrabPoints(ctx, in, opts...)
+}
+
+func (m *defaultActivity) SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
+	client := activity.NewActivityClient(m.cli.Conn())
+	return client.SendMessageToUser(ctx, in, opts...)
 }
