@@ -77,8 +77,8 @@ type (
 
         // 用户修改信息
     UserModInfoRequest {
-        NickName string `json:"nick_name"`
-        Phone    string `json:"phone"`
+        NickName string `json:"nick_name, optional"`
+        Phone    string `json:"phone, optional"`
     }
     UserModInfoResponse {
     }

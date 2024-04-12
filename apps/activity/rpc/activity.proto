@@ -10,20 +10,92 @@ message GrabPointsResponse{
   uint32 remain_amount = 1;
 }
 
-// 发送给用户信息
-message SendMessageRequest {
-  uint64 user_id = 1;
-  string message = 2;
+
+// 活动信息
+message ActivityInfo {
+  uint32 id = 1; // 活动ID
+  string name = 2; // 活动名称
+  string activity_info = 3; // 活动信息
+  string location = 4; // 活动地点
+  string date_time = 5; // 活动日期和时间
+  string organizer = 6; // 组织者
+  string end_date_time = 7; // 活动结束时间
+  string duration = 8; // 活动时长
+  string rewards_info = 9; // 奖励信息
 }
 
-message SendMessageResponse {
-  bool success = 1;
-  string error_message = 2;
+
+//查看所有的活动
+message LookAllActivitiesRequest{
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
 }
+message LookAllActivitiesResponse{
+  repeated ActivityInfo activities = 1; // 所有活动信息
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
+
+// 用户报名活动请求
+message UserSignUpActivityRequest {
+  uint32 user_id = 1; // 用户ID
+  uint32 activity_id = 2; // 活动ID
+}
+
+// 用户报名活动响应
+message UserSignUpActivityResponse {
+  bool success = 1; // 是否报名成功
+  string message = 2; // 报名结果信息
+}
+
+// 用户查看自己的所有活动请求
+message UserViewAllActivitiesRequest {
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
+  uint32 user_id = 3; // 用户ID
+}
+
+// 用户查看自己的所有活动响应
+message UserViewAllActivitiesResponse {
+  repeated ActivityInfo activities = 1; // 用户参与的所有活动信息
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
+
 
 service activity{
+  //抢积分
   rpc GrabPoints(GrabPointsRequest) returns (GrabPointsResponse);
-  rpc SendMessageToUser(SendMessageRequest) returns (SendMessageResponse);
+  //查看所有的活动
+  rpc LookAllActivities(LookAllActivitiesRequest) returns (LookAllActivitiesResponse);
+  // 用户进行报名
+  rpc UserSignUpActiity(UserSignUpActivityRequest) returns (UserSignUpActivityResponse);
+  //用户查看自己的报名活动
+  rpc UserViewAllActivities(UserViewAllActivitiesRequest) returns (UserViewAllActivitiesResponse);
 }
 
 //goctl rpc protoc ./rpc/activity.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

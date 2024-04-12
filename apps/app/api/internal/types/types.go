@@ -211,8 +211,8 @@ type UserModBackgroundResponse struct {
 }
 
 type UserModInfoRequest struct {
-	NickName string `json:"nick_name"`
-	Phone    string `json:"phone"`
+	NickName string `json:"nick_name, optional"`
+	Phone    string `json:"phone, optional"`
 }
 
 type UserModInfoResponse struct {
@@ -324,4 +324,57 @@ type GrabPointsRequest struct {
 }
 
 type GrabPointsResponse struct {
+}
+
+type ActivityInfo struct {
+	Id          uint32 `json:"id"`
+	Name        string `json:"name"`
+	Info        string `json:"info"`
+	Location    string `json:"location"`
+	DateTime    string `json:"date_time"`
+	Organizer   string `json:"organizer"`
+	EndDateTime string `json:"end_date_time"`
+	Duration    string `json:"duration"`
+	RewardsInfo string `json:"rewards_info"`
+}
+
+type LookAllActivitiesRequest struct {
+	Page      uint32 `json:"page"`
+	Page_size uint32 `json:"page_size"`
+}
+
+type LookAllActivitiesResponse struct {
+	Activities   []*ActivityInfo `json:"activities"`
+	Current_page uint32          `json:"current_page"`
+	Page_size    uint32          `json:"page_size"`
+	Offset       uint32          `json:"offset"`
+	Overflow     bool            `json:"overflow"`
+	Total_pages  uint32          `json:"total_pages"`
+	Total_count  uint64          `json:"total_count"`
+}
+
+type UserSignUpActivityRequest struct {
+	User_id     uint32 `json:"user_id"`
+	Activity_id uint32 `json:"activity_id"`
+}
+
+type UserSignUpActivityResponse struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+type UserViewAllActivitiesRequest struct {
+	User_id   uint32 `json:"user_id"`
+	Page      uint32 `json:"page"`
+	Page_size uint32 `json:"page_size"`
+}
+
+type UserViewAllActivitiesResponse struct {
+	Activities   []*ActivityInfo `json:"activities"`
+	Current_page uint32          `json:"current_page"`
+	Page_size    uint32          `json:"page_size"`
+	Offset       uint32          `json:"offset"`
+	Overflow     bool            `json:"overflow"`
+	Total_pages  uint32          `json:"total_pages"`
+	Total_count  uint64          `json:"total_count"`
 }

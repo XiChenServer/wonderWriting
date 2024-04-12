@@ -8,3 +8,64 @@ type GrabPointsRequest{
 }
 type GrabPointsResponse{
 }
+
+
+// 活动信息
+type ActivityInfo {
+    Id uint32 `json:"id"`
+    Name string `json:"name"`
+    Info string `json:"info"`
+    Location string `json:"location"`
+    DateTime string `json:"date_time"`
+    Organizer string `json:"organizer"`
+    EndDateTime string `json:"end_date_time"`
+    Duration string `json:"duration"`
+    RewardsInfo string `json:"rewards_info"`
+}
+
+// 查看所有活动请求消息
+type LookAllActivitiesRequest {
+    page uint32 `json:"page"`
+    page_size uint32 `json:"page_size"`
+}
+
+// 查看所有活动响应消息
+type LookAllActivitiesResponse {
+    activities []*ActivityInfo `json:"activities"`
+    current_page uint32 `json:"current_page"`
+    page_size uint32 `json:"page_size"`
+    offset uint32 `json:"offset"`
+    overflow bool `json:"overflow"`
+    total_pages uint32 `json:"total_pages"`
+    total_count uint64 `json:"total_count"`
+}
+
+// 用户报名活动请求消息
+type UserSignUpActivityRequest {
+    user_id uint32 `json:"user_id"`
+    activity_id uint32 `json:"activity_id"`
+}
+
+// 用户报名活动响应消息
+type UserSignUpActivityResponse {
+    success bool `json:"success"`
+    message string `json:"message"`
+}
+
+// 用户查看自己的所有活动请求消息
+type UserViewAllActivitiesRequest {
+    user_id uint32 `json:"user_id"`
+    page uint32 `json:"page"`
+    page_size uint32 `json:"page_size"`
+}
+
+// 用户查看自己的所有活动响应消息
+type UserViewAllActivitiesResponse {
+    activities []*ActivityInfo `json:"activities"`
+    current_page uint32 `json:"current_page"`
+    page_size uint32 `json:"page_size"`
+    offset uint32 `json:"offset"`
+    overflow bool `json:"overflow"`
+    total_pages uint32 `json:"total_pages"`
+    total_count uint64 `json:"total_count"`
+}

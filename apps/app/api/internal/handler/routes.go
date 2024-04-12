@@ -188,8 +188,29 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
+				Path:    "/lool/all_activities",
+				Handler: activity.LookAllActivitiesHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/activity"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
 				Path:    "/grab/points",
 				Handler: activity.GrabPointsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/sign_up/activity",
+				Handler: activity.UserSignUpActivityHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/view/all_activities_by_one",
+				Handler: activity.UserViewAllActivitiesHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

@@ -22,12 +22,26 @@ func NewActivityServer(svcCtx *svc.ServiceContext) *ActivityServer {
 	}
 }
 
+// 抢积分
 func (s *ActivityServer) GrabPoints(ctx context.Context, in *activity.GrabPointsRequest) (*activity.GrabPointsResponse, error) {
 	l := logic.NewGrabPointsLogic(ctx, s.svcCtx)
 	return l.GrabPoints(in)
 }
 
-func (s *ActivityServer) SendMessageToUser(ctx context.Context, in *activity.SendMessageRequest) (*activity.SendMessageResponse, error) {
-	l := logic.NewSendMessageToUserLogic(ctx, s.svcCtx)
-	return l.SendMessageToUser(in)
+// 查看所有的活动
+func (s *ActivityServer) LookAllActivities(ctx context.Context, in *activity.LookAllActivitiesRequest) (*activity.LookAllActivitiesResponse, error) {
+	l := logic.NewLookAllActivitiesLogic(ctx, s.svcCtx)
+	return l.LookAllActivities(in)
+}
+
+// 用户进行报名
+func (s *ActivityServer) UserSignUpActiity(ctx context.Context, in *activity.UserSignUpActivityRequest) (*activity.UserSignUpActivityResponse, error) {
+	l := logic.NewUserSignUpActiityLogic(ctx, s.svcCtx)
+	return l.UserSignUpActiity(in)
+}
+
+// 用户查看自己的报名活动
+func (s *ActivityServer) UserViewAllActivities(ctx context.Context, in *activity.UserViewAllActivitiesRequest) (*activity.UserViewAllActivitiesResponse, error) {
+	l := logic.NewUserViewAllActivitiesLogic(ctx, s.svcCtx)
+	return l.UserViewAllActivities(in)
 }

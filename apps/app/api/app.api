@@ -173,6 +173,18 @@ service App{
 }
 
 //=====================================> activity <=======================================
+// no need login
+@server (
+	prefix: /activity
+	group: activity
+)
+service App{
+	//查看所有活动请求消息
+	@doc "查看所有活动请求消息"
+	@handler LookAllActivities
+	get /lool/all_activities(LookAllActivitiesRequest) returns(LookAllActivitiesResponse)
+}
+
 //need login
 @server (
 	prefix: /activity
@@ -184,5 +196,16 @@ service App{
 	@doc "每日抢积分"
 	@handler  GrabPoints
 	get /grab/points(GrabPointsRequest) returns (GrabPointsResponse)
+
+	// 用户报名活动
+	@doc "用户报名活动"
+	@handler  UserSignUpActivity
+	get /sign_up/activity(UserSignUpActivityRequest) returns (UserSignUpActivityResponse)
+
+	// 用户查看自己的所有活动
+	@doc "用户查看自己的所有活动"
+	@handler  UserViewAllActivities
+	get /view/all_activities_by_one(UserViewAllActivitiesRequest) returns (UserViewAllActivitiesResponse)
 }
+
 //goctl api go -api ./app.api -dir .

@@ -13,14 +13,25 @@ import (
 )
 
 type (
-	GrabPointsRequest   = activity.GrabPointsRequest
-	GrabPointsResponse  = activity.GrabPointsResponse
-	SendMessageRequest  = activity.SendMessageRequest
-	SendMessageResponse = activity.SendMessageResponse
+	ActivityInfo                  = activity.ActivityInfo
+	GrabPointsRequest             = activity.GrabPointsRequest
+	GrabPointsResponse            = activity.GrabPointsResponse
+	LookAllActivitiesRequest      = activity.LookAllActivitiesRequest
+	LookAllActivitiesResponse     = activity.LookAllActivitiesResponse
+	UserSignUpActivityRequest     = activity.UserSignUpActivityRequest
+	UserSignUpActivityResponse    = activity.UserSignUpActivityResponse
+	UserViewAllActivitiesRequest  = activity.UserViewAllActivitiesRequest
+	UserViewAllActivitiesResponse = activity.UserViewAllActivitiesResponse
 
 	Activity interface {
+		// 抢积分
 		GrabPoints(ctx context.Context, in *GrabPointsRequest, opts ...grpc.CallOption) (*GrabPointsResponse, error)
-		SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
+		// 查看所有的活动
+		LookAllActivities(ctx context.Context, in *LookAllActivitiesRequest, opts ...grpc.CallOption) (*LookAllActivitiesResponse, error)
+		// 用户进行报名
+		UserSignUpActiity(ctx context.Context, in *UserSignUpActivityRequest, opts ...grpc.CallOption) (*UserSignUpActivityResponse, error)
+		// 用户查看自己的报名活动
+		UserViewAllActivities(ctx context.Context, in *UserViewAllActivitiesRequest, opts ...grpc.CallOption) (*UserViewAllActivitiesResponse, error)
 	}
 
 	defaultActivity struct {
@@ -34,12 +45,26 @@ func NewActivity(cli zrpc.Client) Activity {
 	}
 }
 
+// 抢积分
 func (m *defaultActivity) GrabPoints(ctx context.Context, in *GrabPointsRequest, opts ...grpc.CallOption) (*GrabPointsResponse, error) {
 	client := activity.NewActivityClient(m.cli.Conn())
 	return client.GrabPoints(ctx, in, opts...)
 }
 
-func (m *defaultActivity) SendMessageToUser(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
+// 查看所有的活动
+func (m *defaultActivity) LookAllActivities(ctx context.Context, in *LookAllActivitiesRequest, opts ...grpc.CallOption) (*LookAllActivitiesResponse, error) {
 	client := activity.NewActivityClient(m.cli.Conn())
-	return client.SendMessageToUser(ctx, in, opts...)
+	return client.LookAllActivities(ctx, in, opts...)
+}
+
+// 用户进行报名
+func (m *defaultActivity) UserSignUpActiity(ctx context.Context, in *UserSignUpActivityRequest, opts ...grpc.CallOption) (*UserSignUpActivityResponse, error) {
+	client := activity.NewActivityClient(m.cli.Conn())
+	return client.UserSignUpActiity(ctx, in, opts...)
+}
+
+// 用户查看自己的报名活动
+func (m *defaultActivity) UserViewAllActivities(ctx context.Context, in *UserViewAllActivitiesRequest, opts ...grpc.CallOption) (*UserViewAllActivitiesResponse, error) {
+	client := activity.NewActivityClient(m.cli.Conn())
+	return client.UserViewAllActivities(ctx, in, opts...)
 }
