@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// 点赞表
 type Like struct {
 	gorm.Model
 	PostID uint `json:"post_id"` // 帖子ID，JSON序列化时的字段名为"post_id"

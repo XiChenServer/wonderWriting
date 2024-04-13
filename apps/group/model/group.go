@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// 签到打卡表
 type CheckIn struct {
 	gorm.Model
 	UserID          uint      `gorm:"not null;index" json:"user_id"`
@@ -12,6 +13,7 @@ type CheckIn struct {
 	LastCheckInTime time.Time `gorm:"type:timestamp" json:"last_checkin_time"`
 }
 
+// 书法上传表
 type RecordContent struct {
 	gorm.Model
 	UserID  uint    `gorm:"not null;index" json:"user_id"`

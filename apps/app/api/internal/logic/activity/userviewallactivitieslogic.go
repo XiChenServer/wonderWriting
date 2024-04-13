@@ -27,11 +27,17 @@ func NewUserViewAllActivitiesLogic(ctx context.Context, svcCtx *svc.ServiceConte
 
 func (l *UserViewAllActivitiesLogic) UserViewAllActivities(req *types.UserViewAllActivitiesRequest) (resp *types.UserViewAllActivitiesResponse, err error) {
 	// todo: add your logic here and delete this line
+	pageSize := req.Page_size
+	pageSizeNum := 20 // 默认每页大小为20
+	if pageSize != 0 {
+		pageSizeNum = int(pageSize)
+	}
+
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	res, err := l.svcCtx.Activity.UserViewAllActivities(l.ctx, &activity.UserViewAllActivitiesRequest{
 		UserId:   uint32(uid),
 		Page:     req.Page,
-		PageSize: req.Page_size,
+		PageSize: uint32(pageSizeNum),
 	})
 
 	if err != nil {

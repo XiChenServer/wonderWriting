@@ -26,9 +26,16 @@ func NewLookAllActivitiesLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *LookAllActivitiesLogic) LookAllActivities(req *types.LookAllActivitiesRequest) (resp *types.LookAllActivitiesResponse, err error) {
 	// todo: add your logic here and delete this line
+
+	pageSize := req.Page_size
+	pageSizeNum := 20 // 默认每页大小为20
+	if pageSize != 0 {
+		pageSizeNum = int(pageSize)
+	}
+
 	res, err := l.svcCtx.Activity.LookAllActivities(l.ctx, &activity.LookAllActivitiesRequest{
 		Page:     req.Page,
-		PageSize: req.Page_size,
+		PageSize: uint32(pageSizeNum),
 	})
 	if err != nil {
 		return &types.LookAllActivitiesResponse{}, err

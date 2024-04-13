@@ -1,7 +1,6 @@
 package service
 
 import (
-	"calligraphy/apps/activity/model"
 	"calligraphy/apps/activity/rmq/internal/config"
 	"calligraphy/apps/activity/rpc/activityclient"
 	"calligraphy/apps/activity/rpc/types/activity"
@@ -55,7 +54,7 @@ func NewService(c config.Config) *Service {
 	}
 
 	//初始化程序
-	db.AutoMigrate(&model.UserPoints{})
+	db.AutoMigrate()
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200
 	opt.Level = option.LevelSearch //缓存级别，默认LevelSearch。LevelDisable:关闭缓存，LevelModel:模型缓存， LevelSearch:查询缓存

@@ -37,7 +37,7 @@ service App{
 service App{
 	//获取用户信息
 	@handler UserInfo
-	get /userinfo() returns (UserInfoResponse)
+	post /userinfo() returns (UserInfoResponse)
 	// 修改用户密码
 	@handler UserModPwd
 	post /modpwd(UserModPwdRequset) returns (UserModPwdResponse)
@@ -63,7 +63,7 @@ service App{
 	//用户查看所有的帖子
 	@doc "user look all post"
 	@handler LookAllPosts
-	get /look/allposts(LookAllPostsRequest) returns (LookAllPostsResponse)
+	post /look/allposts(LookAllPostsRequest) returns (LookAllPostsResponse)
 	//查看评论
 	@doc "查看评论请求"
 	@handler LookComment
@@ -134,12 +134,12 @@ service App{
 	// 用户人气榜单
 	@doc "用户人气榜单"
 	@handler UserPopularityRankings
-	get /user/popularity/rankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse)
+	post /user/popularity/rankings(UserPopularityRankingsRequest) returns (UserPopularityRankingsResponse)
 
 	// 帖子每日榜单
 	@doc "帖子每日榜单"
 	@handler PostPopularityRankings
-	get /post/popularity/rankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse)
+	post /post/popularity/rankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse)
 }
 
 //=====================================> group <=======================================
@@ -154,7 +154,7 @@ service App{
 	// 开启打卡
 	@doc "开启打卡"
 	@handler StartCheck
-	get /start/check(StartCheckRequest) returns (StartCheckResponse)
+	post /start/check(StartCheckRequest) returns (StartCheckResponse)
 
 	//上传书法信息
 	@doc "上传书法"
@@ -182,7 +182,7 @@ service App{
 	//查看所有活动请求消息
 	@doc "查看所有活动请求消息"
 	@handler LookAllActivities
-	get /lool/all_activities(LookAllActivitiesRequest) returns(LookAllActivitiesResponse)
+	post /lool/all_activities(LookAllActivitiesRequest) returns(LookAllActivitiesResponse)
 }
 
 //need login
@@ -195,17 +195,17 @@ service App{
 	// 每日抢积分
 	@doc "每日抢积分"
 	@handler  GrabPoints
-	get /grab/points(GrabPointsRequest) returns (GrabPointsResponse)
+	post /grab/points(GrabPointsRequest) returns (GrabPointsResponse)
 
 	// 用户报名活动
 	@doc "用户报名活动"
 	@handler  UserSignUpActivity
-	get /sign_up/activity(UserSignUpActivityRequest) returns (UserSignUpActivityResponse)
+	post /sign_up/activity(UserSignUpActivityRequest) returns (UserSignUpActivityResponse)
 
 	// 用户查看自己的所有活动
 	@doc "用户查看自己的所有活动"
 	@handler  UserViewAllActivities
-	get /view/all_activities_by_one(UserViewAllActivitiesRequest) returns (UserViewAllActivitiesResponse)
+	post /view/all_activities_by_one(UserViewAllActivitiesRequest) returns (UserViewAllActivitiesResponse)
 }
 
 //goctl api go -api ./app.api -dir .

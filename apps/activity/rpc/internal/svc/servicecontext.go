@@ -30,7 +30,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	db.AutoMigrate(&model.UserSignUpActivity{}, &model.Activity{}, &model.UserPoints{})
+	db.AutoMigrate(&model.UserSignUpActivity{}, &model.Activity{})
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200
 	opt.Level = option.LevelSearch //缓存级别，默认LevelSearch。LevelDisable:关闭缓存，LevelModel:模型缓存， LevelSearch:查询缓存

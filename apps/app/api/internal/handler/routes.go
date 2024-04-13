@@ -44,7 +44,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/userinfo",
 				Handler: user.UserInfoHandler(serverCtx),
 			},
@@ -76,7 +76,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/look/allposts",
 				Handler: community.LookAllPostsHandler(serverCtx),
 			},
@@ -144,12 +144,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/user/popularity/rankings",
 				Handler: home.UserPopularityRankingsHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/post/popularity/rankings",
 				Handler: home.PostPopularityRankingsHandler(serverCtx),
 			},
@@ -160,7 +160,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/start/check",
 				Handler: group.StartCheckHandler(serverCtx),
 			},
@@ -187,7 +187,7 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/lool/all_activities",
 				Handler: activity.LookAllActivitiesHandler(serverCtx),
 			},
@@ -198,17 +198,17 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/grab/points",
 				Handler: activity.GrabPointsHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/sign_up/activity",
 				Handler: activity.UserSignUpActivityHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodGet,
+				Method:  http.MethodPost,
 				Path:    "/view/all_activities_by_one",
 				Handler: activity.UserViewAllActivitiesHandler(serverCtx),
 			},

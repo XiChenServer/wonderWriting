@@ -1,6 +1,9 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import (
+	"fmt"
+	"github.com/jinzhu/gorm"
+)
 
 // Activity 活动表结构
 type Activity struct {
@@ -39,9 +42,11 @@ func (*Activity) GetAllActivities(db *gorm.DB, start, pageSize int) ([]Activity,
 // GetActivityInfo 根据活动ID获取活动信息
 func (*Activity) GetActivityInfo(db *gorm.DB, id uint) (*Activity, error) {
 	var activity Activity
+	fmt.Println("123", id)
 	// 根据活动ID查询数据库中的活动信息
 	err := db.Where("id = ?", id).First(&activity).Error
 	if err != nil {
+		fmt.Println("123", id, err.Error())
 		return nil, err
 	}
 	return &activity, nil

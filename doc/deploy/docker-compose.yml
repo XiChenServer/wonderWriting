@@ -17,3 +17,39 @@ services:
       #networks:
       #- backend
     restart: always
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "3000:9090"
+    restart: always
+
+  grafana:
+    build:
+      context: /home/zwm/GolandProjects/wonderWriting/doc/deploy/grafana
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "4000:3000"
+    networks:
+      - backend
+    restart: always
+
+  jaeger:
+    build:
+      context: ./jaeger
+    environment:
+      - TZ=${TZ}
+    ports:
+      - "5000:16686"
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
+    driver: bridge
+
+

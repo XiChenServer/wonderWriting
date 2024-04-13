@@ -27,3 +27,13 @@ UserRpc:
       - 127.0.0.1:2379
     Key: user.rpc
 
+Prometheus:
+  Host: 0.0.0.0
+  Port: 14003
+  Path: /metrics
+
+Telemetry:
+  Name: group.rpc
+  Endpoint: http://jaeger:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger

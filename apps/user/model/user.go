@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// 用户表
 type User struct {
 	UserID           uint   `gorm:"primaryKey;autoIncrement" json:"user_id"`
 	Nickname         string `gorm:"not null" json:"nickname"`
@@ -25,6 +26,7 @@ type User struct {
 	PointCount       int    `gorm:"default:0" json:"point_count"`
 }
 
+// 关注表
 type Follow struct {
 	FollowID       uint `gorm:"primaryKey;autoIncrement" json:"follow_id"`
 	FollowerUserID uint `gorm:"index" json:"follower_user_id"`

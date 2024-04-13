@@ -4,6 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// 帖子表
 type Post struct {
 	gorm.Model
 	UserID          uint        `json:"user_id"`                              // 用户ID，JSON序列化时的字段名为"user_id"
