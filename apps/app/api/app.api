@@ -50,6 +50,13 @@ service App{
 	//用户修改信息
 	@handler UserModInfo
 	post /modinfo(UserModInfoRequest) returns(UserModInfoResponse)
+	//用户关注
+	@handler UserFollow
+	post /follow(UserFollowRequest) returns (UserFollowResponse)
+	//用户取消关注
+	@handler UserCancelFollow
+	post /cancel_follow(UserCancelFollowRequest) returns(UserCancelFollowResponse)
+
 }
 
 //=====================================> communoty <=======================================

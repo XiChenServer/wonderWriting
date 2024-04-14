@@ -90,6 +90,22 @@ message UserModInfoRequest {
 message UserModInfoResponse {
 
 }
+// 用户关注
+message UserFollowRequest{
+  uint32 user_id = 1;
+  uint32 other_id = 2;
+}
+message UserFollowResponse{
+
+}
+//用户取消关注
+message UserCancelFollowRequest{
+  uint32 user_id = 1;
+  uint32 other_id = 2;
+}
+message UserCancelFollowResponse{
+}
+
 
 
 service User{
@@ -101,6 +117,14 @@ service User{
   rpc UserModAvatar(UserModAvatarRequest) returns (UserModAvatarResponse);
   rpc UserModBackground(UserModBackgroundRequest) returns (UserModBackgroundResponse);
   rpc UserModInfo(UserModInfoRequest) returns (UserModInfoResponse);
+
+  //用户关注
+  rpc UserFollow(UserFollowRequest) returns (UserFollowResponse);
+  //用户取消关注
+  rpc UserCancelFollow(UserCancelFollowRequest) returns (UserCancelFollowResponse);
+
 }
 
 
+
+//  goctl rpc protoc ./rpc/user.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

@@ -68,6 +68,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/modinfo",
 				Handler: user.UserModInfoHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/follow",
+				Handler: user.UserFollowHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/cancel_follow",
+				Handler: user.UserCancelFollowHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/user"),

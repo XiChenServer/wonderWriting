@@ -61,3 +61,15 @@ func (s *UserServer) UserModInfo(ctx context.Context, in *user.UserModInfoReques
 	l := logic.NewUserModInfoLogic(ctx, s.svcCtx)
 	return l.UserModInfo(in)
 }
+
+// 用户关注
+func (s *UserServer) UserFollow(ctx context.Context, in *user.UserFollowRequest) (*user.UserFollowResponse, error) {
+	l := logic.NewUserFollowLogic(ctx, s.svcCtx)
+	return l.UserFollow(in)
+}
+
+// 用户取消关注
+func (s *UserServer) UserCancelFollow(ctx context.Context, in *user.UserCancelFollowRequest) (*user.UserCancelFollowResponse, error) {
+	l := logic.NewUserCancelFollowLogic(ctx, s.svcCtx)
+	return l.UserCancelFollow(in)
+}

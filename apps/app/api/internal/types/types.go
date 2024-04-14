@@ -218,6 +218,20 @@ type UserModInfoRequest struct {
 type UserModInfoResponse struct {
 }
 
+type UserFollowRequest struct {
+	OtherId uint32 `json:"other_id"`
+}
+
+type UserFollowResponse struct {
+}
+
+type UserCancelFollowRequest struct {
+	OtherId uint32 `json:"other_id"`
+}
+
+type UserCancelFollowResponse struct {
+}
+
 type UserPopularInfo struct {
 	UserId    uint32 `json:"user_id"`
 	NickName  string `json:"nick_name"`

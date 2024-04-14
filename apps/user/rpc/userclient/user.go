@@ -13,6 +13,10 @@ import (
 )
 
 type (
+	UserCancelFollowRequest   = user.UserCancelFollowRequest
+	UserCancelFollowResponse  = user.UserCancelFollowResponse
+	UserFollowRequest         = user.UserFollowRequest
+	UserFollowResponse        = user.UserFollowResponse
 	UserForgetPwdRequest      = user.UserForgetPwdRequest
 	UserForgetPwdResponse     = user.UserForgetPwdResponse
 	UserInfoRequest           = user.UserInfoRequest
@@ -39,6 +43,10 @@ type (
 		UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error)
 		UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error)
 		UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error)
+		// 用户关注
+		UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error)
+		// 用户取消关注
+		UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error)
 	}
 
 	defaultUser struct {
@@ -90,4 +98,16 @@ func (m *defaultUser) UserModBackground(ctx context.Context, in *UserModBackgrou
 func (m *defaultUser) UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UserModInfo(ctx, in, opts...)
+}
+
+// 用户关注
+func (m *defaultUser) UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserFollow(ctx, in, opts...)
+}
+
+// 用户取消关注
+func (m *defaultUser) UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.UserCancelFollow(ctx, in, opts...)
 }

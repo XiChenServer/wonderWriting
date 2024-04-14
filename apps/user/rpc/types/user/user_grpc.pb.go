@@ -27,6 +27,8 @@ const (
 	User_UserModAvatar_FullMethodName     = "/user.User/UserModAvatar"
 	User_UserModBackground_FullMethodName = "/user.User/UserModBackground"
 	User_UserModInfo_FullMethodName       = "/user.User/UserModInfo"
+	User_UserFollow_FullMethodName        = "/user.User/UserFollow"
+	User_UserCancelFollow_FullMethodName  = "/user.User/UserCancelFollow"
 )
 
 // UserClient is the client API for User service.
@@ -41,6 +43,10 @@ type UserClient interface {
 	UserModAvatar(ctx context.Context, in *UserModAvatarRequest, opts ...grpc.CallOption) (*UserModAvatarResponse, error)
 	UserModBackground(ctx context.Context, in *UserModBackgroundRequest, opts ...grpc.CallOption) (*UserModBackgroundResponse, error)
 	UserModInfo(ctx context.Context, in *UserModInfoRequest, opts ...grpc.CallOption) (*UserModInfoResponse, error)
+	// 用户关注
+	UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error)
+	// 用户取消关注
+	UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error)
 }
 
 type userClient struct {
@@ -123,6 +129,24 @@ func (c *userClient) UserModInfo(ctx context.Context, in *UserModInfoRequest, op
 	return out, nil
 }
 
+func (c *userClient) UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error) {
+	out := new(UserFollowResponse)
+	err := c.cc.Invoke(ctx, User_UserFollow_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error) {
+	out := new(UserCancelFollowResponse)
+	err := c.cc.Invoke(ctx, User_UserCancelFollow_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -135,6 +159,10 @@ type UserServer interface {
 	UserModAvatar(context.Context, *UserModAvatarRequest) (*UserModAvatarResponse, error)
 	UserModBackground(context.Context, *UserModBackgroundRequest) (*UserModBackgroundResponse, error)
 	UserModInfo(context.Context, *UserModInfoRequest) (*UserModInfoResponse, error)
+	// 用户关注
+	UserFollow(context.Context, *UserFollowRequest) (*UserFollowResponse, error)
+	// 用户取消关注
+	UserCancelFollow(context.Context, *UserCancelFollowRequest) (*UserCancelFollowResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -165,6 +193,12 @@ func (UnimplementedUserServer) UserModBackground(context.Context, *UserModBackgr
 }
 func (UnimplementedUserServer) UserModInfo(context.Context, *UserModInfoRequest) (*UserModInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserModInfo not implemented")
+}
+func (UnimplementedUserServer) UserFollow(context.Context, *UserFollowRequest) (*UserFollowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserFollow not implemented")
+}
+func (UnimplementedUserServer) UserCancelFollow(context.Context, *UserCancelFollowRequest) (*UserCancelFollowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserCancelFollow not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -323,6 +357,42 @@ func _User_UserModInfo_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_UserFollow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserFollowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserFollow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserFollow_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserFollow(ctx, req.(*UserFollowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_UserCancelFollow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserCancelFollowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).UserCancelFollow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_UserCancelFollow_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).UserCancelFollow(ctx, req.(*UserCancelFollowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -361,6 +431,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserModInfo",
 			Handler:    _User_UserModInfo_Handler,
+		},
+		{
+			MethodName: "UserFollow",
+			Handler:    _User_UserFollow_Handler,
+		},
+		{
+			MethodName: "UserCancelFollow",
+			Handler:    _User_UserCancelFollow_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
