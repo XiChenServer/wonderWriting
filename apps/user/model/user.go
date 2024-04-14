@@ -5,7 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 用户表
+// User 用户表
 type User struct {
 	UserID           uint   `gorm:"primaryKey;autoIncrement" json:"user_id"`
 	Nickname         string `gorm:"not null" json:"nickname"`
@@ -26,7 +26,7 @@ type User struct {
 	PointCount       int    `gorm:"default:0" json:"point_count"`
 }
 
-// 关注表
+// Follow 关注表
 type Follow struct {
 	FollowID       uint `gorm:"primaryKey;autoIncrement" json:"follow_id"`
 	FollowerUserID uint `gorm:"index" json:"follower_user_id"`
@@ -62,7 +62,7 @@ func (m *User) FindOneByAccount(db *gorm.DB, account string) (*User, error) {
 	return &user, nil
 }
 
-// FindOneByAccount 根据逐渐查询用户
+// FindOne 根据逐渐查询用户
 func (m *User) FindOne(db *gorm.DB, id uint) (*User, error) {
 	var user User
 	if err := db.Where("user_id = ?", id).First(&user).Error; err != nil {
@@ -100,4 +100,46 @@ func (m *User) UpdatePointsGrab(db *gorm.DB, userID uint) error {
 		return result.Error
 	}
 	return nil
+}
+
+// FindOneByFollowerAndFollowed 根据关注者和被关注者查询关注记录
+func (m *Follow) FindOneByFollowerAndFollowed(db *gorm.DB, followerUserID, followedUserID uint) (*Follow, error) {
+	var follow Follow
+	if err := db.Where("follower_user_id = ? AND followed_user_id = ?", followerUserID, followedUserID).First(&follow).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil // 没有找到关注记录
+		}
+		return nil, err // 其他错误
+	}
+	return &follow, nil
+}
+
+// CreateUserFollow 创建用户关注记录
+func (m *Follow) CreateUserFollow(db *gorm.DB, newFollow *Follow) error {
+	return db.Create(newFollow).Error
+}
+
+// IncrementFollowCount 增加用户关注数
+func (m *Follow) IncrementFollowCount(db *gorm.DB, userID uint) error {
+	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("follow_count", gorm.Expr("follow_count + 1")).Error
+}
+
+// IncrementFansCount 增加用户粉丝数
+func (m *Follow) IncrementFansCount(db *gorm.DB, userID uint) error {
+	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("fans_count", gorm.Expr("fans_count + 1")).Error
+}
+
+// DeleteFollow 删除关注记录
+func (m *Follow) DeleteFollow(db *gorm.DB) error {
+	return db.Delete(m).Error
+}
+
+// DecrementFollowCount 减少用户关注数
+func (m *Follow) DecrementFollowCount(db *gorm.DB, userID uint) error {
+	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("follow_count", gorm.Expr("follow_count - 1")).Error
+}
+
+// DecrementFansCount 减少用户粉丝数
+func (m *Follow) DecrementFansCount(db *gorm.DB, userID uint) error {
+	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("fans_count", gorm.Expr("fans_count - 1")).Error
 }

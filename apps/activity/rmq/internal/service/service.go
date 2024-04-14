@@ -3,11 +3,9 @@ package service
 import (
 	"calligraphy/apps/activity/rmq/internal/config"
 	"calligraphy/apps/activity/rpc/activityclient"
-	"calligraphy/apps/activity/rpc/types/activity"
 	userModel "calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/userclient"
 	"calligraphy/common/app_redis"
-	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/8treenet/gcache"
@@ -116,14 +114,6 @@ func (s *Service) consume(ch chan *KafkaData) {
 		if _, err = s.RDB.Decrby("point_count_one_day", 1); err != nil {
 			logx.Errorf("Decrby redis err: %v", err)
 			return
-		}
-		// 发送成功消息给用户
-		_, err = s.ActivityRpc.SendMessageToUser(context.Background(), &activity.SendMessageRequest{
-			UserId:  uint64(m.Uid),
-			Message: "Congratulations! You have successfully grabbed points.",
-		})
-		if err != nil {
-			logx.Errorf("failed to send message to user: %v", err)
 		}
 
 	}
