@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// 帖子表
+// Post 帖子表
 type Post struct {
 	gorm.Model
 	UserID          uint        `json:"user_id"`                              // 用户ID，JSON序列化时的字段名为"user_id"
@@ -18,7 +18,7 @@ type Post struct {
 	Comments        []Comment   `gorm:"foreignKey:PostID" json:"comment"`     // 帖子评论，外键关联到Comment表的PostID字段，JSON序列化时的字段名为"comment"
 }
 
-// GetTopLikedUsers 获取获赞数前一千名的用户
+// GetTopLikedPosts  获取获赞数前一千名的用户
 func (m *Post) GetTopLikedPosts(db *gorm.DB) ([]Post, error) {
 	var users []Post
 	result := db.Order("like_count DESC").Limit(1000).Find(&users)

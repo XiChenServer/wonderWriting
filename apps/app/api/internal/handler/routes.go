@@ -78,6 +78,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/cancel_follow",
 				Handler: user.UserCancelFollowHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/look/all_follow",
+				Handler: user.LoolAllFollowHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/look/all_fans",
+				Handler: user.LookAllFansHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/user"),
@@ -206,23 +216,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/grab/points",
-				Handler: activity.GrabPointsHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/sign_up/activity",
-				Handler: activity.UserSignUpActivityHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/view/all_activities_by_one",
-				Handler: activity.UserViewAllActivitiesHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.GreetMiddleware1, serverCtx.GreetMiddleware2},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/grab/points",
+					Handler: activity.GrabPointsHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/sign_up/activity",
+					Handler: activity.UserSignUpActivityHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/view/all_activities_by_one",
+					Handler: activity.UserViewAllActivitiesHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/activity"),
 	)

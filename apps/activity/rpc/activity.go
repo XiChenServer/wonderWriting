@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
+	"github.com/zeromicro/go-zero/core/syncx"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"net/http"
 	"time"
 
 	"calligraphy/apps/activity/rpc/internal/config"
@@ -34,8 +39,24 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
-
+	var n = 100
+	l := syncx.NewLimit(n)
+	s.AddUnaryInterceptors(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		if l.TryBorrow() {
+			defer func() {
+				if err := l.Return(); err != nil {
+					logx.Error(err)
+				}
+			}()
+			return handler(ctx, req)
+		} else {
+			logx.Errorf("concurrent connections over %d, rejected with code %d",
+				n, http.StatusServiceUnavailable)
+			return nil, status.Error(codes.Unavailable, "concurrent connections over limit")
+		}
+	})
 	defer s.Stop()
+
 	// 启动定时器
 	go startTimer(ctx)
 

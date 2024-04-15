@@ -1,6 +1,7 @@
 Name: App
 Host: 0.0.0.0
 Port: 12000
+MaxConns: 100
 
 Mysql:
   DataSource: root:root@tcp(127.0.0.1:3306)/wonderWriting?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
@@ -70,3 +71,6 @@ Telemetry:
   Endpoint: http://jaeger:14268/api/traces
   Sampler: 1.0
   Batcher: jaeger
+
+
+

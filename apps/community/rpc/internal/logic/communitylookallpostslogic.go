@@ -45,9 +45,6 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 
 	// 缓存未命中，查询数据库获取数据
 	posts, totalCount, err := (&model.Post{}).LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
-	for _, post := range posts {
-		fmt.Println(post.Content)
-	}
 	if err != nil {
 		return nil, err
 	}

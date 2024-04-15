@@ -95,5 +95,41 @@ type (
     }
     UserCancelFollowResponse{
     }
+    //在关注和粉丝的请求中，用户展示的自己的信息
+    UserExhibitInfo{
+        UserId uint32 `json:"user_id"`
+        AvatarBackground string `json:"avatar_background"`
+        NickName string `json:"nick_name"`
+        FollowCount int64 `json:"follow_count"`
+        FansCount int64  `json:"fans_count"`
+        Email string `json:"email"`
+    }
 
+
+    LookAllFollowRequest{
+        Page uint32 `json:"page"`
+        PageSize uint32 `json:"page_size, optional"`
+    }
+    LookAllFollowResponse{
+        UserData []*UserExhibitInfo `json:"post_data"`
+        CurrentPage uint32     `json:"current_page"`
+        PageSize    uint32     `json:"page_size"`
+        Offset      uint32     `json:"offset"`
+        Overflow    bool       `json:"overflow"`
+        TotalPage   uint32     `json:"total_page"`
+        TotalCount  uint64     `json:"total_count"`
+    }
+    LookAllFansRequest{
+        Page uint32 `json:"page"`
+        PageSize uint32 `json:"page_size, optional"`
+    }
+    LookAllFansResponse{
+        UserData []*UserExhibitInfo `json:"post_data"`
+        CurrentPage uint32     `json:"current_page"`
+        PageSize    uint32     `json:"page_size"`
+        Offset      uint32     `json:"offset"`
+        Overflow    bool       `json:"overflow"`
+        TotalPage   uint32     `json:"total_page"`
+        TotalCount  uint64     `json:"total_count"`
+    }
 )

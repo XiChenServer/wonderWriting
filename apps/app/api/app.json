@@ -1,0 +1,2254 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/activity/grab/points": {
+      "post": {
+        "summary": "每日抢积分",
+        "operationId": "GrabPoints",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GrabPointsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GrabPointsRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "activity"
+        ]
+      }
+    },
+    "/activity/lool/all_activities": {
+      "post": {
+        "summary": "查看所有活动请求消息",
+        "operationId": "LookAllActivities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookAllActivitiesResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 查看所有活动请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LookAllActivitiesRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "activity"
+        ]
+      }
+    },
+    "/activity/sign_up/activity": {
+      "post": {
+        "summary": "用户报名活动",
+        "operationId": "UserSignUpActivity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserSignUpActivityResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户报名活动请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSignUpActivityRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "activity"
+        ]
+      }
+    },
+    "/activity/view/all_activities_by_one": {
+      "post": {
+        "summary": "用户查看自己的所有活动",
+        "operationId": "UserViewAllActivities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserViewAllActivitiesResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户查看自己的所有活动请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserViewAllActivitiesRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "activity"
+        ]
+      }
+    },
+    "/community/cancel/collect": {
+      "post": {
+        "summary": "取消收藏请求",
+        "operationId": "CancelCollectPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CancelCollectPostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 取消收藏请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CancelCollectPostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/cancel/comment": {
+      "post": {
+        "summary": "取消评论请求",
+        "operationId": "CancelCommentPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CancelCommentPostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 取消评论请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CancelCommentPostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/cancel/like": {
+      "post": {
+        "summary": "取消点赞请求",
+        "operationId": "CancelLikePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CancelLikePostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 取消点赞请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CancelLikePostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/collect/post": {
+      "post": {
+        "summary": "收藏请求",
+        "operationId": "CollectPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CollectPostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 收藏请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CollectPostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/comment/post": {
+      "post": {
+        "summary": "评论请求",
+        "operationId": "CommentPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CommentPostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 评论请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CommentPostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/create/post": {
+      "post": {
+        "summary": "user create post",
+        "operationId": "UsercretePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostCreateResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/delete/post": {
+      "post": {
+        "summary": "user del post",
+        "operationId": "UserDelPost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostDelResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "帖子删除",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostDelRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/like/post": {
+      "post": {
+        "summary": "点赞请求",
+        "operationId": "LikePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LikePostResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 点赞请求消息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LikePostRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/look/allposts": {
+      "post": {
+        "summary": "user look all post",
+        "operationId": "LookAllPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookAllPostsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LookAllPostsRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/look/comment": {
+      "post": {
+        "summary": "查看评论请求",
+        "operationId": "LookComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookCommentResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "查看用户评论信息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LookCommentRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/community/look/postbyown": {
+      "post": {
+        "summary": "user see post userId",
+        "operationId": "UserLookPostByOwn",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookPostByOwnResponses"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 查看自己的所有帖子",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LookPostByOwnRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "community"
+        ]
+      }
+    },
+    "/group/check/pubcgcard": {
+      "post": {
+        "summary": "查看某人的签到是否打开",
+        "operationId": "CheckPunchCard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CheckPunchCardModelResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 检查打卡模式是否开启",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckPunchCardModelRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "group"
+        ]
+      }
+    },
+    "/group/create/record": {
+      "post": {
+        "summary": "上传书法",
+        "operationId": "CreateRecord",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreateRecordResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "group"
+        ]
+      }
+    },
+    "/group/look/recordbyuser": {
+      "post": {
+        "summary": "查看某人的书法信息",
+        "operationId": "LookRecordByUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/LookRecordByUserIdResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " LookRecordByUserIdRequest 查看某人的书法记录请求",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LookRecordByUserIdRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "group"
+        ]
+      }
+    },
+    "/group/start/check": {
+      "post": {
+        "summary": "开启打卡",
+        "operationId": "StartCheck",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StartCheckResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "开启打卡",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StartCheckRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "group"
+        ]
+      }
+    },
+    "/home/post/popularity/rankings": {
+      "post": {
+        "summary": "帖子每日榜单",
+        "operationId": "PostPopularityRankings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PostPopularityRankingsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "# 帖子获赞每日排行榜",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostPopularityRankingsRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "home"
+        ]
+      }
+    },
+    "/home/user/popularity/rankings": {
+      "post": {
+        "summary": "用户人气榜单",
+        "operationId": "UserPopularityRankings",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserPopularityRankingsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "# 用户人气排行榜",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserPopularityRankingsRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "home"
+        ]
+      }
+    },
+    "/user/basic/getemailverification": {
+      "post": {
+        "operationId": "GetEmailVerification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VerificationResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VerificationRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/cancel_follow": {
+      "post": {
+        "operationId": "UserCancelFollow",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserCancelFollowResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "用户取消关注",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCancelFollowRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/follow": {
+      "post": {
+        "operationId": "UserFollow",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserFollowResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户关注",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserFollowRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/forgetpwd": {
+      "post": {
+        "operationId": "UserForgetPwd",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserForgetPwdResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "忘记密码",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserForgetPwdRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "operationId": "UserLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "用户登录",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLoginRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/modavatar": {
+      "post": {
+        "operationId": "UserModAvatar",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserModAvatarResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/modbackground": {
+      "post": {
+        "operationId": "UserModBackground",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserModBackgroundResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/modinfo": {
+      "post": {
+        "operationId": "UserModInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserModInfoResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " 用户修改信息",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserModInfoRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/modpwd": {
+      "post": {
+        "operationId": "UserModPwd",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserModPwdResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "忘记密码之后修改密码",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserModPwdRequset"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "operationId": "UserRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserRegisterResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "用户注册",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegisterRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/userinfo": {
+      "post": {
+        "operationId": "UserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfoResponse"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActivityInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "info": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "date_time": {
+          "type": "string"
+        },
+        "organizer": {
+          "type": "string"
+        },
+        "end_date_time": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "rewards_info": {
+          "type": "string"
+        }
+      },
+      "title": "ActivityInfo",
+      "required": [
+        "id",
+        "name",
+        "info",
+        "location",
+        "date_time",
+        "organizer",
+        "end_date_time",
+        "duration",
+        "rewards_info"
+      ]
+    },
+    "CancelCollectPostRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "collect_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CancelCollectPostRequest",
+      "required": [
+        "post_id",
+        "collect_id"
+      ]
+    },
+    "CancelCollectPostResponse": {
+      "type": "object",
+      "title": "CancelCollectPostResponse"
+    },
+    "CancelCommentPostRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "comment_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CancelCommentPostRequest",
+      "required": [
+        "post_id",
+        "comment_id"
+      ]
+    },
+    "CancelCommentPostResponse": {
+      "type": "object",
+      "title": "CancelCommentPostResponse"
+    },
+    "CancelLikePostRequest": {
+      "type": "object",
+      "properties": {
+        "like_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CancelLikePostRequest",
+      "required": [
+        "like_id",
+        "post_id"
+      ]
+    },
+    "CancelLikePostResponse": {
+      "type": "object",
+      "title": "CancelLikePostResponse"
+    },
+    "CheckPunchCardModelRequest": {
+      "type": "object",
+      "title": "CheckPunchCardModelRequest"
+    },
+    "CheckPunchCardModelResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "CheckPunchCardModelResponse",
+      "required": [
+        "data"
+      ]
+    },
+    "CollectPostRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CollectPostRequest",
+      "required": [
+        "post_id"
+      ]
+    },
+    "CollectPostResponse": {
+      "type": "object",
+      "properties": {
+        "collect_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CollectPostResponse",
+      "required": [
+        "collect_id"
+      ]
+    },
+    "CommentInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/uint"
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "user_info": {
+          "$ref": "#/definitions/UserSimpleInfo"
+        }
+      },
+      "title": "CommentInfo",
+      "required": [
+        "id",
+        "create_time",
+        "post_id",
+        "comment",
+        "user_info"
+      ]
+    },
+    "CommentPostRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "content": {
+          "type": "string"
+        }
+      },
+      "title": "CommentPostRequest",
+      "required": [
+        "post_id",
+        "content"
+      ]
+    },
+    "CommentPostResponse": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "CommentPostResponse",
+      "required": [
+        "comment_id"
+      ]
+    },
+    "CreateRecordRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "content": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        }
+      },
+      "title": "CreateRecordRequest",
+      "required": [
+        "user_id",
+        "content",
+        "image",
+        "score"
+      ]
+    },
+    "CreateRecordResponse": {
+      "type": "object",
+      "properties": {
+        "record_info": {
+          "$ref": "#/definitions/RecordSimpleInfo"
+        }
+      },
+      "title": "CreateRecordResponse",
+      "required": [
+        "record_info"
+      ]
+    },
+    "GrabPointsRequest": {
+      "type": "object",
+      "title": "GrabPointsRequest"
+    },
+    "GrabPointsResponse": {
+      "type": "object",
+      "title": "GrabPointsResponse"
+    },
+    "JwtInfo": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "access_expire": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "JwtInfo",
+      "required": [
+        "access_token",
+        "access_expire"
+      ]
+    },
+    "LikePostRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "LikePostRequest",
+      "required": [
+        "post_id"
+      ]
+    },
+    "LikePostResponse": {
+      "type": "object",
+      "properties": {
+        "like_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "LikePostResponse",
+      "required": [
+        "like_id"
+      ]
+    },
+    "LookAllActivitiesRequest": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "LookAllActivitiesRequest",
+      "required": [
+        "page",
+        "page_size"
+      ]
+    },
+    "LookAllActivitiesResponse": {
+      "type": "object",
+      "properties": {
+        "activities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActivityInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_pages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "LookAllActivitiesResponse",
+      "required": [
+        "activities",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_pages",
+        "total_count"
+      ]
+    },
+    "LookAllPostsRequest": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "LookAllPostsRequest",
+      "required": [
+        "page",
+        "page_size"
+      ]
+    },
+    "LookAllPostsResponse": {
+      "type": "object",
+      "properties": {
+        "post_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "LookAllPostsResponse",
+      "required": [
+        "post_data",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "LookCommentRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "page": {
+          "$ref": "#/definitions/uint"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "LookCommentRequest",
+      "required": [
+        "post_id",
+        "page",
+        "page_size"
+      ]
+    },
+    "LookCommentResponse": {
+      "type": "object",
+      "properties": {
+        "comment_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CommentInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "LookCommentResponse",
+      "required": [
+        "comment_data",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "LookPostByOwnRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "LookPostByOwnRequest",
+      "required": [
+        "user_id",
+        "page",
+        "page_size"
+      ]
+    },
+    "LookPostByOwnResponses": {
+      "type": "object",
+      "properties": {
+        "post_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "LookPostByOwnResponses",
+      "required": [
+        "post_data",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "LookRecordByUserIdRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "LookRecordByUserIdRequest",
+      "required": [
+        "user_id",
+        "page",
+        "page_size"
+      ]
+    },
+    "LookRecordByUserIdResponse": {
+      "type": "object",
+      "properties": {
+        "record_info": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RecordSimpleInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "LookRecordByUserIdResponse",
+      "required": [
+        "record_info",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "PostCreateRequest": {
+      "type": "object",
+      "title": "PostCreateRequest"
+    },
+    "PostCreateResponse": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "PostCreateResponse",
+      "required": [
+        "post_id"
+      ]
+    },
+    "PostDelRequest": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "$ref": "#/definitions/uint"
+        }
+      },
+      "title": "PostDelRequest",
+      "required": [
+        "post_id"
+      ]
+    },
+    "PostDelResponse": {
+      "type": "object",
+      "title": "PostDelResponse"
+    },
+    "PostInfo": {
+      "type": "object",
+      "properties": {
+        "user_info": {
+          "$ref": "#/definitions/UserSimpleInfo"
+        },
+        "id": {
+          "$ref": "#/definitions/uint"
+        },
+        "user_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "content_count": {
+          "$ref": "#/definitions/uint"
+        },
+        "like_count": {
+          "$ref": "#/definitions/uint"
+        },
+        "collect_count": {
+          "$ref": "#/definitions/uint"
+        },
+        "content": {
+          "type": "string"
+        },
+        "image_urls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "delete_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PostInfo",
+      "required": [
+        "user_info",
+        "id",
+        "user_id",
+        "content_count",
+        "like_count",
+        "collect_count",
+        "content",
+        "image_urls",
+        "create_time",
+        "delete_time"
+      ]
+    },
+    "PostPopularityInfo": {
+      "type": "object",
+      "properties": {
+        "post_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "content": {
+          "type": "string"
+        },
+        "like_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "collection_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "popular_info": {
+          "$ref": "#/definitions/UserPopularInfo"
+        },
+        "post_image": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "PostPopularityInfo",
+      "required": [
+        "post_id",
+        "content",
+        "like_count",
+        "collection_count",
+        "comment_count",
+        "popular_info",
+        "post_image"
+      ]
+    },
+    "PostPopularityRankingsRequest": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "PostPopularityRankingsRequest",
+      "required": [
+        "page",
+        "page_size"
+      ]
+    },
+    "PostPopularityRankingsResponse": {
+      "type": "object",
+      "properties": {
+        "post_popular_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PostPopularityInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "PostPopularityRankingsResponse",
+      "required": [
+        "post_popular_data",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "RecordSimpleInfo": {
+      "type": "object",
+      "properties": {
+        "record_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "content": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "format": "float"
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "RecordSimpleInfo",
+      "required": [
+        "record_id",
+        "user_id",
+        "content",
+        "image",
+        "score",
+        "create_time"
+      ]
+    },
+    "StartCheckRequest": {
+      "type": "object",
+      "title": "StartCheckRequest"
+    },
+    "StartCheckResponse": {
+      "type": "object",
+      "properties": {
+        "check_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "continuous_days": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "create_time": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "last_check_in_time": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "StartCheckResponse",
+      "required": [
+        "check_id",
+        "user_id",
+        "continuous_days",
+        "create_time",
+        "last_check_in_time"
+      ]
+    },
+    "UserCancelFollowRequest": {
+      "type": "object",
+      "properties": {
+        "other_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserCancelFollowRequest",
+      "required": [
+        "other_id"
+      ]
+    },
+    "UserCancelFollowResponse": {
+      "type": "object",
+      "title": "UserCancelFollowResponse"
+    },
+    "UserFollowRequest": {
+      "type": "object",
+      "properties": {
+        "other_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserFollowRequest",
+      "required": [
+        "other_id"
+      ]
+    },
+    "UserFollowResponse": {
+      "type": "object",
+      "title": "UserFollowResponse"
+    },
+    "UserForgetPwdRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "email_code": {
+          "type": "string"
+        }
+      },
+      "title": "UserForgetPwdRequest",
+      "required": [
+        "email",
+        "email_code"
+      ]
+    },
+    "UserForgetPwdResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "access_expire": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserForgetPwdResponse",
+      "required": [
+        "access_token",
+        "access_expire"
+      ]
+    },
+    "UserInfoResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "nick_name": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "avatar_background": {
+          "type": "string"
+        },
+        "background_image": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "post_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "follow_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "fans_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "like_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "point_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserInfoResponse",
+      "required": [
+        "id",
+        "nick_name",
+        "account",
+        "email",
+        "avatar_background",
+        "background_image",
+        "phone",
+        "post_count",
+        "follow_count",
+        "fans_count",
+        "like_count",
+        "point_count"
+      ]
+    },
+    "UserLoginRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "UserLoginRequest",
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "UserLoginResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "access_expire": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserLoginResponse",
+      "required": [
+        "access_token",
+        "access_expire"
+      ]
+    },
+    "UserModAvatarResponse": {
+      "type": "object",
+      "title": "UserModAvatarResponse"
+    },
+    "UserModBackgroundResponse": {
+      "type": "object",
+      "title": "UserModBackgroundResponse"
+    },
+    "UserModInfoRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        }
+      },
+      "title": "UserModInfoRequest",
+      "required": [
+        "nick_name",
+        "phone"
+      ]
+    },
+    "UserModInfoResponse": {
+      "type": "object",
+      "title": "UserModInfoResponse"
+    },
+    "UserModPwdRequset": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "UserModPwdRequset",
+      "required": [
+        "password"
+      ]
+    },
+    "UserModPwdResponse": {
+      "type": "object",
+      "title": "UserModPwdResponse"
+    },
+    "UserPopularInfo": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nick_name": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "like_count": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "avatar": {
+          "type": "string"
+        }
+      },
+      "title": "UserPopularInfo",
+      "required": [
+        "user_id",
+        "nick_name",
+        "account",
+        "like_count",
+        "avatar"
+      ]
+    },
+    "UserPopularityRankingsRequest": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserPopularityRankingsRequest",
+      "required": [
+        "page",
+        "page_size"
+      ]
+    },
+    "UserPopularityRankingsResponse": {
+      "type": "object",
+      "properties": {
+        "user_popular_data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserPopularInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserPopularityRankingsResponse",
+      "required": [
+        "user_popular_data",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_page",
+        "total_count"
+      ]
+    },
+    "UserRegisterRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email_code": {
+          "type": "string"
+        }
+      },
+      "title": "UserRegisterRequest",
+      "required": [
+        "email",
+        "password",
+        "email_code"
+      ]
+    },
+    "UserRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "UserRegisterResponse",
+      "required": [
+        "code",
+        "message"
+      ]
+    },
+    "UserSignUpActivityRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "activity_id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserSignUpActivityRequest",
+      "required": [
+        "user_id",
+        "activity_id"
+      ]
+    },
+    "UserSignUpActivityResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "UserSignUpActivityResponse",
+      "required": [
+        "success",
+        "message"
+      ]
+    },
+    "UserSimpleInfo": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "$ref": "#/definitions/uint"
+        },
+        "nick_name": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        },
+        "avatar_image": {
+          "type": "string"
+        }
+      },
+      "title": "UserSimpleInfo",
+      "required": [
+        "user_id",
+        "nick_name",
+        "account",
+        "avatar_image"
+      ]
+    },
+    "UserViewAllActivitiesRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserViewAllActivitiesRequest",
+      "required": [
+        "user_id",
+        "page",
+        "page_size"
+      ]
+    },
+    "UserViewAllActivitiesResponse": {
+      "type": "object",
+      "properties": {
+        "activities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActivityInfo"
+          }
+        },
+        "current_page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "page_size": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "overflow": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "total_pages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "UserViewAllActivitiesResponse",
+      "required": [
+        "activities",
+        "current_page",
+        "page_size",
+        "offset",
+        "overflow",
+        "total_pages",
+        "total_count"
+      ]
+    },
+    "VerificationRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "title": "VerificationRequest",
+      "required": [
+        "email"
+      ]
+    },
+    "VerificationResponse": {
+      "type": "object",
+      "title": "VerificationResponse"
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

@@ -56,7 +56,12 @@ service App{
 	//用户取消关注
 	@handler UserCancelFollow
 	post /cancel_follow(UserCancelFollowRequest) returns(UserCancelFollowResponse)
-
+	//用户查看自己的关注
+	@handler LoolAllFollow
+	post /look/all_follow(LookAllFollowRequest) returns (LookAllFollowResponse)
+	//用户查看自己的粉丝
+	@handler LookAllFans
+	post /look/all_fans(LookAllFansRequest) returns (LookAllFansResponse)
 }
 
 //=====================================> communoty <=======================================
@@ -197,6 +202,7 @@ service App{
 	prefix: /activity
 	group: activity
 	jwt: Auth
+	middleware: GreetMiddleware1, GreetMiddleware2
 )
 service App{
 	// 每日抢积分
@@ -216,3 +222,5 @@ service App{
 }
 
 //goctl api go -api ./app.api -dir .
+//生成json，可以直接导入apifox
+//goctl api plugin -plugin goctl-swagger="swagger -filename app.json" -api app.api -dir .

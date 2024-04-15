@@ -13,12 +13,17 @@ import (
 )
 
 type (
+	LookAllFansRequest        = user.LookAllFansRequest
+	LookAllFansResponse       = user.LookAllFansResponse
+	LookAllFollowRequest      = user.LookAllFollowRequest
+	LookAllFollowResponse     = user.LookAllFollowResponse
 	UserCancelFollowRequest   = user.UserCancelFollowRequest
 	UserCancelFollowResponse  = user.UserCancelFollowResponse
 	UserFollowRequest         = user.UserFollowRequest
 	UserFollowResponse        = user.UserFollowResponse
 	UserForgetPwdRequest      = user.UserForgetPwdRequest
 	UserForgetPwdResponse     = user.UserForgetPwdResponse
+	UserInfo                  = user.UserInfo
 	UserInfoRequest           = user.UserInfoRequest
 	UserInfoResponse          = user.UserInfoResponse
 	UserLoginRequest          = user.UserLoginRequest
@@ -47,6 +52,10 @@ type (
 		UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error)
 		// 用户取消关注
 		UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error)
+		// 用户查看自己的粉丝
+		LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error)
+		// 用户查看自己的关注
+		LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error)
 	}
 
 	defaultUser struct {
@@ -110,4 +119,16 @@ func (m *defaultUser) UserFollow(ctx context.Context, in *UserFollowRequest, opt
 func (m *defaultUser) UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UserCancelFollow(ctx, in, opts...)
+}
+
+// 用户查看自己的粉丝
+func (m *defaultUser) LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.LookAllFans(ctx, in, opts...)
+}
+
+// 用户查看自己的关注
+func (m *defaultUser) LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.LookAllFollow(ctx, in, opts...)
 }

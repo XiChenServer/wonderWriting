@@ -21,6 +21,7 @@ type Config struct {
 	//}
 	//KqConsumerConf kq.KqConf
 	ActivityRpc zrpc.RpcClientConf
+	//MaxConns    int `json:",default=10000"` // 最大并发连接数，默认值为 10000 qps
 }
 
 //

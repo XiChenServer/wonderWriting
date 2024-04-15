@@ -232,6 +232,45 @@ type UserCancelFollowRequest struct {
 type UserCancelFollowResponse struct {
 }
 
+type UserExhibitInfo struct {
+	UserId           uint32 `json:"user_id"`
+	AvatarBackground string `json:"avatar_background"`
+	NickName         string `json:"nick_name"`
+	FollowCount      int64  `json:"follow_count"`
+	FansCount        int64  `json:"fans_count"`
+	Email            string `json:"email"`
+}
+
+type LookAllFollowRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size, optional"`
+}
+
+type LookAllFollowResponse struct {
+	UserData    []*UserExhibitInfo `json:"post_data"`
+	CurrentPage uint32             `json:"current_page"`
+	PageSize    uint32             `json:"page_size"`
+	Offset      uint32             `json:"offset"`
+	Overflow    bool               `json:"overflow"`
+	TotalPage   uint32             `json:"total_page"`
+	TotalCount  uint64             `json:"total_count"`
+}
+
+type LookAllFansRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size, optional"`
+}
+
+type LookAllFansResponse struct {
+	UserData    []*UserExhibitInfo `json:"post_data"`
+	CurrentPage uint32             `json:"current_page"`
+	PageSize    uint32             `json:"page_size"`
+	Offset      uint32             `json:"offset"`
+	Overflow    bool               `json:"overflow"`
+	TotalPage   uint32             `json:"total_page"`
+	TotalCount  uint64             `json:"total_count"`
+}
+
 type UserPopularInfo struct {
 	UserId    uint32 `json:"user_id"`
 	NickName  string `json:"nick_name"`

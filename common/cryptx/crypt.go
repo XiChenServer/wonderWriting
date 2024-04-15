@@ -2,7 +2,6 @@ package cryptx
 
 import (
 	"fmt"
-
 	"golang.org/x/crypto/scrypt"
 )
 

@@ -73,3 +73,15 @@ func (s *UserServer) UserCancelFollow(ctx context.Context, in *user.UserCancelFo
 	l := logic.NewUserCancelFollowLogic(ctx, s.svcCtx)
 	return l.UserCancelFollow(in)
 }
+
+// 用户查看自己的粉丝
+func (s *UserServer) LookAllFans(ctx context.Context, in *user.LookAllFansRequest) (*user.LookAllFansResponse, error) {
+	l := logic.NewLookAllFansLogic(ctx, s.svcCtx)
+	return l.LookAllFans(in)
+}
+
+// 用户查看自己的关注
+func (s *UserServer) LookAllFollow(ctx context.Context, in *user.LookAllFollowRequest) (*user.LookAllFollowResponse, error) {
+	l := logic.NewLookAllFollowLogic(ctx, s.svcCtx)
+	return l.LookAllFollow(in)
+}

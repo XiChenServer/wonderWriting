@@ -29,6 +29,8 @@ const (
 	User_UserModInfo_FullMethodName       = "/user.User/UserModInfo"
 	User_UserFollow_FullMethodName        = "/user.User/UserFollow"
 	User_UserCancelFollow_FullMethodName  = "/user.User/UserCancelFollow"
+	User_LookAllFans_FullMethodName       = "/user.User/LookAllFans"
+	User_LookAllFollow_FullMethodName     = "/user.User/LookAllFollow"
 )
 
 // UserClient is the client API for User service.
@@ -47,6 +49,10 @@ type UserClient interface {
 	UserFollow(ctx context.Context, in *UserFollowRequest, opts ...grpc.CallOption) (*UserFollowResponse, error)
 	// 用户取消关注
 	UserCancelFollow(ctx context.Context, in *UserCancelFollowRequest, opts ...grpc.CallOption) (*UserCancelFollowResponse, error)
+	// 用户查看自己的粉丝
+	LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error)
+	// 用户查看自己的关注
+	LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error)
 }
 
 type userClient struct {
@@ -147,6 +153,24 @@ func (c *userClient) UserCancelFollow(ctx context.Context, in *UserCancelFollowR
 	return out, nil
 }
 
+func (c *userClient) LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error) {
+	out := new(LookAllFansResponse)
+	err := c.cc.Invoke(ctx, User_LookAllFans_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error) {
+	out := new(LookAllFollowResponse)
+	err := c.cc.Invoke(ctx, User_LookAllFollow_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -163,6 +187,10 @@ type UserServer interface {
 	UserFollow(context.Context, *UserFollowRequest) (*UserFollowResponse, error)
 	// 用户取消关注
 	UserCancelFollow(context.Context, *UserCancelFollowRequest) (*UserCancelFollowResponse, error)
+	// 用户查看自己的粉丝
+	LookAllFans(context.Context, *LookAllFansRequest) (*LookAllFansResponse, error)
+	// 用户查看自己的关注
+	LookAllFollow(context.Context, *LookAllFollowRequest) (*LookAllFollowResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -199,6 +227,12 @@ func (UnimplementedUserServer) UserFollow(context.Context, *UserFollowRequest) (
 }
 func (UnimplementedUserServer) UserCancelFollow(context.Context, *UserCancelFollowRequest) (*UserCancelFollowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserCancelFollow not implemented")
+}
+func (UnimplementedUserServer) LookAllFans(context.Context, *LookAllFansRequest) (*LookAllFansResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LookAllFans not implemented")
+}
+func (UnimplementedUserServer) LookAllFollow(context.Context, *LookAllFollowRequest) (*LookAllFollowResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LookAllFollow not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -393,6 +427,42 @@ func _User_UserCancelFollow_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_LookAllFans_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LookAllFansRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).LookAllFans(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_LookAllFans_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).LookAllFans(ctx, req.(*LookAllFansRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_LookAllFollow_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LookAllFollowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).LookAllFollow(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_LookAllFollow_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).LookAllFollow(ctx, req.(*LookAllFollowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -439,6 +509,14 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UserCancelFollow",
 			Handler:    _User_UserCancelFollow_Handler,
+		},
+		{
+			MethodName: "LookAllFans",
+			Handler:    _User_LookAllFans_Handler,
+		},
+		{
+			MethodName: "LookAllFollow",
+			Handler:    _User_LookAllFollow_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -8,6 +8,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/rest"
 	"net/http"
@@ -23,7 +24,10 @@ func main() {
 	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(JwtUnauthorizedResult))
 	//server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
-
+	//使用中间件，进行熔断
+	server.Use(
+		middlewareDemoFunc,
+	)
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
 
@@ -87,4 +91,11 @@ func JwtUnauthorizedResult(w http.ResponseWriter, r *http.Request, err error) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusUnauthorized)
 	_, _ = w.Write(jsonResponse)
+}
+func middlewareDemoFunc(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		logx.Info("request ... ")
+		next(w, r)
+		logx.Info("reponse ... ")
+	}
 }

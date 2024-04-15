@@ -2,20 +2,21 @@ version: '3.8'
 services:
   #分布式事务解决方案DTM
   dtm:
-    image: yedf/dtm
+    build:
+      context: ./dtm
     environment:
       - TZ=${TZ}
     entrypoint:
       - "/app/dtm/dtm"
       - "-c=/app/dtm/configs/config.yaml"
     privileged: true
-    volumes: #把本地文件挂载到容器里的指定的目录
+    volumes:
       - ./dtm/config.yml:/app/dtm/configs/config.yaml # 将 dtm 配置文件挂载到容器里
     ports:
       - "36789:36789"  # DTM HTTP 协议端口号
       - "36790:36790"  # DTM gRPC 协议端口号
-      #networks:
-      #- backend
+    networks:
+      - backend
     restart: always
   prometheus:
     image: prom/prometheus:latest
