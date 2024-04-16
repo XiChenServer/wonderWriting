@@ -3,17 +3,20 @@ package svc
 import (
 	"calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/internal/config"
+	"calligraphy/common/app_redis"
 	"fmt"
 	"github.com/8treenet/gcache"
 	"github.com/8treenet/gcache/option"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
+	"github.com/zeromicro/go-zero/core/stores/redis"
 	"log"
 )
 
 type ServiceContext struct {
 	Config config.Config
 	DB     *gorm.DB
+	RDB    *redis.Redis
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -38,6 +41,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		Config: c,
 		DB:     db,
 		//UserModel: model.NewUsersModel(sqlx.NewMysql(c.Mysql.DataSource), c.CacheRedis),
+		RDB: app_redis.Redis,
 	}
 }
 

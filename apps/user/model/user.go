@@ -143,3 +143,23 @@ func (m *Follow) DecrementFollowCount(db *gorm.DB, userID uint) error {
 func (m *Follow) DecrementFansCount(db *gorm.DB, userID uint) error {
 	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("fans_count", gorm.Expr("fans_count - 1")).Error
 }
+
+// LookAllFollow 查找自己的关注人
+func (m *Follow) LookAllFollow(db *gorm.DB, userID uint) (*[]Follow, error) {
+	var follows []Follow
+	err := db.Where("follower_user_id = ?", userID).Find(&follows).Error
+	if err != nil {
+		return nil, err
+	}
+	return &follows, nil
+}
+
+// LookAllFans 查找自己的粉丝
+func (m *Follow) LookAllFans(db *gorm.DB, userID uint) (*[]Follow, error) {
+	var fans []Follow
+	err := db.Where("followed_user_id = ?", userID).Find(&fans).Error
+	if err != nil {
+		return nil, err
+	}
+	return &fans, nil
+}
