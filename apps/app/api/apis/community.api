@@ -172,3 +172,19 @@ type WhetherCollectPostRequest{
     OtherId uint32 `json:"other_id"`
 }
 type WhetherCollectPostResponse{}
+
+
+//状态
+type StatusWithPost{
+    WhetherLike bool `json:"whether_like"`
+    WhetherCollect bool `json:"whether_collect"`
+    WhetherFollow bool `json:"whether_follow"`
+}
+//查看帖子详情 
+type ViewPostDetailsRequest{
+    PostId uint32 `json:"post_id"`
+}
+type ViewPostDetailsResponse{
+    PostData PostInfo `json:"post_data"`
+    StatusData StatusWithPost `json:"status_data"`
+}

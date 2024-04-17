@@ -153,6 +153,21 @@ type WhetherCollectPostRequest struct {
 type WhetherCollectPostResponse struct {
 }
 
+type StatusWithPost struct {
+	WhetherLike    bool `json:"whether_like"`
+	WhetherCollect bool `json:"whether_collect"`
+	WhetherFollow  bool `json:"whether_follow"`
+}
+
+type ViewPostDetailsRequest struct {
+	PostId uint32 `json:"post_id"`
+}
+
+type ViewPostDetailsResponse struct {
+	PostData   PostInfo       `json:"post_data"`
+	StatusData StatusWithPost `json:"status_data"`
+}
+
 type VerificationRequest struct {
 	Email string `json:"email"`
 }

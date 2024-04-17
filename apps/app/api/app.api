@@ -147,6 +147,10 @@ service App{
 	@doc "是否收藏帖子"
 	@handler WhetherCollectPost
 	post /whether/collect_post(WhetherCollectPostRequest) returns (WhetherCollectPostResponse)
+	// 查看帖子详情
+	@doc "查看帖子详情"
+	@handler ViewPostDetails
+	post /view/post_details(ViewPostDetailsRequest) returns (ViewPostDetailsResponse)
 }
 
 //=====================================> home <=======================================

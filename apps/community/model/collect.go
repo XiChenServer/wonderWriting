@@ -74,13 +74,13 @@ func (*Collect) CancelCollectPost(DB *gorm.DB, collectID, postID uint) error {
 	return err
 }
 
-// WhetherCollectPost 用户是否关注了该帖子
-func (*Like) WhetherCollectPost(DB *gorm.DB, postID, userID uint) error {
+// WhetherCollectPost 检查用户是否收藏了某个帖子
+func (*Collect) WhetherCollectPost(DB *gorm.DB, postID, userID uint) error {
 	var collect Collect
 	err := DB.Where("post_id = ? AND user_id = ?", postID, userID).First(&collect).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return fmt.Errorf("用户未关注该帖子")
+			return fmt.Errorf("用户未收藏该帖子")
 		}
 		return err
 	}

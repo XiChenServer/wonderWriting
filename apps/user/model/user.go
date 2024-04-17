@@ -165,10 +165,10 @@ func (m *Follow) LookAllFans(db *gorm.DB, userID uint) (*[]Follow, error) {
 	return &fans, nil
 }
 
-// WhetherLikedPost 用户是否关注一个人
-func (*Follow) WhetherLikedPost(DB *gorm.DB, otherId, userID uint) error {
-	var like Follow
-	err := DB.Where("followed_user_id = ? AND follower_user_id = ?", otherId, userID).First(&like).Error
+// WhetherFollowPeople 检查用户是否关注了某个人
+func (*Follow) WhetherFollowPeople(DB *gorm.DB, otherId, userID uint) error {
+	var follow Follow
+	err := DB.Where("followed_user_id = ? AND follower_user_id = ?", otherId, userID).First(&follow).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fmt.Errorf("用户未关注该用户")

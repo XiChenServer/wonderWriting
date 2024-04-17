@@ -112,3 +112,14 @@ func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
 	return posts, nil
 
 }
+
+// LookPostByPostId 根据帖子id查询
+func (*Post) LookPostByPostId(dao *gorm.DB, postId uint) (*Post, error) {
+	var posts Post
+	err := dao.Where("id = ?", postId).First(&posts).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &posts, nil
+}

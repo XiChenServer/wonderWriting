@@ -171,6 +171,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/whether/collect_post",
 				Handler: community.WhetherCollectPostHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/view/post_details",
+				Handler: community.ViewPostDetailsHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/community"),

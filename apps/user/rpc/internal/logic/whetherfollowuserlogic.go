@@ -32,7 +32,7 @@ var ErrNotFollow = errors.New("用户未关注该用户")
 func (l *WhetherFollowUserLogic) WhetherFollowUser(in *user.WhetherFollowUserRequest) (*user.WhetherFollowUserResponse, error) {
 	// todo: add your logic here and delete this line
 	// todo: add your logic here and delete this line
-	err := (&model.Follow{}).WhetherLikedPost(l.svcCtx.DB, uint(in.OtherId), uint(in.UserId))
+	err := (&model.Follow{}).WhetherFollowPeople(l.svcCtx.DB, uint(in.OtherId), uint(in.UserId))
 	if err != nil {
 		// 如果错误是由于用户未关注该帖子引起的，返回特定的错误信息
 		if errors.Is(err, ErrNotFollow) {

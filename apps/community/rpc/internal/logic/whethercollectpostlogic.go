@@ -31,7 +31,7 @@ var ErrNotCollect = errors.New("用户未收藏该帖子")
 // WhetherCollectPost 用户是否收藏帖子
 func (l *WhetherCollectPostLogic) WhetherCollectPost(in *community.WhetherCollectPostRequest) (*community.WhetherCollectPostResponse, error) {
 	// todo: add your logic here and delete this line
-	err := (&model.Like{}).WhetherCollectPost(l.svcCtx.DB, uint(in.PostId), uint(in.UserId))
+	err := (&model.Collect{}).WhetherCollectPost(l.svcCtx.DB, uint(in.PostId), uint(in.UserId))
 	if err != nil {
 		// 如果错误是由于用户未关注该帖子引起的，返回特定的错误信息
 		if errors.Is(err, ErrNotCollect) {
