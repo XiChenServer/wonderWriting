@@ -132,4 +132,9 @@ type (
         TotalPage   uint32     `json:"total_page"`
         TotalCount  uint64     `json:"total_count"`
     }
+    WhetherFollowUserRequest{
+        OtherId uint32 `json:"other_id"`
+    }
+    WhetherFollowUserResponse{
+    }
 )

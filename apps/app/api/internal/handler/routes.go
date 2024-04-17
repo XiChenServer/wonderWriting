@@ -88,6 +88,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/look/all_fans",
 				Handler: user.LookAllFansHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/whether/follow_post",
+				Handler: user.WhetherFollowUserHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/user"),
@@ -155,6 +160,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/cancel/collect",
 				Handler: community.CancelCollectPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/whether/like_post",
+				Handler: community.WhetherLikePostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/whether/collect_post",
+				Handler: community.WhetherCollectPostHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

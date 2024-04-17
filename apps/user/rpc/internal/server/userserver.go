@@ -85,3 +85,9 @@ func (s *UserServer) LookAllFollow(ctx context.Context, in *user.LookAllFollowRe
 	l := logic.NewLookAllFollowLogic(ctx, s.svcCtx)
 	return l.LookAllFollow(in)
 }
+
+// 用户是否关注其他人
+func (s *UserServer) WhetherFollowUser(ctx context.Context, in *user.WhetherFollowUserRequest) (*user.WhetherFollowUserResponse, error) {
+	l := logic.NewWhetherFollowUserLogic(ctx, s.svcCtx)
+	return l.WhetherFollowUser(in)
+}

@@ -38,6 +38,8 @@ type (
 	UserModPwdResponse        = user.UserModPwdResponse
 	UserRegisterRequest       = user.UserRegisterRequest
 	UserRegisterResponse      = user.UserRegisterResponse
+	WhetherFollowUserRequest  = user.WhetherFollowUserRequest
+	WhetherFollowUserResponse = user.WhetherFollowUserResponse
 
 	User interface {
 		Login(ctx context.Context, in *UserLoginRequest, opts ...grpc.CallOption) (*UserLoginResponse, error)
@@ -56,6 +58,8 @@ type (
 		LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error)
 		// 用户查看自己的关注
 		LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error)
+		// 用户是否关注其他人
+		WhetherFollowUser(ctx context.Context, in *WhetherFollowUserRequest, opts ...grpc.CallOption) (*WhetherFollowUserResponse, error)
 	}
 
 	defaultUser struct {
@@ -131,4 +135,10 @@ func (m *defaultUser) LookAllFans(ctx context.Context, in *LookAllFansRequest, o
 func (m *defaultUser) LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.LookAllFollow(ctx, in, opts...)
+}
+
+// 用户是否关注其他人
+func (m *defaultUser) WhetherFollowUser(ctx context.Context, in *WhetherFollowUserRequest, opts ...grpc.CallOption) (*WhetherFollowUserResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.WhetherFollowUser(ctx, in, opts...)
 }

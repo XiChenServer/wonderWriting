@@ -139,6 +139,20 @@ type LookCommentResponse struct {
 	TotalCount  uint64         `json:"total_count"`
 }
 
+type WhetherLikePostRequest struct {
+	OtherId uint32 `json:"other_id"`
+}
+
+type WhetherLikePostResponse struct {
+}
+
+type WhetherCollectPostRequest struct {
+	OtherId uint32 `json:"other_id"`
+}
+
+type WhetherCollectPostResponse struct {
+}
+
 type VerificationRequest struct {
 	Email string `json:"email"`
 }
@@ -269,6 +283,13 @@ type LookAllFansResponse struct {
 	Overflow    bool               `json:"overflow"`
 	TotalPage   uint32             `json:"total_page"`
 	TotalCount  uint64             `json:"total_count"`
+}
+
+type WhetherFollowUserRequest struct {
+	OtherId uint32 `json:"other_id"`
+}
+
+type WhetherFollowUserResponse struct {
 }
 
 type UserPopularInfo struct {

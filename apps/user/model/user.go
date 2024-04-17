@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -162,4 +163,17 @@ func (m *Follow) LookAllFans(db *gorm.DB, userID uint) (*[]Follow, error) {
 		return nil, err
 	}
 	return &fans, nil
+}
+
+// WhetherLikedPost 用户是否关注一个人
+func (*Follow) WhetherLikedPost(DB *gorm.DB, otherId, userID uint) error {
+	var like Follow
+	err := DB.Where("followed_user_id = ? AND follower_user_id = ?", otherId, userID).First(&like).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("用户未关注该用户")
+		}
+		return err
+	}
+	return nil
 }

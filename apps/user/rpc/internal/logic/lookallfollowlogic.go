@@ -2,6 +2,7 @@ package logic
 
 import (
 	userModel "calligraphy/apps/user/model"
+	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -51,7 +52,7 @@ func (l *LookAllFollowLogic) LookAllFollow(in *user.LookAllFollowRequest) (*user
 		}
 		newUserInfo := user.UserInfo{
 			UserId:           uint32(userinfo.UserID),
-			AvatarBackground: userinfo.AvatarBackground,
+			AvatarBackground: qiniu.ImgUrl + userinfo.AvatarBackground,
 			NickName:         userinfo.Nickname,
 			FollowCount:      int64(userinfo.FollowCount),
 			FansCount:        int64(userinfo.FansCount),

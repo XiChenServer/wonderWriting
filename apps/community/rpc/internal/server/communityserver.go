@@ -80,3 +80,20 @@ func (s *CommunityServer) LookComment(ctx context.Context, in *community.LookCom
 	l := logic.NewLookCommentLogic(ctx, s.svcCtx)
 	return l.LookComment(in)
 }
+
+// 用户是否点赞帖子
+func (s *CommunityServer) WhetherLikePost(ctx context.Context, in *community.WhetherLikePostRequest) (*community.WhetherLikePostResponse, error) {
+	l := logic.NewWhetherLikePostLogic(ctx, s.svcCtx)
+	return l.WhetherLikePost(in)
+}
+
+// 用户是否收藏帖子
+func (s *CommunityServer) WhetherCollectPost(ctx context.Context, in *community.WhetherCollectPostRequest) (*community.WhetherCollectPostResponse, error) {
+	l := logic.NewWhetherCollectPostLogic(ctx, s.svcCtx)
+	return l.WhetherCollectPost(in)
+}
+
+func (s *CommunityServer) ViewPostDetails(ctx context.Context, in *community.ViewPostDetailsRequest) (*community.ViewPostDetailsResponse, error) {
+	l := logic.NewViewPostDetailsLogic(ctx, s.svcCtx)
+	return l.ViewPostDetails(in)
+}

@@ -30,6 +30,9 @@ const (
 	Community_CommunityLookPostByOwn_FullMethodName = "/community.Community/CommunityLookPostByOwn"
 	Community_CommunityLookAllPosts_FullMethodName  = "/community.Community/CommunityLookAllPosts"
 	Community_LookComment_FullMethodName            = "/community.Community/LookComment"
+	Community_WhetherLikePost_FullMethodName        = "/community.Community/WhetherLikePost"
+	Community_WhetherCollectPost_FullMethodName     = "/community.Community/WhetherCollectPost"
+	Community_ViewPostDetails_FullMethodName        = "/community.Community/ViewPostDetails"
 )
 
 // CommunityClient is the client API for Community service.
@@ -51,6 +54,11 @@ type CommunityClient interface {
 	CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error)
 	// 查看帖子的评论
 	LookComment(ctx context.Context, in *LookCommentRequest, opts ...grpc.CallOption) (*LookCommentResponse, error)
+	// 用户是否点赞帖子
+	WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error)
+	// 用户是否收藏帖子
+	WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error)
+	ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error)
 }
 
 type communityClient struct {
@@ -160,6 +168,33 @@ func (c *communityClient) LookComment(ctx context.Context, in *LookCommentReques
 	return out, nil
 }
 
+func (c *communityClient) WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error) {
+	out := new(WhetherLikePostResponse)
+	err := c.cc.Invoke(ctx, Community_WhetherLikePost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *communityClient) WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error) {
+	out := new(WhetherCollectPostResponse)
+	err := c.cc.Invoke(ctx, Community_WhetherCollectPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *communityClient) ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error) {
+	out := new(ViewPostDetailsResponse)
+	err := c.cc.Invoke(ctx, Community_ViewPostDetails_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommunityServer is the server API for Community service.
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
@@ -179,6 +214,11 @@ type CommunityServer interface {
 	CommunityLookAllPosts(context.Context, *CommunityLookAllPostsRequest) (*CommunityLookAllPostsResponse, error)
 	// 查看帖子的评论
 	LookComment(context.Context, *LookCommentRequest) (*LookCommentResponse, error)
+	// 用户是否点赞帖子
+	WhetherLikePost(context.Context, *WhetherLikePostRequest) (*WhetherLikePostResponse, error)
+	// 用户是否收藏帖子
+	WhetherCollectPost(context.Context, *WhetherCollectPostRequest) (*WhetherCollectPostResponse, error)
+	ViewPostDetails(context.Context, *ViewPostDetailsRequest) (*ViewPostDetailsResponse, error)
 	mustEmbedUnimplementedCommunityServer()
 }
 
@@ -218,6 +258,15 @@ func (UnimplementedCommunityServer) CommunityLookAllPosts(context.Context, *Comm
 }
 func (UnimplementedCommunityServer) LookComment(context.Context, *LookCommentRequest) (*LookCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LookComment not implemented")
+}
+func (UnimplementedCommunityServer) WhetherLikePost(context.Context, *WhetherLikePostRequest) (*WhetherLikePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhetherLikePost not implemented")
+}
+func (UnimplementedCommunityServer) WhetherCollectPost(context.Context, *WhetherCollectPostRequest) (*WhetherCollectPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhetherCollectPost not implemented")
+}
+func (UnimplementedCommunityServer) ViewPostDetails(context.Context, *ViewPostDetailsRequest) (*ViewPostDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewPostDetails not implemented")
 }
 func (UnimplementedCommunityServer) mustEmbedUnimplementedCommunityServer() {}
 
@@ -430,6 +479,60 @@ func _Community_LookComment_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Community_WhetherLikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhetherLikePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).WhetherLikePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_WhetherLikePost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).WhetherLikePost(ctx, req.(*WhetherLikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Community_WhetherCollectPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhetherCollectPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).WhetherCollectPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_WhetherCollectPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).WhetherCollectPost(ctx, req.(*WhetherCollectPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Community_ViewPostDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewPostDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).ViewPostDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_ViewPostDetails_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).ViewPostDetails(ctx, req.(*ViewPostDetailsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Community_ServiceDesc is the grpc.ServiceDesc for Community service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -480,6 +583,18 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LookComment",
 			Handler:    _Community_LookComment_Handler,
+		},
+		{
+			MethodName: "WhetherLikePost",
+			Handler:    _Community_WhetherLikePost_Handler,
+		},
+		{
+			MethodName: "WhetherCollectPost",
+			Handler:    _Community_WhetherCollectPost_Handler,
+		},
+		{
+			MethodName: "ViewPostDetails",
+			Handler:    _Community_ViewPostDetails_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -160,3 +160,15 @@ type LookCommentResponse{
     TotalPage   uint32     `json:"total_page"`
     TotalCount  uint64     `json:"total_count"`
 }
+
+//是否点赞帖子
+type WhetherLikePostRequest{
+    OtherId uint32 `json:"other_id"`
+}
+type WhetherLikePostResponse{}
+
+//是否收藏帖子
+type WhetherCollectPostRequest{
+    OtherId uint32 `json:"other_id"`
+}
+type WhetherCollectPostResponse{}

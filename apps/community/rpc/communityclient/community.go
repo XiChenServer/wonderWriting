@@ -37,7 +37,14 @@ type (
 	LookCommentRequest                 = community.LookCommentRequest
 	LookCommentResponse                = community.LookCommentResponse
 	PostInfo                           = community.PostInfo
+	StatusWithPost                     = community.StatusWithPost
 	UserSimpleInfo                     = community.UserSimpleInfo
+	ViewPostDetailsRequest             = community.ViewPostDetailsRequest
+	ViewPostDetailsResponse            = community.ViewPostDetailsResponse
+	WhetherCollectPostRequest          = community.WhetherCollectPostRequest
+	WhetherCollectPostResponse         = community.WhetherCollectPostResponse
+	WhetherLikePostRequest             = community.WhetherLikePostRequest
+	WhetherLikePostResponse            = community.WhetherLikePostResponse
 
 	Community interface {
 		// 定义点赞服务
@@ -55,6 +62,11 @@ type (
 		CommunityLookAllPosts(ctx context.Context, in *CommunityLookAllPostsRequest, opts ...grpc.CallOption) (*CommunityLookAllPostsResponse, error)
 		// 查看帖子的评论
 		LookComment(ctx context.Context, in *LookCommentRequest, opts ...grpc.CallOption) (*LookCommentResponse, error)
+		// 用户是否点赞帖子
+		WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error)
+		// 用户是否收藏帖子
+		WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error)
+		ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error)
 	}
 
 	defaultCommunity struct {
@@ -125,4 +137,21 @@ func (m *defaultCommunity) CommunityLookAllPosts(ctx context.Context, in *Commun
 func (m *defaultCommunity) LookComment(ctx context.Context, in *LookCommentRequest, opts ...grpc.CallOption) (*LookCommentResponse, error) {
 	client := community.NewCommunityClient(m.cli.Conn())
 	return client.LookComment(ctx, in, opts...)
+}
+
+// 用户是否点赞帖子
+func (m *defaultCommunity) WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.WhetherLikePost(ctx, in, opts...)
+}
+
+// 用户是否收藏帖子
+func (m *defaultCommunity) WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.WhetherCollectPost(ctx, in, opts...)
+}
+
+func (m *defaultCommunity) ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.ViewPostDetails(ctx, in, opts...)
 }

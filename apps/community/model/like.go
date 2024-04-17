@@ -3,6 +3,7 @@ package model
 import (
 	"calligraphy/apps/user/model"
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -91,4 +92,17 @@ func (*Like) CancelLikePost(DB *gorm.DB, likeID, postID, userID uint) error {
 	})
 
 	return err
+}
+
+// WhetherLikedPost 用户是否点赞了该帖子
+func (*Like) WhetherLikedPost(DB *gorm.DB, postID, userID uint) error {
+	var like Like
+	err := DB.Where("post_id = ? AND user_id = ?", postID, userID).First(&like).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return fmt.Errorf("用户未点赞该帖子")
+		}
+		return err
+	}
+	return nil
 }

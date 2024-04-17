@@ -62,6 +62,10 @@ service App{
 	//用户查看自己的粉丝
 	@handler LookAllFans
 	post /look/all_fans(LookAllFansRequest) returns (LookAllFansResponse)
+	// 是否关注用户
+	@doc "是否关注用户"
+	@handler WhetherFollowUser
+	post /whether/follow_post(WhetherFollowUserRequest) returns (WhetherFollowUserResponse)
 }
 
 //=====================================> communoty <=======================================
@@ -133,6 +137,16 @@ service App{
 	@doc "取消收藏请求"
 	@handler CancelCollectPost
 	post /cancel/collect(CancelCollectPostRequest) returns (CancelCollectPostResponse)
+
+	// 是否点赞帖子
+	@doc "是否点赞帖子"
+	@handler WhetherLikePost
+	post /whether/like_post(WhetherLikePostRequest) returns (WhetherLikePostResponse)
+
+	// 是否收藏帖子
+	@doc "是否收藏帖子"
+	@handler WhetherCollectPost
+	post /whether/collect_post(WhetherCollectPostRequest) returns (WhetherCollectPostResponse)
 }
 
 //=====================================> home <=======================================

@@ -192,6 +192,40 @@ message CommunityCancelContentPostRequest{
 message CommunityCancelContentPostResponse{
 
 }
+//用户是否点赞帖子
+message WhetherLikePostRequest{
+  uint32 user_id = 1;
+  uint32 post_id = 2;
+}
+message WhetherLikePostResponse{
+
+}
+//用户是否收藏帖子
+message WhetherCollectPostRequest{
+  uint32 user_id = 1;
+  uint32 post_id = 2;
+}
+message WhetherCollectPostResponse{
+
+}
+
+
+//用户查看某一个帖子的具体
+message ViewPostDetailsRequest{
+  uint32 user_id = 1;
+  uint32 post_id = 2;
+}
+message ViewPostDetailsResponse{
+  // 帖子信息列表
+  PostInfo post_data = 1;
+  StatusWithPost related_status = 2;
+}
+// 与帖子的相关状态
+message StatusWithPost{
+  bool whether_like = 1;
+  bool whether_collect = 2;
+  bool whether_follow = 3;
+}
 
 // 定义社区服务
 service Community {
@@ -218,6 +252,14 @@ service Community {
   //查看帖子的评论
   rpc LookComment(LookCommentRequest) returns (LookCommentResponse);
 
+  //用户是否点赞帖子
+  rpc WhetherLikePost(WhetherLikePostRequest) returns (WhetherLikePostResponse);
+
+  //用户是否收藏帖子
+  rpc WhetherCollectPost(WhetherCollectPostRequest) returns (WhetherCollectPostResponse);
+
+
+  rpc ViewPostDetails(ViewPostDetailsRequest) returns (ViewPostDetailsResponse);
 }
 
 //  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

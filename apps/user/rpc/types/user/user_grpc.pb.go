@@ -31,6 +31,7 @@ const (
 	User_UserCancelFollow_FullMethodName  = "/user.User/UserCancelFollow"
 	User_LookAllFans_FullMethodName       = "/user.User/LookAllFans"
 	User_LookAllFollow_FullMethodName     = "/user.User/LookAllFollow"
+	User_WhetherFollowUser_FullMethodName = "/user.User/WhetherFollowUser"
 )
 
 // UserClient is the client API for User service.
@@ -53,6 +54,8 @@ type UserClient interface {
 	LookAllFans(ctx context.Context, in *LookAllFansRequest, opts ...grpc.CallOption) (*LookAllFansResponse, error)
 	// 用户查看自己的关注
 	LookAllFollow(ctx context.Context, in *LookAllFollowRequest, opts ...grpc.CallOption) (*LookAllFollowResponse, error)
+	// 用户是否关注其他人
+	WhetherFollowUser(ctx context.Context, in *WhetherFollowUserRequest, opts ...grpc.CallOption) (*WhetherFollowUserResponse, error)
 }
 
 type userClient struct {
@@ -171,6 +174,15 @@ func (c *userClient) LookAllFollow(ctx context.Context, in *LookAllFollowRequest
 	return out, nil
 }
 
+func (c *userClient) WhetherFollowUser(ctx context.Context, in *WhetherFollowUserRequest, opts ...grpc.CallOption) (*WhetherFollowUserResponse, error) {
+	out := new(WhetherFollowUserResponse)
+	err := c.cc.Invoke(ctx, User_WhetherFollowUser_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -191,6 +203,8 @@ type UserServer interface {
 	LookAllFans(context.Context, *LookAllFansRequest) (*LookAllFansResponse, error)
 	// 用户查看自己的关注
 	LookAllFollow(context.Context, *LookAllFollowRequest) (*LookAllFollowResponse, error)
+	// 用户是否关注其他人
+	WhetherFollowUser(context.Context, *WhetherFollowUserRequest) (*WhetherFollowUserResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -233,6 +247,9 @@ func (UnimplementedUserServer) LookAllFans(context.Context, *LookAllFansRequest)
 }
 func (UnimplementedUserServer) LookAllFollow(context.Context, *LookAllFollowRequest) (*LookAllFollowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LookAllFollow not implemented")
+}
+func (UnimplementedUserServer) WhetherFollowUser(context.Context, *WhetherFollowUserRequest) (*WhetherFollowUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WhetherFollowUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -463,6 +480,24 @@ func _User_LookAllFollow_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_WhetherFollowUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WhetherFollowUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).WhetherFollowUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_WhetherFollowUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).WhetherFollowUser(ctx, req.(*WhetherFollowUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -517,6 +552,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LookAllFollow",
 			Handler:    _User_LookAllFollow_Handler,
+		},
+		{
+			MethodName: "WhetherFollowUser",
+			Handler:    _User_WhetherFollowUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
