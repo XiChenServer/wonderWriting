@@ -27,7 +27,7 @@ func NewCancelCollectPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *CancelCollectPostLogic) CancelCollectPost(in *community.CommunityCancelCollectPostRequest) (*community.CommunityCancelCollectPostResponse, error) {
 	// todo: add your logic here and delete this line
 	Operations := &model.Collect{}
-	err := Operations.CancelCollectPost(l.svcCtx.DB, uint(in.CollectId), uint(in.PostId))
+	err := Operations.CancelCollectPost(l.svcCtx.DB, uint(in.UserId), uint(in.PostId))
 	if err != nil {
 		return nil, err
 	}

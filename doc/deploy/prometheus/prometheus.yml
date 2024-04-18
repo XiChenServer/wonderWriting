@@ -55,7 +55,7 @@ scrape_configs:
 
       - targets: ['192.168.0.146:14003']
         labels:
-          app: 'group-api'
+          app: 'grow-api'
           env: 'test'
 
       - targets: ['192.168.0.146:14004']

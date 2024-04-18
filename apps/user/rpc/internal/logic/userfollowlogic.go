@@ -51,7 +51,7 @@ func (l *UserFollowLogic) UserFollow(in *user.UserFollowRequest) (*user.UserFoll
 	}
 
 	// 检查是否已经关注了该用户
-	existingFollow, err := (&model.Follow{}).FindOneByFollowerAndFollowed(tx, uint(in.OtherId), followedUser.UserID)
+	existingFollow, err := (&model.Follow{}).FindOneByFollowerAndFollowed(tx, uint(in.OtherId), uint(in.UserId))
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (l *UserFollowLogic) UserFollow(in *user.UserFollowRequest) (*user.UserFoll
 	// 创建关注记录
 	newFollow := &model.Follow{
 		FollowerUserID: uint(in.UserId),
-		FollowedUserID: followedUser.UserID,
+		FollowedUserID: uint(in.OtherId),
 	}
 	if err := newFollow.CreateUserFollow(tx, newFollow); err != nil {
 		return nil, err

@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 
-	"calligraphy/apps/group/rpc/internal/config"
-	"calligraphy/apps/group/rpc/internal/server"
-	"calligraphy/apps/group/rpc/internal/svc"
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/internal/config"
+	"calligraphy/apps/grow/rpc/internal/server"
+	"calligraphy/apps/grow/rpc/internal/svc"
+	"calligraphy/apps/grow/rpc/types/grow"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/group.yaml", "the config file")
+var configFile = flag.String("f", "etc/grow.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -26,7 +26,7 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		group.RegisterGroupServer(grpcServer, server.NewGroupServer(ctx))
+		grow.RegisterGrowServer(grpcServer, server.NewGrowServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)

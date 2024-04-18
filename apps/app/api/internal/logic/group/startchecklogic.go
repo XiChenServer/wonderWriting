@@ -1,7 +1,7 @@
 package group
 
 import (
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/types/grow"
 	"context"
 	"encoding/json"
 
@@ -29,7 +29,7 @@ func (l *StartCheckLogic) StartCheck(req *types.StartCheckRequest) (resp *types.
 	// todo: add your logic here and delete this line
 	//从jwt获取id
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	res, err := l.svcCtx.GroupRpc.StartCheck(l.ctx, &group.StartCheckRequest{UserId: uint32(uid)})
+	res, err := l.svcCtx.GrowRpc.StartCheck(l.ctx, &grow.StartCheckRequest{UserId: uint32(uid)})
 	if err != nil {
 		return nil, err
 	}

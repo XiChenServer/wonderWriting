@@ -108,8 +108,7 @@ type CollectPostResponse struct {
 }
 
 type CancelCollectPostRequest struct {
-	PostId    uint `json:"post_id"`
-	CollectId uint `json:"collect_id"`
+	PostId uint `json:"post_id"`
 }
 
 type CancelCollectPostResponse struct {
@@ -248,14 +247,14 @@ type UserModInfoResponse struct {
 }
 
 type UserFollowRequest struct {
-	OtherId uint32 `json:"other_id"`
+	UserId uint32 `json:"user_id"`
 }
 
 type UserFollowResponse struct {
 }
 
 type UserCancelFollowRequest struct {
-	OtherId uint32 `json:"other_id"`
+	UserId uint32 `json:"user_id"`
 }
 
 type UserCancelFollowResponse struct {

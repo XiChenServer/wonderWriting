@@ -2,7 +2,7 @@ import (
 	"apis/community.api"
 	"apis/user.api"
 	"apis/home.api"
-	"apis/group.api"
+	"apis/grow.api"
 	"apis/activity.api"
 )
 
@@ -172,7 +172,7 @@ service App{
 	post /post/popularity/rankings(PostPopularityRankingsRequest) returns (PostPopularityRankingsResponse)
 }
 
-//=====================================> group <=======================================
+//=====================================> grow <=======================================
 //need login
 
 @server (

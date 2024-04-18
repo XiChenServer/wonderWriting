@@ -1,15 +1,15 @@
 package logic
 
 import (
-	groupModel "calligraphy/apps/group/model"
+	groupModel "calligraphy/apps/grow/model"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
 
-	"calligraphy/apps/group/rpc/internal/svc"
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/internal/svc"
+	"calligraphy/apps/grow/rpc/types/grow"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -29,7 +29,7 @@ func NewLookRecordByUserIdLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 }
 
 // LookRecordByUserId 查看某人的书法记录（带缓存和分页）
-func (l *LookRecordByUserIdLogic) LookRecordByUserId(in *group.LookRecordByUserIdRequest) (*group.LookRecordByUserIdResponse, error) {
+func (l *LookRecordByUserIdLogic) LookRecordByUserId(in *grow.LookRecordByUserIdRequest) (*grow.LookRecordByUserIdResponse, error) {
 	// 构建缓存键
 	cacheKey := fmt.Sprintf("user_records:%d:%d:%d", in.UserId, in.Page, in.PageSize)
 
@@ -52,7 +52,7 @@ func (l *LookRecordByUserIdLogic) LookRecordByUserId(in *group.LookRecordByUserI
 	}
 
 	// 构建并返回记录信息响应
-	resp := &group.LookRecordByUserIdResponse{
+	resp := &grow.LookRecordByUserIdResponse{
 		RecordInfo:  recordInfo,
 		CurrentPage: in.Page,
 		PageSize:    in.PageSize,
@@ -72,7 +72,7 @@ func (l *LookRecordByUserIdLogic) LookRecordByUserId(in *group.LookRecordByUserI
 	return resp, nil
 }
 
-func getRecordsByUser(db *gorm.DB, userId uint32, page, pageSize int) ([]*group.RecordSimpleInfo, int64, error) {
+func getRecordsByUser(db *gorm.DB, userId uint32, page, pageSize int) ([]*grow.RecordSimpleInfo, int64, error) {
 	var res []groupModel.RecordContent
 
 	if pageSize <= 0 {
@@ -93,7 +93,7 @@ func getRecordsByUser(db *gorm.DB, userId uint32, page, pageSize int) ([]*group.
 	}
 
 	if totalCount == 0 {
-		return []*group.RecordSimpleInfo{}, 0, nil
+		return []*grow.RecordSimpleInfo{}, 0, nil
 	}
 
 	// 计算总页数
@@ -105,11 +105,11 @@ func getRecordsByUser(db *gorm.DB, userId uint32, page, pageSize int) ([]*group.
 	// 其他分页和数据获取逻辑...
 
 	// 构建用于返回的记录信息切片
-	var recordInfo []*group.RecordSimpleInfo
+	var recordInfo []*grow.RecordSimpleInfo
 
 	// 遍历查询到的记录信息
 	for _, v := range res {
-		newRecord := &group.RecordSimpleInfo{
+		newRecord := &grow.RecordSimpleInfo{
 			RecordId:   uint32(v.ID),
 			UserId:     uint32(v.UserID),
 			Content:    v.Content,
@@ -125,13 +125,13 @@ func getRecordsByUser(db *gorm.DB, userId uint32, page, pageSize int) ([]*group.
 }
 
 // 从缓存中获取数据
-func getFromCacheForRecords(l *LookRecordByUserIdLogic, key string) (*group.LookRecordByUserIdResponse, error) {
+func getFromCacheForRecords(l *LookRecordByUserIdLogic, key string) (*grow.LookRecordByUserIdResponse, error) {
 	val, err := l.svcCtx.RDB.GetCtx(l.ctx, key)
 	if err != nil {
 		return nil, err
 	}
 
-	var data group.LookRecordByUserIdResponse
+	var data grow.LookRecordByUserIdResponse
 	err = json.Unmarshal([]byte(val), &data)
 	if err != nil {
 		return nil, err

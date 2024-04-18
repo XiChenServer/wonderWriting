@@ -1,9 +1,9 @@
-Name: group.rpc
+Name: grow.rpc
 ListenOn: 0.0.0.0:11003
 Etcd:
   Hosts:
-  - 127.0.0.1:2379
-  Key: group.rpc
+    - 127.0.0.1:2379
+  Key: grow.rpc
 
 
 
@@ -33,7 +33,7 @@ Prometheus:
   Path: /metrics
 
 Telemetry:
-  Name: group.rpc
+  Name: grow.rpc
   Endpoint: http://jaeger:14268/api/traces
   Sampler: 1.0
   Batcher: jaeger

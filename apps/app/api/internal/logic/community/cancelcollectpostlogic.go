@@ -28,7 +28,7 @@ func NewCancelCollectPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *CancelCollectPostLogic) CancelCollectPost(req *types.CancelCollectPostRequest) (resp *types.CancelCollectPostResponse, err error) {
 	// todo: add your logic here and delete this line
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	_, err = l.svcCtx.CommunityRpc.CancelCollectPost(l.ctx, &community.CommunityCancelCollectPostRequest{PostId: uint32(req.PostId), UserId: uint32(uid), CollectId: uint32(req.CollectId)})
+	_, err = l.svcCtx.CommunityRpc.CancelCollectPost(l.ctx, &community.CommunityCancelCollectPostRequest{PostId: uint32(req.PostId), UserId: uint32(uid)})
 	if err != nil {
 		return &types.CancelCollectPostResponse{}, err
 	}

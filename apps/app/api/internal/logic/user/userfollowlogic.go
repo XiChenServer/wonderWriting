@@ -31,7 +31,7 @@ func (l *UserFollowLogic) UserFollow(req *types.UserFollowRequest) (resp *types.
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	_, err = l.svcCtx.UserRpc.UserFollow(l.ctx, &user.UserFollowRequest{
 		UserId:  uint32(uid),
-		OtherId: req.OtherId,
+		OtherId: req.UserId,
 	})
 	if err != nil {
 		return &types.UserFollowResponse{}, err

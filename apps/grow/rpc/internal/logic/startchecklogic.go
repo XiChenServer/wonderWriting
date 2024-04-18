@@ -1,9 +1,9 @@
 package logic
 
 import (
-	groupModel "calligraphy/apps/group/model"
-	"calligraphy/apps/group/rpc/internal/svc"
-	"calligraphy/apps/group/rpc/types/group"
+	groupModel "calligraphy/apps/grow/model"
+	"calligraphy/apps/grow/rpc/internal/svc"
+	"calligraphy/apps/grow/rpc/types/grow"
 	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -24,7 +24,7 @@ func NewStartCheckLogic(ctx context.Context, svcCtx *svc.ServiceContext) *StartC
 }
 
 // 开启签到
-func (l *StartCheckLogic) StartCheck(in *group.StartCheckRequest) (*group.StartCheckResponse, error) {
+func (l *StartCheckLogic) StartCheck(in *grow.StartCheckRequest) (*grow.StartCheckResponse, error) {
 	// todo: add your logic here and delete this line
 	//在model层进行创建
 	res, err := (&groupModel.CheckIn{}).CreateCheckIn(l.svcCtx.DB, uint(in.UserId))
@@ -32,7 +32,7 @@ func (l *StartCheckLogic) StartCheck(in *group.StartCheckRequest) (*group.StartC
 		return nil, err
 	}
 	//将数据返回
-	return &group.StartCheckResponse{
+	return &grow.StartCheckResponse{
 		CheckId:         uint32(res.ID),
 		UserId:          uint32(res.UserID),
 		ContinuousDays:  res.ContinuousDays,

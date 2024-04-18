@@ -51,7 +51,7 @@ func (l *UserCancelFollowLogic) UserCancelFollow(in *user.UserCancelFollowReques
 	}
 
 	// 检查是否已经关注了该用户
-	existingFollow, err := (&model.Follow{}).FindOneByFollowerAndFollowed(tx, uint(in.OtherId), followedUser.UserID)
+	existingFollow, err := (&model.Follow{}).FindOneByFollowerAndFollowed(tx, uint(in.OtherId), uint(in.UserId))
 	if err != nil {
 		return nil, err
 	}

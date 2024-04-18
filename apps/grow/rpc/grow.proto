@@ -1,6 +1,6 @@
 syntax = "proto3";
 package group;
-option go_package = "./group";
+option go_package = "./grow";
 
 // 开启打卡记录
 message StartCheckRequest {
@@ -65,8 +65,19 @@ message CheckPunchCardModelRequest {
 message CheckPunchCardModelResponse {
   bool data = 1;
 }
+//进行打卡
+message CheckInRequest{
+  uint32 user_id = 1;
+  string content = 2;
+  string image = 3;
+  float score = 4;
 
-service Group {
+}
+message CheckInResponse{
+  RecordSimpleInfo record_info = 1;
+}
+
+service Grow {
   // 开启签到
   rpc StartCheck(StartCheckRequest) returns (StartCheckResponse);
   // 上传书法记录
@@ -75,6 +86,8 @@ service Group {
   rpc LookRecordByUserId(LookRecordByUserIdRequest) returns (LookRecordByUserIdResponse);
   //检查打卡模式是否开启
   rpc CheckPunchCardModel(CheckPunchCardModelRequest) returns (CheckPunchCardModelResponse);
+  // 进行打卡
+  rpc CheckIn(CheckInRequest) returns (CheckInResponse);
 }
 
 

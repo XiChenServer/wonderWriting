@@ -1,9 +1,11 @@
 package model
 
 import (
+	groupModel "calligraphy/apps/grow/model"
 	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"time"
 )
 
 // User 用户表
@@ -48,7 +50,20 @@ func (m *User) FindOneByEmail(db *gorm.DB, email string) (*User, error) {
 
 // InsertUser 插入用户记录
 func (m *User) InsertUser(db *gorm.DB, user *User) error {
-	return db.Create(user).Error
+	err := db.Create(user).Error
+	if err != nil {
+		return err
+	}
+	checkIn := &groupModel.CheckIn{
+		UserID:          user.UserID,
+		ContinuousDays:  0,          // 设置默认值为0
+		LastCheckInTime: time.Now(), // 设置为当前时间
+	}
+	err = db.Create(checkIn).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // FindOneByAccount 根据账号查询用户
@@ -104,11 +119,11 @@ func (m *User) UpdatePointsGrab(db *gorm.DB, userID uint) error {
 }
 
 // FindOneByFollowerAndFollowed 根据关注者和被关注者查询关注记录
-func (m *Follow) FindOneByFollowerAndFollowed(db *gorm.DB, followerUserID, followedUserID uint) (*Follow, error) {
+func (m *Follow) FindOneByFollowerAndFollowed(db *gorm.DB, followedUserID, followerUserID uint) (*Follow, error) {
 	var follow Follow
-	if err := db.Where("follower_user_id = ? AND followed_user_id = ?", followerUserID, followedUserID).First(&follow).Error; err != nil {
+	if err := db.Where("followed_user_id = ? AND follower_user_id = ?", followedUserID, followerUserID).First(&follow).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil // 没有找到关注记录
+			return nil, nil // 没有找到关注记录follower_user_id
 		}
 		return nil, err // 其他错误
 	}

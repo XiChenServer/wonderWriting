@@ -84,14 +84,14 @@ type (
     }
         // 用户关注
     UserFollowRequest{
-        OtherId uint32  `json:"other_id"`
+        UserId uint32  `json:"user_id"`
     }
     UserFollowResponse{
 
     }
     //用户取消关注
     UserCancelFollowRequest{
-        OtherId uint32  `json:"other_id"`
+        UserId uint32  `json:"user_id"`
     }
     UserCancelFollowResponse{
     }

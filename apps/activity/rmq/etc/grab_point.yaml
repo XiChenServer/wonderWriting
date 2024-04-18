@@ -3,7 +3,7 @@ Kafka:
   Brokers:
     - 127.0.0.1:9092
   Topic: grab_points-topic
-  Group: grab_points-group
+  Group: grab_points-grow
 UserRPC:
   Etcd:
     Hosts:

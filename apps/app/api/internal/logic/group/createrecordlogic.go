@@ -1,7 +1,7 @@
 package group
 
 import (
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/types/grow"
 	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
@@ -61,7 +61,7 @@ func (l *CreateRecordLogic) CreateRecord(r *http.Request) (resp *types.CreateRec
 	}
 
 	//调用rpc获取进行创建
-	res, err := l.svcCtx.GroupRpc.CreateRecord(l.ctx, &group.CreateRecordRequest{
+	res, err := l.svcCtx.GrowRpc.CreateRecord(l.ctx, &grow.CreateRecordRequest{
 		UserId:  uint32(uid),
 		Content: content,
 		Image:   url,

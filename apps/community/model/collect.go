@@ -44,10 +44,10 @@ func (*Collect) CollectPost(DB *gorm.DB, postID, userID uint) (*Collect, error) 
 }
 
 // CancelCollectPost 在数据库中删除收藏记录并原子更新帖子的收藏数量
-func (*Collect) CancelCollectPost(DB *gorm.DB, collectID, postID uint) error {
+func (*Collect) CancelCollectPost(DB *gorm.DB, userID, postID uint) error {
 	// 获取收藏记录
 	var collect Collect
-	if err := DB.Where("id = ? AND post_id = ?", collectID, postID).First(&collect).Error; err != nil {
+	if err := DB.Where("user_id = ? AND post_id = ?", userID, postID).First(&collect).Error; err != nil {
 		return err
 	}
 

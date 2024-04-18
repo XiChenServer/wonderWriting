@@ -34,11 +34,11 @@ HomeRpc:
       - 127.0.0.1:2379
     Key: home.rpc
 
-GroupRpc:
+GrowRpc:
   Etcd:
     Hosts:
       - 127.0.0.1:2379
-    Key: group.rpc
+    Key: grow.rpc
 
 ActivityRpc:
   Etcd:

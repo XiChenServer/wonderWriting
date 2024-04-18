@@ -128,7 +128,6 @@ type CollectPostResponse struct {
 // 取消收藏请求消息
 type CancelCollectPostRequest struct {
     PostId  uint   `json:"post_id"`
-    CollectId uint `json:"collect_id"`
 }
 
 // 取消收藏响应消息

@@ -30,7 +30,7 @@ func (l *UserCancelFollowLogic) UserCancelFollow(req *types.UserCancelFollowRequ
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	_, err = l.svcCtx.UserRpc.UserCancelFollow(l.ctx, &user.UserCancelFollowRequest{
 		UserId:  uint32(uid),
-		OtherId: req.OtherId,
+		OtherId: req.UserId,
 	})
 	if err != nil {
 		return &types.UserCancelFollowResponse{}, err

@@ -46,7 +46,7 @@ func (l *LookAllFansLogic) LookAllFans(in *user.LookAllFansRequest) (*user.LookA
 
 	var userInfo []*user.UserInfo
 	for _, v := range *res {
-		userinfo, err := (&userModel.User{}).FindOne(l.svcCtx.DB, v.FollowedUserID)
+		userinfo, err := (&userModel.User{}).FindOne(l.svcCtx.DB, v.FollowerUserID)
 		if err != nil {
 			return nil, err
 		}

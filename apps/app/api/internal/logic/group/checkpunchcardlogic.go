@@ -1,7 +1,7 @@
 package group
 
 import (
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/types/grow"
 	"context"
 	"encoding/json"
 
@@ -28,7 +28,7 @@ func NewCheckPunchCardLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ch
 func (l *CheckPunchCardLogic) CheckPunchCard(req *types.CheckPunchCardModelRequest) (resp *types.CheckPunchCardModelResponse, err error) {
 	// todo: add your logic here and delete this line
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
-	res, err := l.svcCtx.GroupRpc.CheckPunchCardModel(l.ctx, &group.CheckPunchCardModelRequest{UserId: uint32(uid)})
+	res, err := l.svcCtx.GrowRpc.CheckPunchCardModel(l.ctx, &grow.CheckPunchCardModelRequest{UserId: uint32(uid)})
 	if err != nil {
 		return nil, err
 	}

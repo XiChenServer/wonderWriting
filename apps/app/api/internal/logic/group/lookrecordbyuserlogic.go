@@ -1,7 +1,7 @@
 package group
 
 import (
-	"calligraphy/apps/group/rpc/types/group"
+	"calligraphy/apps/grow/rpc/types/grow"
 	"context"
 
 	"calligraphy/apps/app/api/internal/svc"
@@ -30,7 +30,7 @@ func (l *LookRecordByUserLogic) LookRecordByUser(req *types.LookRecordByUserIdRe
 	if req.PageSize > 0 {
 		pageSize = req.PageSize
 	}
-	res, err := l.svcCtx.GroupRpc.LookRecordByUserId(l.ctx, &group.LookRecordByUserIdRequest{
+	res, err := l.svcCtx.GrowRpc.LookRecordByUserId(l.ctx, &grow.LookRecordByUserIdRequest{
 		UserId:   req.UserId,
 		Page:     req.Page,
 		PageSize: pageSize,

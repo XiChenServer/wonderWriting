@@ -163,7 +163,6 @@ message CommunityCollectPostResponse{
 
 //取消收藏
 message CommunityCancelCollectPostRequest{
-  uint32 CollectId = 1;
   uint32 UserId = 2;
   uint32 PostId = 3;
 }

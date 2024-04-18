@@ -1,8 +1,8 @@
 package svc
 
 import (
-	"calligraphy/apps/group/model"
-	"calligraphy/apps/group/rpc/internal/config"
+	"calligraphy/apps/grow/model"
+	"calligraphy/apps/grow/rpc/internal/config"
 	"calligraphy/apps/user/rpc/userclient"
 	"calligraphy/common/app_redis"
 	"fmt"
