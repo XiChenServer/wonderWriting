@@ -39,7 +39,6 @@ func (l *CheckInLogic) CheckIn(in *grow.CheckInRequest) (*grow.CheckInResponse, 
 	if hasCheckedIn {
 		return nil, errors.New("already checked in today")
 	}
-
 	// 更新打卡信息
 	err = (&groupModel.CheckIn{}).UpdateCheckInInfo(l.svcCtx.DB, userID)
 	if err != nil {
@@ -71,9 +70,8 @@ func (l *CheckInLogic) hasCheckedInToday(userID uint) (bool, error) {
 
 	// 查询用户是否在今天已经打卡过
 	var count int
-	if err := l.svcCtx.DB.Model(&groupModel.CheckIn{}).Where("user_id = ? AND created_at >= ? AND created_at <= ?", userID, todayStart, todayEnd).Count(&count).Error; err != nil {
+	if err := l.svcCtx.DB.Model(&groupModel.CheckIn{}).Where("user_id = ? AND last_check_in_time >= ? AND last_check_in_time <= ?", userID, todayStart, todayEnd).Count(&count).Error; err != nil {
 		return false, err
 	}
-
 	return count > 0, nil
 }

@@ -63,3 +63,8 @@ type CheckPunchCardModelRequest {
 type CheckPunchCardModelResponse {
   Data bool `json:"data"`
 }
+
+
+type CheckInResponse{
+
+}

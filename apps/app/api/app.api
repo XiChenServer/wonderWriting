@@ -176,8 +176,8 @@ service App{
 //need login
 
 @server (
-	prefix: /group
-	group: group
+	prefix: /grow
+	group: grow
 	jwt: Auth
 )
 service App{
@@ -200,6 +200,11 @@ service App{
 	@doc "查看某人的签到是否打开"
 	@handler CheckPunchCard
 	post /check/pubcgcard(CheckPunchCardModelRequest) returns (CheckPunchCardModelResponse)
+	//进行打卡
+	@doc "进行打卡"
+	@handler CheckIn
+	post /check/in() returns (CheckInResponse)
+
 }
 
 //=====================================> activity <=======================================

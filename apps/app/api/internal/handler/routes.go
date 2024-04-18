@@ -6,7 +6,7 @@ import (
 
 	activity "calligraphy/apps/app/api/internal/handler/activity"
 	community "calligraphy/apps/app/api/internal/handler/community"
-	group "calligraphy/apps/app/api/internal/handler/group"
+	grow "calligraphy/apps/app/api/internal/handler/grow"
 	home "calligraphy/apps/app/api/internal/handler/home"
 	user "calligraphy/apps/app/api/internal/handler/user"
 	"calligraphy/apps/app/api/internal/svc"
@@ -202,22 +202,27 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodPost,
 				Path:    "/start/check",
-				Handler: group.StartCheckHandler(serverCtx),
+				Handler: grow.StartCheckHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/create/record",
-				Handler: group.CreateRecordHandler(serverCtx),
+				Handler: grow.CreateRecordHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/look/recordbyuser",
-				Handler: group.LookRecordByUserHandler(serverCtx),
+				Handler: grow.LookRecordByUserHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
 				Path:    "/check/pubcgcard",
-				Handler: group.CheckPunchCardHandler(serverCtx),
+				Handler: grow.CheckPunchCardHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/check/in",
+				Handler: grow.CheckInHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Grow_StartCheck_FullMethodName          = "/group.Grow/StartCheck"
-	Grow_CreateRecord_FullMethodName        = "/group.Grow/CreateRecord"
-	Grow_LookRecordByUserId_FullMethodName  = "/group.Grow/LookRecordByUserId"
-	Grow_CheckPunchCardModel_FullMethodName = "/group.Grow/CheckPunchCardModel"
-	Grow_CheckIn_FullMethodName             = "/group.Grow/CheckIn"
+	Grow_StartCheck_FullMethodName          = "/grow.Grow/StartCheck"
+	Grow_CreateRecord_FullMethodName        = "/grow.Grow/CreateRecord"
+	Grow_LookRecordByUserId_FullMethodName  = "/grow.Grow/LookRecordByUserId"
+	Grow_CheckPunchCardModel_FullMethodName = "/grow.Grow/CheckPunchCardModel"
+	Grow_CheckIn_FullMethodName             = "/grow.Grow/CheckIn"
 )
 
 // GrowClient is the client API for Grow service.
@@ -238,7 +238,7 @@ func _Grow_CheckIn_Handler(srv interface{}, ctx context.Context, dec func(interf
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Grow_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "group.Grow",
+	ServiceName: "grow.Grow",
 	HandlerType: (*GrowServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -14,7 +14,7 @@ type Config struct {
 	UserRpc      zrpc.RpcClientConf
 	CommunityRpc zrpc.RpcClientConf
 	HomeRpc      zrpc.RpcClientConf
-	GroupRpc     zrpc.RpcClientConf
+	GrowRpc      zrpc.RpcClientConf
 	//KqPusherConf struct {
 	//	Brokers []string
 	//	Topic   string

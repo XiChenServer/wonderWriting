@@ -408,6 +408,9 @@ type CheckPunchCardModelResponse struct {
 	Data bool `json:"data"`
 }
 
+type CheckInResponse struct {
+}
+
 type GrabPointsRequest struct {
 }
 

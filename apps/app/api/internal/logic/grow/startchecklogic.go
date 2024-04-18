@@ -1,4 +1,4 @@
-package group
+package grow
 
 import (
 	"calligraphy/apps/grow/rpc/types/grow"

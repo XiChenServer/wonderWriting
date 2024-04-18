@@ -33,7 +33,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		UserRpc:      userclient.NewUser(zrpc.MustNewClient(c.UserRpc)),
 		CommunityRpc: communityclient.NewCommunity(zrpc.MustNewClient(c.CommunityRpc)),
 		HomeRpc:      homeclient.NewHome(zrpc.MustNewClient(c.HomeRpc)),
-		GrowRpc:      growclient.NewGrow(zrpc.MustNewClient(c.GroupRpc)),
+		GrowRpc:      growclient.NewGrow(zrpc.MustNewClient(c.GrowRpc)),
 		Activity:     activityclient.NewActivity(zrpc.MustNewClient(c.ActivityRpc)),
 		//KqPusherClient: kq.NewPusher(c.KqPusherConf.Brokers, c.KqPusherConf.Topic),
 		//ActivityRpc:    activityclient.NewActivity(zrpc.MustNewClient(c.ActivityRpc)),

@@ -862,32 +862,32 @@ func file_rpc_grow_proto_rawDescGZIP() []byte {
 
 var file_rpc_grow_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_rpc_grow_proto_goTypes = []interface{}{
-	(*StartCheckRequest)(nil),           // 0: group.StartCheckRequest
-	(*StartCheckResponse)(nil),          // 1: group.StartCheckResponse
-	(*RecordSimpleInfo)(nil),            // 2: group.RecordSimpleInfo
-	(*CreateRecordRequest)(nil),         // 3: group.CreateRecordRequest
-	(*CreateRecordResponse)(nil),        // 4: group.CreateRecordResponse
-	(*LookRecordByUserIdRequest)(nil),   // 5: group.LookRecordByUserIdRequest
-	(*LookRecordByUserIdResponse)(nil),  // 6: group.LookRecordByUserIdResponse
-	(*CheckPunchCardModelRequest)(nil),  // 7: group.CheckPunchCardModelRequest
-	(*CheckPunchCardModelResponse)(nil), // 8: group.CheckPunchCardModelResponse
-	(*CheckInRequest)(nil),              // 9: group.CheckInRequest
-	(*CheckInResponse)(nil),             // 10: group.CheckInResponse
+	(*StartCheckRequest)(nil),           // 0: grow.StartCheckRequest
+	(*StartCheckResponse)(nil),          // 1: grow.StartCheckResponse
+	(*RecordSimpleInfo)(nil),            // 2: grow.RecordSimpleInfo
+	(*CreateRecordRequest)(nil),         // 3: grow.CreateRecordRequest
+	(*CreateRecordResponse)(nil),        // 4: grow.CreateRecordResponse
+	(*LookRecordByUserIdRequest)(nil),   // 5: grow.LookRecordByUserIdRequest
+	(*LookRecordByUserIdResponse)(nil),  // 6: grow.LookRecordByUserIdResponse
+	(*CheckPunchCardModelRequest)(nil),  // 7: grow.CheckPunchCardModelRequest
+	(*CheckPunchCardModelResponse)(nil), // 8: grow.CheckPunchCardModelResponse
+	(*CheckInRequest)(nil),              // 9: grow.CheckInRequest
+	(*CheckInResponse)(nil),             // 10: grow.CheckInResponse
 }
 var file_rpc_grow_proto_depIdxs = []int32{
-	2,  // 0: group.CreateRecordResponse.record_info:type_name -> group.RecordSimpleInfo
-	2,  // 1: group.LookRecordByUserIdResponse.record_info:type_name -> group.RecordSimpleInfo
-	2,  // 2: group.CheckInResponse.record_info:type_name -> group.RecordSimpleInfo
-	0,  // 3: group.Grow.StartCheck:input_type -> group.StartCheckRequest
-	3,  // 4: group.Grow.CreateRecord:input_type -> group.CreateRecordRequest
-	5,  // 5: group.Grow.LookRecordByUserId:input_type -> group.LookRecordByUserIdRequest
-	7,  // 6: group.Grow.CheckPunchCardModel:input_type -> group.CheckPunchCardModelRequest
-	9,  // 7: group.Grow.CheckIn:input_type -> group.CheckInRequest
-	1,  // 8: group.Grow.StartCheck:output_type -> group.StartCheckResponse
-	4,  // 9: group.Grow.CreateRecord:output_type -> group.CreateRecordResponse
-	6,  // 10: group.Grow.LookRecordByUserId:output_type -> group.LookRecordByUserIdResponse
-	8,  // 11: group.Grow.CheckPunchCardModel:output_type -> group.CheckPunchCardModelResponse
-	10, // 12: group.Grow.CheckIn:output_type -> group.CheckInResponse
+	2,  // 0: grow.CreateRecordResponse.record_info:type_name -> grow.RecordSimpleInfo
+	2,  // 1: grow.LookRecordByUserIdResponse.record_info:type_name -> grow.RecordSimpleInfo
+	2,  // 2: grow.CheckInResponse.record_info:type_name -> grow.RecordSimpleInfo
+	0,  // 3: grow.Grow.StartCheck:input_type -> grow.StartCheckRequest
+	3,  // 4: grow.Grow.CreateRecord:input_type -> grow.CreateRecordRequest
+	5,  // 5: grow.Grow.LookRecordByUserId:input_type -> grow.LookRecordByUserIdRequest
+	7,  // 6: grow.Grow.CheckPunchCardModel:input_type -> grow.CheckPunchCardModelRequest
+	9,  // 7: grow.Grow.CheckIn:input_type -> grow.CheckInRequest
+	1,  // 8: grow.Grow.StartCheck:output_type -> grow.StartCheckResponse
+	4,  // 9: grow.Grow.CreateRecord:output_type -> grow.CreateRecordResponse
+	6,  // 10: grow.Grow.LookRecordByUserId:output_type -> grow.LookRecordByUserIdResponse
+	8,  // 11: grow.Grow.CheckPunchCardModel:output_type -> grow.CheckPunchCardModelResponse
+	10, // 12: grow.Grow.CheckIn:output_type -> grow.CheckInResponse
 	8,  // [8:13] is the sub-list for method output_type
 	3,  // [3:8] is the sub-list for method input_type
 	3,  // [3:3] is the sub-list for extension type_name
