@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -116,6 +117,7 @@ func (*Post) LookPostByOwn(dao *gorm.DB, userId uint) ([]*Post, error) {
 // LookPostByPostId 根据帖子id查询
 func (*Post) LookPostByPostId(dao *gorm.DB, postId uint) (*Post, error) {
 	var posts Post
+	fmt.Println("123", postId)
 	err := dao.Where("id = ?", postId).First(&posts).Error
 	if err != nil {
 		return nil, err

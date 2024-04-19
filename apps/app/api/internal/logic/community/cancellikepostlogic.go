@@ -30,7 +30,6 @@ func (l *CancelLikePostLogic) CancelLikePost(req *types.CancelLikePostRequest) (
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 
 	_, err = l.svcCtx.CommunityRpc.CancelLikePost(l.ctx, &community.CommunityCancelLikePostRequest{
-		LikeId: uint32(req.LikeId),
 		UserId: uint32(uid),
 		PostId: uint32(req.PostId),
 	})

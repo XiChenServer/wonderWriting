@@ -48,7 +48,14 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		}
 
 		logx.WithContext(r.Context()).Errorf("【API-ERR】 : %+v ", err)
-
+		if err.Error() == "rpc error: code = Unknown desc = already checked in today" {
+			httpx.WriteJson(w, http.StatusBadRequest, &Response{
+				Code:    200,
+				Message: "今日已经打开",
+				Data:    resp,
+			})
+			return
+		}
 		httpx.WriteJson(w, http.StatusBadRequest, &Response{
 			Code:    errcode,
 			Message: err.Error(),

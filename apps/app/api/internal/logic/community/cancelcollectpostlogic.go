@@ -1,12 +1,11 @@
 package community
 
 import (
+	"calligraphy/apps/app/api/internal/svc"
+	"calligraphy/apps/app/api/internal/types"
 	"calligraphy/apps/community/rpc/types/community"
 	"context"
 	"encoding/json"
-
-	"calligraphy/apps/app/api/internal/svc"
-	"calligraphy/apps/app/api/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

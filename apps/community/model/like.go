@@ -68,15 +68,41 @@ func (*Like) LikePost(DB *gorm.DB, postID, userID uint) (*Like, error) {
 func (*Like) CancelLikePost(DB *gorm.DB, likeID, postID, userID uint) error {
 	// 获取点赞记录
 	var like Like
-	if err := DB.Where("id = ? AND post_id = ?", likeID, postID).First(&like).Error; err != nil {
+	if err := DB.Where("user_id = ? AND post_id = ?", userID, postID).First(&like).Error; err != nil {
+		fmt.Println("123")
 		return err
 	}
 
 	// 使用原子操作删除点赞记录并更新帖子和用户的点赞数量
 	err := DB.Transaction(func(tx *gorm.DB) error {
+
+		fmt.Println(like)
 		if err := tx.Delete(&like).Error; err != nil {
 			return err
 		}
+
+		//var user model.User
+		//if err := tx.First(&user, like.UserID).Error; err != nil {
+		//	return err
+		//}
+		//if user.ll > 0 {
+		//	user.CollectionCount--
+		//	if err := tx.Save(&user).Error; err != nil {
+		//		return err
+		//	}
+		//}
+		//
+		//// 查询帖子并更新收藏数量
+		//var post Post
+		//if err := tx.First(&post, postID).Error; err != nil {
+		//	return err
+		//}
+		//if post.CollectionCount > 0 {
+		//	post.CollectionCount--
+		//	if err := tx.Save(&post).Error; err != nil {
+		//		return err
+		//	}
+		//}
 
 		// 原子操作更新帖子的点赞数量
 		if err := tx.Model(&Post{}).Where("id = ?", postID).Update("like_count", gorm.Expr("like_count - 1")).Error; err != nil {

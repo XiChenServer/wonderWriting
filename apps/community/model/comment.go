@@ -8,13 +8,25 @@ import (
 // Comment 评论表模型
 type Comment struct {
 	gorm.Model
-	CommentReplays []*Comment `gorm:"foreignkey:ParentID"` //自引用
-	PostID         uint       `json:"post_id"`             // 帖子ID，JSON序列化时的字段名为"post_id"
-	Post           Post       `gorm:"foreignKey:PostID"`   // 关联的帖子，使用PostID作为外键
-	UserID         uint       `json:"user_id"`             // 用户ID，JSON序列化时的字段名为"user_id"
-	Content        string     `json:"content"`             // 评论内容，JSON序列化时的字段名为"content"
-	Parent         *Comment   `gorm:"foreignkey:ParentID"` //自引用
-	ParentID       uint       `json:"parent_id"`           //评论父级ID  0
+	PostID       uint   `json:"post_id"`           // 帖子ID，JSON序列化时的字段名为"post_id"
+	Post         Post   `gorm:"foreignKey:PostID"` // 关联的帖子，使用PostID作为外键
+	UserID       uint   `json:"user_id"`           // 用户ID，JSON序列化时的字段名为"user_id"
+	Content      string `json:"content"`           // 评论内容，JSON序列化时的字段名为"content"
+	ParentID     uint   `json:"parent_id"`         //评论父级ID  0
+	UserAvatar   string //回复者的头像
+	UserNickName string //回复者的昵称
+}
+
+// 回复评论
+type ReplyComment struct {
+	gorm.Model
+	CommentID     uint   //回复的评论的id
+	UserID        uint   //回复者的id
+	UserNickName  string //回复者的昵称
+	UserAvatar    string //回复者的头像
+	Content       string // 回复的内容
+	ReplyNickName string //给谁回复，那个人的昵称
+	ReplyUserId   uint   //给谁回复，那个人的id
 
 }
 

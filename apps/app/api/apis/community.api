@@ -86,7 +86,7 @@ type LikePostResponse struct {
 
 // 取消点赞请求消息
 type CancelLikePostRequest struct {
-    LikeId uint `json:"like_id"`
+
     PostId  uint   `json:"post_id"`
 }
 

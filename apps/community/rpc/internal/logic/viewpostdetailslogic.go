@@ -27,6 +27,7 @@ func NewViewPostDetailsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *V
 func (l *ViewPostDetailsLogic) ViewPostDetails(in *community.ViewPostDetailsRequest) (*community.ViewPostDetailsResponse, error) {
 	// todo: add your logic here and delete this line
 	resPost, err := (&model.Post{}).LookPostByPostId(l.svcCtx.DB, uint(in.PostId))
+	fmt.Println("1")
 	if err != nil {
 		return nil, err
 	}
@@ -45,6 +46,7 @@ func (l *ViewPostDetailsLogic) ViewPostDetails(in *community.ViewPostDetailsRequ
 
 	urls, err := (&model.PostImage{}).FindImageByPostId(l.svcCtx.DB, resPost.ID)
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
 	ansPost := &community.PostInfo{
@@ -57,9 +59,8 @@ func (l *ViewPostDetailsLogic) ViewPostDetails(in *community.ViewPostDetailsRequ
 		ContentCount: uint32(resPost.CommentCount),
 		CollectCount: uint32(resPost.CollectionCount),
 	}
-	fmt.Println("2123")
+
 	ansPost.UserInfo = ansUser
-	fmt.Println("2123")
 	var ansStatus = &community.StatusWithPost{
 		WhetherLike:    false,
 		WhetherCollect: false,
@@ -81,6 +82,7 @@ func (l *ViewPostDetailsLogic) ViewPostDetails(in *community.ViewPostDetailsRequ
 	// 检查用户收藏状态
 	err = (&model.Collect{}).WhetherCollectPost(l.svcCtx.DB, resPost.ID, uint(in.UserId))
 	if err == nil {
+
 		ansStatus.WhetherCollect = true
 	}
 

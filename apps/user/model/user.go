@@ -145,9 +145,9 @@ func (m *Follow) IncrementFansCount(db *gorm.DB, userID uint) error {
 	return db.Model(&User{}).Where("user_id = ?", userID).UpdateColumn("fans_count", gorm.Expr("fans_count + 1")).Error
 }
 
-// DeleteFollow 删除关注记录
-func (m *Follow) DeleteFollow(db *gorm.DB) error {
-	return db.Delete(m).Error
+// DeleteFollow 删除指定用户的关注记录
+func (m *Follow) DeleteFollow(db *gorm.DB, followerID, followedID uint) error {
+	return db.Where("follower_user_id = ? AND followed_user_id = ?", followerID, followedID).Delete(m).Error
 }
 
 // DecrementFollowCount 减少用户关注数

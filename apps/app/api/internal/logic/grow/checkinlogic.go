@@ -39,7 +39,7 @@ func (l *CheckInLogic) CheckIn(r *http.Request) (resp *types.CheckInResponse, er
 		err = errors.New("Field 'content' is required")
 		return &types.CheckInResponse{}, err
 	}
-
+	fmt.Println("4")
 	score := r.FormValue("score")
 	if score == "" {
 		err = errors.New("Field 'score' is required")
@@ -47,20 +47,21 @@ func (l *CheckInLogic) CheckIn(r *http.Request) (resp *types.CheckInResponse, er
 	}
 	scoreFloat, err := strconv.ParseFloat(score, 64)
 	if err != nil {
-		return nil, err
+		return &types.CheckInResponse{}, err
 	}
 	// 图片上传到七牛云
+	fmt.Println("1")
 	file, handler, err := r.FormFile("image")
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return &types.CheckInResponse{}, err
 	}
 	defer file.Close()
 	url, err := qiniu.UploadToQiNiu(file, handler.Size, "BackgroundImage/", handler.Filename)
 	if err != nil {
-		return nil, err
+		return &types.CheckInResponse{}, err
 	}
-
+	fmt.Println("2")
 	//调用rpc获取进行创建
 	_, err = l.svcCtx.GrowRpc.CheckIn(l.ctx, &grow.CheckInRequest{
 		UserId:  uint32(uid),
@@ -69,7 +70,8 @@ func (l *CheckInLogic) CheckIn(r *http.Request) (resp *types.CheckInResponse, er
 		Score:   float32(scoreFloat),
 	})
 	if err != nil {
-		return nil, err
+		fmt.Println(err.Error())
+		return &types.CheckInResponse{}, err
 	}
 	////创建响应体
 	//record := types.RecordSimpleInfo{
@@ -80,5 +82,6 @@ func (l *CheckInLogic) CheckIn(r *http.Request) (resp *types.CheckInResponse, er
 	//	Score:      res.RecordInfo.Score,
 	//	CreateTime: res.RecordInfo.CreateTime,
 	//}
+	fmt.Println("3")
 	return &types.CheckInResponse{}, nil
 }

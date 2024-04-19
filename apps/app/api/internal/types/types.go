@@ -75,7 +75,6 @@ type LikePostResponse struct {
 }
 
 type CancelLikePostRequest struct {
-	LikeId uint `json:"like_id"`
 	PostId uint `json:"post_id"`
 }
 
