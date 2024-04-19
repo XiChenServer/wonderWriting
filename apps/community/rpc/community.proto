@@ -34,6 +34,10 @@ message CommentInfo{
   uint32 PostId = 3;
   string Comment = 5;
   UserSimpleInfo UserInfo = 6;
+  string UserAvatar = 7;
+  string user_nickname = 8;
+  uint32 like_count = 9;
+  uint32 user_id = 10;
 }
 
 
@@ -182,6 +186,9 @@ message CommunityContentPostResponse{
   uint32 ContentId = 1;
 }
 
+
+
+
 //取消评论
 message CommunityCancelContentPostRequest{
   uint32 ContentId = 1;
@@ -199,6 +206,7 @@ message WhetherLikePostRequest{
 message WhetherLikePostResponse{
 
 }
+
 //用户是否收藏帖子
 message WhetherCollectPostRequest{
   uint32 user_id = 1;
@@ -226,8 +234,91 @@ message StatusWithPost{
   bool whether_follow = 3;
 }
 
+
+//回复评论
+message ReplyCommunityRequest{
+  uint32 community_id = 1;
+  string Content = 2;
+  uint32 UserId = 3;
+  string ReplyUserNickName = 4;
+  uint32 ReplyUserId = 5;
+  uint32 PostId = 6;
+}
+message ReplyCommunityResponse{
+  uint32 ReplyCommunityId = 1;
+}
+
+
+
+//对评论点赞
+message LikeCommentRequest{
+  uint32 user_id = 1;
+  uint32 comment_id = 2;
+}
+message LikeCommentResponse{
+  uint32 LikeCommentId = 1;
+}
+
+
+//对评论点赞
+message CancelLikeCommentRequest{
+  uint32 user_id = 1;
+  uint32 comment_id = 2;
+}
+message CancelLikeCommentResponse{
+  uint32 LikeCommentId = 1;
+}
+
+//回复的内容
+message ReplyCommentInfo{
+  uint32 id = 1;
+  uint32 comment_id = 2;
+  uint32 user_id = 3;
+  string user_nick_name = 4;
+  string user_avatar = 5;
+  string content = 6;
+  string reply_nick_name = 7;
+  uint32 reply_user_id = 8;
+  uint32 like_count = 9;
+  int32 CreateTime = 10;
+}
+
+//查看回复
+message LookReplyCommentRequest{
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
+  uint32 comment_id = 3;
+  uint32 user_id = 4;
+}
+
+message LookReplyCommentResponse{
+  repeated ReplyCommentInfo reply_comment_data = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
+
 // 定义社区服务
 service Community {
+  //查看回复
+  rpc LookReplyComment(LookReplyCommentRequest) returns (LookReplyCommentResponse);
+  //回复评论
+  rpc ReplyComment(ReplyCommunityRequest) returns (ReplyCommunityResponse);
+  //对评论进行点赞
+  rpc LikeComment(LikeCommentRequest) returns (LikeCommentResponse);
+  //对评论点赞的取消
+  rpc CancelLikeComment(CancelLikeCommentRequest) returns (CancelLikeCommentResponse);
 // 定义点赞服务
   rpc LikePost(CommunityLikePostRequest) returns (CommunityLikePostResponse);
   rpc CancelLikePost(CommunityCancelLikePostRequest) returns (CommunityCancelLikePostResponse);

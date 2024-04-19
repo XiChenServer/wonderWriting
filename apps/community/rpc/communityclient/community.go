@@ -13,6 +13,8 @@ import (
 )
 
 type (
+	CancelLikeCommentRequest           = community.CancelLikeCommentRequest
+	CancelLikeCommentResponse          = community.CancelLikeCommentResponse
 	CommentInfo                        = community.CommentInfo
 	CommunityCancelCollectPostRequest  = community.CommunityCancelCollectPostRequest
 	CommunityCancelCollectPostResponse = community.CommunityCancelCollectPostResponse
@@ -34,9 +36,16 @@ type (
 	CommunityLookAllPostsResponse      = community.CommunityLookAllPostsResponse
 	CommunityLookPostByOwnRequest      = community.CommunityLookPostByOwnRequest
 	CommunityLookPostByOwnResponses    = community.CommunityLookPostByOwnResponses
+	LikeCommentRequest                 = community.LikeCommentRequest
+	LikeCommentResponse                = community.LikeCommentResponse
 	LookCommentRequest                 = community.LookCommentRequest
 	LookCommentResponse                = community.LookCommentResponse
+	LookReplyCommentRequest            = community.LookReplyCommentRequest
+	LookReplyCommentResponse           = community.LookReplyCommentResponse
 	PostInfo                           = community.PostInfo
+	ReplyCommentInfo                   = community.ReplyCommentInfo
+	ReplyCommunityRequest              = community.ReplyCommunityRequest
+	ReplyCommunityResponse             = community.ReplyCommunityResponse
 	StatusWithPost                     = community.StatusWithPost
 	UserSimpleInfo                     = community.UserSimpleInfo
 	ViewPostDetailsRequest             = community.ViewPostDetailsRequest
@@ -47,6 +56,14 @@ type (
 	WhetherLikePostResponse            = community.WhetherLikePostResponse
 
 	Community interface {
+		// 查看回复
+		LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
+		// 回复评论
+		ReplyComment(ctx context.Context, in *ReplyCommunityRequest, opts ...grpc.CallOption) (*ReplyCommunityResponse, error)
+		// 对评论进行点赞
+		LikeComment(ctx context.Context, in *LikeCommentRequest, opts ...grpc.CallOption) (*LikeCommentResponse, error)
+		// 对评论点赞的取消
+		CancelLikeComment(ctx context.Context, in *CancelLikeCommentRequest, opts ...grpc.CallOption) (*CancelLikeCommentResponse, error)
 		// 定义点赞服务
 		LikePost(ctx context.Context, in *CommunityLikePostRequest, opts ...grpc.CallOption) (*CommunityLikePostResponse, error)
 		CancelLikePost(ctx context.Context, in *CommunityCancelLikePostRequest, opts ...grpc.CallOption) (*CommunityCancelLikePostResponse, error)
@@ -78,6 +95,30 @@ func NewCommunity(cli zrpc.Client) Community {
 	return &defaultCommunity{
 		cli: cli,
 	}
+}
+
+// 查看回复
+func (m *defaultCommunity) LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.LookReplyComment(ctx, in, opts...)
+}
+
+// 回复评论
+func (m *defaultCommunity) ReplyComment(ctx context.Context, in *ReplyCommunityRequest, opts ...grpc.CallOption) (*ReplyCommunityResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.ReplyComment(ctx, in, opts...)
+}
+
+// 对评论进行点赞
+func (m *defaultCommunity) LikeComment(ctx context.Context, in *LikeCommentRequest, opts ...grpc.CallOption) (*LikeCommentResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.LikeComment(ctx, in, opts...)
+}
+
+// 对评论点赞的取消
+func (m *defaultCommunity) CancelLikeComment(ctx context.Context, in *CancelLikeCommentRequest, opts ...grpc.CallOption) (*CancelLikeCommentResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.CancelLikeComment(ctx, in, opts...)
 }
 
 // 定义点赞服务

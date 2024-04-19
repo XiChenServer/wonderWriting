@@ -11,7 +11,6 @@ import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 
-	//"github.com/bluele/gcache"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"log"
@@ -31,7 +30,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	db.AutoMigrate(&model.Post{}, &model.PostImage{}, &model.Like{}, &model.Comment{}, &model.Collect{})
+	db.AutoMigrate(&model.Post{}, &model.PostImage{}, &model.Like{}, &model.Comment{}, &model.Collect{}, &model.ReplyComment{}, &model.LikeComment{})
 
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200

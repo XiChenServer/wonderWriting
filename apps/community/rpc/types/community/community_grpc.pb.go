@@ -19,6 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Community_LookReplyComment_FullMethodName       = "/community.Community/LookReplyComment"
+	Community_ReplyComment_FullMethodName           = "/community.Community/ReplyComment"
+	Community_LikeComment_FullMethodName            = "/community.Community/LikeComment"
+	Community_CancelLikeComment_FullMethodName      = "/community.Community/CancelLikeComment"
 	Community_LikePost_FullMethodName               = "/community.Community/LikePost"
 	Community_CancelLikePost_FullMethodName         = "/community.Community/CancelLikePost"
 	Community_CollectPost_FullMethodName            = "/community.Community/CollectPost"
@@ -39,6 +43,14 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommunityClient interface {
+	// 查看回复
+	LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
+	// 回复评论
+	ReplyComment(ctx context.Context, in *ReplyCommunityRequest, opts ...grpc.CallOption) (*ReplyCommunityResponse, error)
+	// 对评论进行点赞
+	LikeComment(ctx context.Context, in *LikeCommentRequest, opts ...grpc.CallOption) (*LikeCommentResponse, error)
+	// 对评论点赞的取消
+	CancelLikeComment(ctx context.Context, in *CancelLikeCommentRequest, opts ...grpc.CallOption) (*CancelLikeCommentResponse, error)
 	// 定义点赞服务
 	LikePost(ctx context.Context, in *CommunityLikePostRequest, opts ...grpc.CallOption) (*CommunityLikePostResponse, error)
 	CancelLikePost(ctx context.Context, in *CommunityCancelLikePostRequest, opts ...grpc.CallOption) (*CommunityCancelLikePostResponse, error)
@@ -67,6 +79,42 @@ type communityClient struct {
 
 func NewCommunityClient(cc grpc.ClientConnInterface) CommunityClient {
 	return &communityClient{cc}
+}
+
+func (c *communityClient) LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error) {
+	out := new(LookReplyCommentResponse)
+	err := c.cc.Invoke(ctx, Community_LookReplyComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *communityClient) ReplyComment(ctx context.Context, in *ReplyCommunityRequest, opts ...grpc.CallOption) (*ReplyCommunityResponse, error) {
+	out := new(ReplyCommunityResponse)
+	err := c.cc.Invoke(ctx, Community_ReplyComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *communityClient) LikeComment(ctx context.Context, in *LikeCommentRequest, opts ...grpc.CallOption) (*LikeCommentResponse, error) {
+	out := new(LikeCommentResponse)
+	err := c.cc.Invoke(ctx, Community_LikeComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *communityClient) CancelLikeComment(ctx context.Context, in *CancelLikeCommentRequest, opts ...grpc.CallOption) (*CancelLikeCommentResponse, error) {
+	out := new(CancelLikeCommentResponse)
+	err := c.cc.Invoke(ctx, Community_CancelLikeComment_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *communityClient) LikePost(ctx context.Context, in *CommunityLikePostRequest, opts ...grpc.CallOption) (*CommunityLikePostResponse, error) {
@@ -199,6 +247,14 @@ func (c *communityClient) ViewPostDetails(ctx context.Context, in *ViewPostDetai
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
 type CommunityServer interface {
+	// 查看回复
+	LookReplyComment(context.Context, *LookReplyCommentRequest) (*LookReplyCommentResponse, error)
+	// 回复评论
+	ReplyComment(context.Context, *ReplyCommunityRequest) (*ReplyCommunityResponse, error)
+	// 对评论进行点赞
+	LikeComment(context.Context, *LikeCommentRequest) (*LikeCommentResponse, error)
+	// 对评论点赞的取消
+	CancelLikeComment(context.Context, *CancelLikeCommentRequest) (*CancelLikeCommentResponse, error)
 	// 定义点赞服务
 	LikePost(context.Context, *CommunityLikePostRequest) (*CommunityLikePostResponse, error)
 	CancelLikePost(context.Context, *CommunityCancelLikePostRequest) (*CommunityCancelLikePostResponse, error)
@@ -226,6 +282,18 @@ type CommunityServer interface {
 type UnimplementedCommunityServer struct {
 }
 
+func (UnimplementedCommunityServer) LookReplyComment(context.Context, *LookReplyCommentRequest) (*LookReplyCommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LookReplyComment not implemented")
+}
+func (UnimplementedCommunityServer) ReplyComment(context.Context, *ReplyCommunityRequest) (*ReplyCommunityResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReplyComment not implemented")
+}
+func (UnimplementedCommunityServer) LikeComment(context.Context, *LikeCommentRequest) (*LikeCommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LikeComment not implemented")
+}
+func (UnimplementedCommunityServer) CancelLikeComment(context.Context, *CancelLikeCommentRequest) (*CancelLikeCommentResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CancelLikeComment not implemented")
+}
 func (UnimplementedCommunityServer) LikePost(context.Context, *CommunityLikePostRequest) (*CommunityLikePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
 }
@@ -279,6 +347,78 @@ type UnsafeCommunityServer interface {
 
 func RegisterCommunityServer(s grpc.ServiceRegistrar, srv CommunityServer) {
 	s.RegisterService(&Community_ServiceDesc, srv)
+}
+
+func _Community_LookReplyComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LookReplyCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).LookReplyComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_LookReplyComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).LookReplyComment(ctx, req.(*LookReplyCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Community_ReplyComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReplyCommunityRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).ReplyComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_ReplyComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).ReplyComment(ctx, req.(*ReplyCommunityRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Community_LikeComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikeCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).LikeComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_LikeComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).LikeComment(ctx, req.(*LikeCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Community_CancelLikeComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelLikeCommentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).CancelLikeComment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_CancelLikeComment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).CancelLikeComment(ctx, req.(*CancelLikeCommentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Community_LikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -540,6 +680,22 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "community.Community",
 	HandlerType: (*CommunityServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "LookReplyComment",
+			Handler:    _Community_LookReplyComment_Handler,
+		},
+		{
+			MethodName: "ReplyComment",
+			Handler:    _Community_ReplyComment_Handler,
+		},
+		{
+			MethodName: "LikeComment",
+			Handler:    _Community_LikeComment_Handler,
+		},
+		{
+			MethodName: "CancelLikeComment",
+			Handler:    _Community_CancelLikeComment_Handler,
+		},
 		{
 			MethodName: "LikePost",
 			Handler:    _Community_LikePost_Handler,

@@ -3,6 +3,7 @@ package logic
 import (
 	"calligraphy/apps/community/model"
 	"context"
+	"fmt"
 
 	"calligraphy/apps/community/rpc/internal/svc"
 	"calligraphy/apps/community/rpc/types/community"
@@ -26,6 +27,8 @@ func NewCancelCollectPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *CancelCollectPostLogic) CancelCollectPost(in *community.CommunityCancelCollectPostRequest) (*community.CommunityCancelCollectPostResponse, error) {
 	// todo: add your logic here and delete this line
+
+	fmt.Println(in.PostId)
 	Operations := &model.Collect{}
 
 	err := Operations.CancelCollectPost(l.svcCtx.DB, uint(in.UserId), uint(in.PostId))

@@ -22,6 +22,30 @@ func NewCommunityServer(svcCtx *svc.ServiceContext) *CommunityServer {
 	}
 }
 
+// 查看回复
+func (s *CommunityServer) LookReplyComment(ctx context.Context, in *community.LookReplyCommentRequest) (*community.LookReplyCommentResponse, error) {
+	l := logic.NewLookReplyCommentLogic(ctx, s.svcCtx)
+	return l.LookReplyComment(in)
+}
+
+// 回复评论
+func (s *CommunityServer) ReplyComment(ctx context.Context, in *community.ReplyCommunityRequest) (*community.ReplyCommunityResponse, error) {
+	l := logic.NewReplyCommentLogic(ctx, s.svcCtx)
+	return l.ReplyComment(in)
+}
+
+// 对评论进行点赞
+func (s *CommunityServer) LikeComment(ctx context.Context, in *community.LikeCommentRequest) (*community.LikeCommentResponse, error) {
+	l := logic.NewLikeCommentLogic(ctx, s.svcCtx)
+	return l.LikeComment(in)
+}
+
+// 对评论点赞的取消
+func (s *CommunityServer) CancelLikeComment(ctx context.Context, in *community.CancelLikeCommentRequest) (*community.CancelLikeCommentResponse, error) {
+	l := logic.NewCancelLikeCommentLogic(ctx, s.svcCtx)
+	return l.CancelLikeComment(in)
+}
+
 // 定义点赞服务
 func (s *CommunityServer) LikePost(ctx context.Context, in *community.CommunityLikePostRequest) (*community.CommunityLikePostResponse, error) {
 	l := logic.NewLikePostLogic(ctx, s.svcCtx)
