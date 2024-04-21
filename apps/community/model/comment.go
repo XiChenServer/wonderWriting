@@ -2,7 +2,6 @@ package model
 
 import (
 	"calligraphy/apps/user/model"
-	"fmt"
 	"github.com/jinzhu/gorm"
 	"log"
 )
@@ -169,17 +168,23 @@ func (*Comment) FindComment(DB *gorm.DB, postId uint) (*[]Comment, error) {
 
 // CommentPost 在数据库中创建一条评论记录并原子更新帖子的评论数量
 func (*Comment) CommentPost(DB *gorm.DB, postID, userID uint, content string) (*Comment, error) {
+	var user model.User
+	err := DB.Where("user_id = ?", userID).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
 	// 开始事务
 	tx := DB.Begin()
 
 	// 创建评论记录
 	comment := &Comment{
-		PostID:  postID,
-		UserID:  userID,
-		Content: content,
+		PostID:       postID,
+		UserID:       userID,
+		Content:      content,
+		UserAvatar:   user.AvatarBackground,
+		UserNickName: user.Nickname,
+		LikeCount:    0,
 	}
-	fmt.Println(userID)
-	fmt.Println(comment)
 	if err := tx.Create(comment).Error; err != nil {
 		tx.Rollback()
 		return nil, err

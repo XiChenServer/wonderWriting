@@ -308,9 +308,19 @@ message LookReplyCommentResponse{
   // 总记录数
   uint64 total_count = 7;
 }
+//查看自己的收藏
+message LookCollectPostRequest{
+  uint32 user_id = 1;
+}
+message LookCollectPostResponse{
+  repeated PostInfo post_data = 1;
+}
 
 // 定义社区服务
 service Community {
+
+  rpc LookCollectPost(LookCollectPostRequest) returns (LookCollectPostResponse);
+
   //查看回复
   rpc LookReplyComment(LookReplyCommentRequest) returns (LookReplyCommentResponse);
   //回复评论

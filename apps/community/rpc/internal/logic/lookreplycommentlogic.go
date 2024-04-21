@@ -2,6 +2,7 @@ package logic
 
 import (
 	"calligraphy/apps/community/model"
+	"calligraphy/pkg/qiniu"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -98,7 +99,7 @@ func getReplyComments(db *gorm.DB, commentID, userID uint32, page, pageSize int)
 			CommentId:     uint32(v.CommentID),
 			UserId:        uint32(v.UserID),
 			UserNickName:  v.UserNickName,
-			UserAvatar:    v.UserAvatar,
+			UserAvatar:    qiniu.ImgUrl + v.UserAvatar,
 			Content:       v.Content,
 			ReplyNickName: v.ReplyNickName,
 			ReplyUserId:   uint32(v.ReplyUserId),

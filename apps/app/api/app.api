@@ -93,6 +93,19 @@ service App{
 	jwt: Auth
 )
 service App{
+	//回复评论
+	@doc "回复评论"
+	@handler ReplyCommunity
+	post /reply/community(ReplyCommunityRequest) returns (ReplyCommentResponse)
+	//查看自己的收藏
+	@doc "查看自己的收藏"
+	@handler LookCollectPost
+	get  /look/collect_post() returns (LookCollectPostResponse)
+	//查看回复
+	@doc "查看回复"
+	@handler LookReplyComment
+	post /look/reply_comment(LookReplyCommentRequest) returns (LookReplyCommentResponse)
+
 	//用户创建帖子
 	@doc "user create post"
 	@handler UsercretePost

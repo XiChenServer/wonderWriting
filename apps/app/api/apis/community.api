@@ -46,7 +46,7 @@ type PostDelResponse{
 type LookPostByOwnRequest{
     UserId uint32  `json:"user_id"`
     Page uint32 `json:"page"`
-    PageSize uint32 `json:"page_size"`
+    PageSize uint32 `json:"page_size, optional"`
 }
 type LookPostByOwnResponses{
     PostData []*PostInfo `json:"post_data"`
@@ -60,7 +60,7 @@ type LookPostByOwnResponses{
 
 type LookAllPostsRequest struct{
     Page uint32 `json:"page"`
-    PageSize uint32 `json:"page_size"`
+    PageSize uint32 `json:"page_size, optional"`
 }
 
 //用户查看所有的帖子
@@ -147,7 +147,7 @@ type CommentInfo{
 type LookCommentRequest{
     PostId uint `json:"post_id"`
     Page uint `json:"page"`
-    PageSize uint32 `json:"page_size"`
+    PageSize uint32 `json:"page_size, optional"`
 }
 
 type LookCommentResponse{
@@ -175,6 +175,7 @@ type WhetherCollectPostResponse{}
 
 //状态
 type StatusWithPost{
+WhetherBelongOne bool `json:"whether_belong_one"`
     WhetherLike bool `json:"whether_like"`
     WhetherCollect bool `json:"whether_collect"`
     WhetherFollow bool `json:"whether_follow"`
@@ -186,4 +187,53 @@ type ViewPostDetailsRequest{
 type ViewPostDetailsResponse{
     PostData PostInfo `json:"post_data"`
     StatusData StatusWithPost `json:"status_data"`
+}
+//回复评论
+type ReplyCommunityRequest{
+    CommunityId uint32 `json:"community_id"`
+    ReplyUserId uint32 `json:"reply_user_id"`
+    PostId uint32 `json:"post_id"`
+    Content string `json:"content"`
+    ReplyUserNickName string `json:"reply_user_nick_name"`
+}
+type ReplyCommentResponse{
+    ReplyCommunityId uint32 `json:"reply_community_id"`
+}
+//查看自己的收藏
+type LookCollectPostRequest{
+
+}
+type LookCollectPostResponse{
+    PostInfo []*PostInfo `json:"post_info"`
+}
+
+//回复的内容
+type ReplyCommentInfo{
+    Id uint32 `json:"id"`
+    CommentId uint32 `json:"comment_id"`
+    UserId uint32 `json:"user_id"`
+    UserNickName string `json:"user_nick_name"`
+    UserAvatar string `json:"user_avatar"`
+    Content string `json:"content"`
+    ReplyNickName string `json:"reply_nick_name"`
+    ReplyUserId uint32 `json:"reply_user_id"`
+    LikeCount uint32 `json:"like_count"`
+    CreateTime int32 `json:"create_time"`
+}
+
+// 查看回复
+type LookReplyCommentRequest{
+    CommentId uint `json:"comment_id"`
+    Page uint `json:"page"`
+    PageSize uint32 `json:"page_size, optional"`
+}
+
+type LookReplyCommentResponse{
+    ReplyCommentData []*ReplyCommentInfo `json:"comment_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
 }

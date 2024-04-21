@@ -69,7 +69,6 @@ func (*Like) CancelLikePost(DB *gorm.DB, likeID, postID, userID uint) error {
 	// 获取点赞记录
 	var like Like
 	if err := DB.Where("user_id = ? AND post_id = ?", userID, postID).First(&like).Error; err != nil {
-		fmt.Println("123")
 		return err
 	}
 

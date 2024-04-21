@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Community_LookCollectPost_FullMethodName        = "/community.Community/LookCollectPost"
 	Community_LookReplyComment_FullMethodName       = "/community.Community/LookReplyComment"
 	Community_ReplyComment_FullMethodName           = "/community.Community/ReplyComment"
 	Community_LikeComment_FullMethodName            = "/community.Community/LikeComment"
@@ -43,6 +44,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommunityClient interface {
+	LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error)
 	// 查看回复
 	LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
 	// 回复评论
@@ -79,6 +81,15 @@ type communityClient struct {
 
 func NewCommunityClient(cc grpc.ClientConnInterface) CommunityClient {
 	return &communityClient{cc}
+}
+
+func (c *communityClient) LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error) {
+	out := new(LookCollectPostResponse)
+	err := c.cc.Invoke(ctx, Community_LookCollectPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *communityClient) LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error) {
@@ -247,6 +258,7 @@ func (c *communityClient) ViewPostDetails(ctx context.Context, in *ViewPostDetai
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
 type CommunityServer interface {
+	LookCollectPost(context.Context, *LookCollectPostRequest) (*LookCollectPostResponse, error)
 	// 查看回复
 	LookReplyComment(context.Context, *LookReplyCommentRequest) (*LookReplyCommentResponse, error)
 	// 回复评论
@@ -282,6 +294,9 @@ type CommunityServer interface {
 type UnimplementedCommunityServer struct {
 }
 
+func (UnimplementedCommunityServer) LookCollectPost(context.Context, *LookCollectPostRequest) (*LookCollectPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LookCollectPost not implemented")
+}
 func (UnimplementedCommunityServer) LookReplyComment(context.Context, *LookReplyCommentRequest) (*LookReplyCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LookReplyComment not implemented")
 }
@@ -347,6 +362,24 @@ type UnsafeCommunityServer interface {
 
 func RegisterCommunityServer(s grpc.ServiceRegistrar, srv CommunityServer) {
 	s.RegisterService(&Community_ServiceDesc, srv)
+}
+
+func _Community_LookCollectPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LookCollectPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).LookCollectPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_LookCollectPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).LookCollectPost(ctx, req.(*LookCollectPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Community_LookReplyComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -680,6 +713,10 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "community.Community",
 	HandlerType: (*CommunityServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "LookCollectPost",
+			Handler:    _Community_LookCollectPost_Handler,
+		},
 		{
 			MethodName: "LookReplyComment",
 			Handler:    _Community_LookReplyComment_Handler,

@@ -37,9 +37,11 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 		causeErr := errors.Cause(err)                // err类型
 		if e, ok := causeErr.(*xerr.CodeError); ok { //自定义错误类型
 			//自定义CodeError
+
 			errcode = e.GetErrCode()
 			//errmsg = e.GetErrMsg()
 		} else {
+
 			if gstatus, ok := status.FromError(causeErr); ok { // grpc err错误
 				grpcCode := uint32(gstatus.Code())
 				errcode = grpcCode
@@ -49,13 +51,39 @@ func HttpResult(r *http.Request, w http.ResponseWriter, resp interface{}, err er
 
 		logx.WithContext(r.Context()).Errorf("【API-ERR】 : %+v ", err)
 		if err.Error() == "rpc error: code = Unknown desc = already checked in today" {
-			httpx.WriteJson(w, http.StatusBadRequest, &Response{
+			httpx.WriteJson(w, http.StatusOK, &Response{
 				Code:    200,
 				Message: "今日已经打开",
 				Data:    resp,
 			})
 			return
 		}
+		if err.Error() == "rpc error: code = Unknown desc = user already liked this post" {
+			httpx.WriteJson(w, http.StatusOK, &Response{
+				Code:    200,
+				Message: "已经点赞了",
+				Data:    resp,
+			})
+			return
+		}
+		if err.Error() == "rpc error: code = Unknown desc = user is already followed" {
+			httpx.WriteJson(w, http.StatusOK, &Response{
+				Code:    200,
+				Message: "已经关注了",
+				Data:    resp,
+			})
+			return
+		}
+
+		if err.Error() == "rpc error: code = Unknown desc = post already collected by user" {
+			httpx.WriteJson(w, http.StatusOK, &Response{
+				Code:    200,
+				Message: "已经收藏了",
+				Data:    resp,
+			})
+			return
+		}
+
 		httpx.WriteJson(w, http.StatusBadRequest, &Response{
 			Code:    errcode,
 			Message: err.Error(),

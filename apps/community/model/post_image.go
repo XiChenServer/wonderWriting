@@ -14,7 +14,6 @@ type PostImage struct {
 
 func (*PostImage) FindImageByPostId(DB *gorm.DB, post_id uint) ([]string, error) {
 	var image []PostImage
-
 	err := DB.Where("post_id = ?", post_id).Find(&image).Error
 	if err != nil {
 		return nil, err

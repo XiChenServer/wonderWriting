@@ -38,7 +38,7 @@ type PostDelResponse struct {
 type LookPostByOwnRequest struct {
 	UserId   uint32 `json:"user_id"`
 	Page     uint32 `json:"page"`
-	PageSize uint32 `json:"page_size"`
+	PageSize uint32 `json:"page_size, optional"`
 }
 
 type LookPostByOwnResponses struct {
@@ -53,7 +53,7 @@ type LookPostByOwnResponses struct {
 
 type LookAllPostsRequest struct {
 	Page     uint32 `json:"page"`
-	PageSize uint32 `json:"page_size"`
+	PageSize uint32 `json:"page_size, optional"`
 }
 
 type LookAllPostsResponse struct {
@@ -124,7 +124,7 @@ type CommentInfo struct {
 type LookCommentRequest struct {
 	PostId   uint   `json:"post_id"`
 	Page     uint   `json:"page"`
-	PageSize uint32 `json:"page_size"`
+	PageSize uint32 `json:"page_size, optional"`
 }
 
 type LookCommentResponse struct {
@@ -152,9 +152,10 @@ type WhetherCollectPostResponse struct {
 }
 
 type StatusWithPost struct {
-	WhetherLike    bool `json:"whether_like"`
-	WhetherCollect bool `json:"whether_collect"`
-	WhetherFollow  bool `json:"whether_follow"`
+	WhetherBelongOne bool `json:"whether_belong_one"`
+	WhetherLike      bool `json:"whether_like"`
+	WhetherCollect   bool `json:"whether_collect"`
+	WhetherFollow    bool `json:"whether_follow"`
 }
 
 type ViewPostDetailsRequest struct {
@@ -164,6 +165,54 @@ type ViewPostDetailsRequest struct {
 type ViewPostDetailsResponse struct {
 	PostData   PostInfo       `json:"post_data"`
 	StatusData StatusWithPost `json:"status_data"`
+}
+
+type ReplyCommunityRequest struct {
+	CommunityId       uint32 `json:"community_id"`
+	ReplyUserId       uint32 `json:"reply_user_id"`
+	PostId            uint32 `json:"post_id"`
+	Content           string `json:"content"`
+	ReplyUserNickName string `json:"reply_user_nick_name"`
+}
+
+type ReplyCommentResponse struct {
+	ReplyCommunityId uint32 `json:"reply_community_id"`
+}
+
+type LookCollectPostRequest struct {
+}
+
+type LookCollectPostResponse struct {
+	PostInfo []*PostInfo `json:"post_info"`
+}
+
+type ReplyCommentInfo struct {
+	Id            uint32 `json:"id"`
+	CommentId     uint32 `json:"comment_id"`
+	UserId        uint32 `json:"user_id"`
+	UserNickName  string `json:"user_nick_name"`
+	UserAvatar    string `json:"user_avatar"`
+	Content       string `json:"content"`
+	ReplyNickName string `json:"reply_nick_name"`
+	ReplyUserId   uint32 `json:"reply_user_id"`
+	LikeCount     uint32 `json:"like_count"`
+	CreateTime    int32  `json:"create_time"`
+}
+
+type LookReplyCommentRequest struct {
+	CommentId uint   `json:"comment_id"`
+	Page      uint   `json:"page"`
+	PageSize  uint32 `json:"page_size, optional"`
+}
+
+type LookReplyCommentResponse struct {
+	ReplyCommentData []*ReplyCommentInfo `json:"comment_data"`
+	CurrentPage      uint32              `json:"current_page"`
+	PageSize         uint32              `json:"page_size"`
+	Offset           uint32              `json:"offset"`
+	Overflow         bool                `json:"overflow"`
+	TotalPage        uint32              `json:"total_page"`
+	TotalCount       uint64              `json:"total_count"`
 }
 
 type VerificationRequest struct {

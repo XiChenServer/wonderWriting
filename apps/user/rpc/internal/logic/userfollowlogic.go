@@ -56,7 +56,7 @@ func (l *UserFollowLogic) UserFollow(in *user.UserFollowRequest) (*user.UserFoll
 		return nil, err
 	}
 	if existingFollow != nil {
-		return nil, fmt.Errorf("user with ID %d is already followed by user with ID %d", followedUser.UserID, in.UserId)
+		return nil, fmt.Errorf("user is already followed")
 	}
 
 	// 创建关注记录

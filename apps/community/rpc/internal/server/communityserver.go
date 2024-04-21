@@ -22,6 +22,11 @@ func NewCommunityServer(svcCtx *svc.ServiceContext) *CommunityServer {
 	}
 }
 
+func (s *CommunityServer) LookCollectPost(ctx context.Context, in *community.LookCollectPostRequest) (*community.LookCollectPostResponse, error) {
+	l := logic.NewLookCollectPostLogic(ctx, s.svcCtx)
+	return l.LookCollectPost(in)
+}
+
 // 查看回复
 func (s *CommunityServer) LookReplyComment(ctx context.Context, in *community.LookReplyCommentRequest) (*community.LookReplyCommentResponse, error) {
 	l := logic.NewLookReplyCommentLogic(ctx, s.svcCtx)

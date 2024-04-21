@@ -118,6 +118,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
+				Path:    "/reply/community",
+				Handler: community.ReplyCommunityHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/look/collect_post",
+				Handler: community.LookCollectPostHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/look/reply_comment",
+				Handler: community.LookReplyCommentHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/create/post",
 				Handler: community.UsercretePostHandler(serverCtx),
 			},

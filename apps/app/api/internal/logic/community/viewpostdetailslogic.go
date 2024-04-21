@@ -57,6 +57,9 @@ func (l *ViewPostDetailsLogic) ViewPostDetails(req *types.ViewPostDetailsRequest
 		WhetherCollect: res.RelatedStatus.WhetherCollect,
 		WhetherFollow:  res.RelatedStatus.WhetherFollow,
 	}
+	if res.PostData.UserId == uint32(uid) {
+		statusData.WhetherBelongOne = true
+	}
 	return &types.ViewPostDetailsResponse{
 		PostData:   postData,
 		StatusData: statusData,

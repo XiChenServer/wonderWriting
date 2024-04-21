@@ -38,6 +38,8 @@ type (
 	CommunityLookPostByOwnResponses    = community.CommunityLookPostByOwnResponses
 	LikeCommentRequest                 = community.LikeCommentRequest
 	LikeCommentResponse                = community.LikeCommentResponse
+	LookCollectPostRequest             = community.LookCollectPostRequest
+	LookCollectPostResponse            = community.LookCollectPostResponse
 	LookCommentRequest                 = community.LookCommentRequest
 	LookCommentResponse                = community.LookCommentResponse
 	LookReplyCommentRequest            = community.LookReplyCommentRequest
@@ -56,6 +58,7 @@ type (
 	WhetherLikePostResponse            = community.WhetherLikePostResponse
 
 	Community interface {
+		LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error)
 		// 查看回复
 		LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
 		// 回复评论
@@ -95,6 +98,11 @@ func NewCommunity(cli zrpc.Client) Community {
 	return &defaultCommunity{
 		cli: cli,
 	}
+}
+
+func (m *defaultCommunity) LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.LookCollectPost(ctx, in, opts...)
 }
 
 // 查看回复

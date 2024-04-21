@@ -31,15 +31,17 @@ func NewUsercretePostLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Use
 
 func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCreateResponse, err error) {
 	// todo: add your logic here and delete this line
+
+	// 获取数据
 	content := r.FormValue("content")
 	if content == "" {
 		err = errors.New("Field 'content' is required")
 		return &types.PostCreateResponse{}, err
 	}
-
 	uid, _ := l.ctx.Value("uid").(json.Number).Int64()
 	var urls []string
 	// 解析表单，获取多个文件字段
+
 	if err := r.ParseMultipartForm(32 << 20); err != nil { // 设置最大内存为 32MB
 		fmt.Println(err)
 		return &types.PostCreateResponse{}, err
@@ -49,7 +51,6 @@ func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCre
 	if len(files) == 0 {
 		return &types.PostCreateResponse{}, errors.New("no images uploaded")
 	}
-
 	// 依次处理每个文件
 	for _, fileHeader := range files {
 		file, err := fileHeader.Open()
@@ -69,7 +70,6 @@ func (l *UsercretePostLogic) UsercretePost(r *http.Request) (resp *types.PostCre
 		// 处理上传成功的情况，比如保存 URL 或其他操作
 		fmt.Println("Uploaded file:", url)
 	}
-	fmt.Println("1")
 	//调用rpc的接口
 	res, err := l.svcCtx.CommunityRpc.CommunityCreatePost(l.ctx, &community.CommunityCreatePostRequest{
 		UserId:    uint32(uid),

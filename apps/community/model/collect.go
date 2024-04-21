@@ -13,8 +13,25 @@ type Collect struct {
 	UserID uint `json:"user_id"` // 用户ID，JSON序列化时的字段名为"user_id"
 }
 
+// FindCollect 查看收藏
+func (*Collect) FindCollect(DB *gorm.DB, userId uint) (*[]Collect, error) {
+	var collect []Collect
+	err := DB.Where("user_id = ?", userId).Find(&collect).Error
+	if err != nil {
+		return nil, err
+	}
+	return &collect, nil
+}
+
 // CollectPost 在数据库中创建一条收藏记录并原子更新帖子的收藏数量
 func (*Collect) CollectPost(DB *gorm.DB, postID, userID uint) (*Collect, error) {
+	// 检查是否已经收藏过
+	var existingCollect Collect
+	err := DB.Where("post_id = ? AND user_id = ?", postID, userID).First(&existingCollect).Error
+	if err == nil {
+		// 已经收藏过，返回错误信息
+		return nil, fmt.Errorf("post already collected by user")
+	}
 	// 开始事务
 	tx := DB.Begin()
 
