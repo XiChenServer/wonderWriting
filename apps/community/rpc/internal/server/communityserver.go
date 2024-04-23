@@ -122,7 +122,14 @@ func (s *CommunityServer) WhetherCollectPost(ctx context.Context, in *community.
 	return l.WhetherCollectPost(in)
 }
 
+// 查看帖子详情
 func (s *CommunityServer) ViewPostDetails(ctx context.Context, in *community.ViewPostDetailsRequest) (*community.ViewPostDetailsResponse, error) {
 	l := logic.NewViewPostDetailsLogic(ctx, s.svcCtx)
 	return l.ViewPostDetails(in)
+}
+
+// 查看未读的评论
+func (s *CommunityServer) ViewUnreadComments(ctx context.Context, in *community.ViewUnreadCommentsRequest) (*community.ViewUnreadCommentsResponse, error) {
+	l := logic.NewViewUnreadCommentsLogic(ctx, s.svcCtx)
+	return l.ViewUnreadComments(in)
 }

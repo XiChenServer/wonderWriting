@@ -38,6 +38,7 @@ const (
 	Community_WhetherLikePost_FullMethodName        = "/community.Community/WhetherLikePost"
 	Community_WhetherCollectPost_FullMethodName     = "/community.Community/WhetherCollectPost"
 	Community_ViewPostDetails_FullMethodName        = "/community.Community/ViewPostDetails"
+	Community_ViewUnreadComments_FullMethodName     = "/community.Community/ViewUnreadComments"
 )
 
 // CommunityClient is the client API for Community service.
@@ -72,7 +73,10 @@ type CommunityClient interface {
 	WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error)
 	// 用户是否收藏帖子
 	WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error)
+	// 查看帖子详情
 	ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error)
+	// 查看未读的评论
+	ViewUnreadComments(ctx context.Context, in *ViewUnreadCommentsRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsResponse, error)
 }
 
 type communityClient struct {
@@ -254,6 +258,15 @@ func (c *communityClient) ViewPostDetails(ctx context.Context, in *ViewPostDetai
 	return out, nil
 }
 
+func (c *communityClient) ViewUnreadComments(ctx context.Context, in *ViewUnreadCommentsRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsResponse, error) {
+	out := new(ViewUnreadCommentsResponse)
+	err := c.cc.Invoke(ctx, Community_ViewUnreadComments_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CommunityServer is the server API for Community service.
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
@@ -286,7 +299,10 @@ type CommunityServer interface {
 	WhetherLikePost(context.Context, *WhetherLikePostRequest) (*WhetherLikePostResponse, error)
 	// 用户是否收藏帖子
 	WhetherCollectPost(context.Context, *WhetherCollectPostRequest) (*WhetherCollectPostResponse, error)
+	// 查看帖子详情
 	ViewPostDetails(context.Context, *ViewPostDetailsRequest) (*ViewPostDetailsResponse, error)
+	// 查看未读的评论
+	ViewUnreadComments(context.Context, *ViewUnreadCommentsRequest) (*ViewUnreadCommentsResponse, error)
 	mustEmbedUnimplementedCommunityServer()
 }
 
@@ -350,6 +366,9 @@ func (UnimplementedCommunityServer) WhetherCollectPost(context.Context, *Whether
 }
 func (UnimplementedCommunityServer) ViewPostDetails(context.Context, *ViewPostDetailsRequest) (*ViewPostDetailsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewPostDetails not implemented")
+}
+func (UnimplementedCommunityServer) ViewUnreadComments(context.Context, *ViewUnreadCommentsRequest) (*ViewUnreadCommentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewUnreadComments not implemented")
 }
 func (UnimplementedCommunityServer) mustEmbedUnimplementedCommunityServer() {}
 
@@ -706,6 +725,24 @@ func _Community_ViewPostDetails_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Community_ViewUnreadComments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewUnreadCommentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).ViewUnreadComments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_ViewUnreadComments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).ViewUnreadComments(ctx, req.(*ViewUnreadCommentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Community_ServiceDesc is the grpc.ServiceDesc for Community service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -788,6 +825,10 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ViewPostDetails",
 			Handler:    _Community_ViewPostDetails_Handler,
+		},
+		{
+			MethodName: "ViewUnreadComments",
+			Handler:    _Community_ViewUnreadComments_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

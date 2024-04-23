@@ -28,7 +28,7 @@ func NewCommentPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Comme
 func (l *CommentPostLogic) CommentPost(in *community.CommunityContentPostRequest) (*community.CommunityContentPostResponse, error) {
 	// todo: add your logic here and delete this line
 	Operations := &model.Comment{}
-	res, err := Operations.CommentPost(l.svcCtx.DB, uint(in.PostId), uint(in.UserId), in.Content)
+	res, err := Operations.CreateComment(l.svcCtx.DB, uint(in.PostId), uint(in.UserId), in.Content)
 	if err != nil {
 		return nil, err
 	}

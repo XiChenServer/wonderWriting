@@ -52,6 +52,8 @@ type (
 	UserSimpleInfo                     = community.UserSimpleInfo
 	ViewPostDetailsRequest             = community.ViewPostDetailsRequest
 	ViewPostDetailsResponse            = community.ViewPostDetailsResponse
+	ViewUnreadCommentsRequest          = community.ViewUnreadCommentsRequest
+	ViewUnreadCommentsResponse         = community.ViewUnreadCommentsResponse
 	WhetherCollectPostRequest          = community.WhetherCollectPostRequest
 	WhetherCollectPostResponse         = community.WhetherCollectPostResponse
 	WhetherLikePostRequest             = community.WhetherLikePostRequest
@@ -86,7 +88,10 @@ type (
 		WhetherLikePost(ctx context.Context, in *WhetherLikePostRequest, opts ...grpc.CallOption) (*WhetherLikePostResponse, error)
 		// 用户是否收藏帖子
 		WhetherCollectPost(ctx context.Context, in *WhetherCollectPostRequest, opts ...grpc.CallOption) (*WhetherCollectPostResponse, error)
+		// 查看帖子详情
 		ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error)
+		// 查看未读的评论
+		ViewUnreadComments(ctx context.Context, in *ViewUnreadCommentsRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsResponse, error)
 	}
 
 	defaultCommunity struct {
@@ -200,7 +205,14 @@ func (m *defaultCommunity) WhetherCollectPost(ctx context.Context, in *WhetherCo
 	return client.WhetherCollectPost(ctx, in, opts...)
 }
 
+// 查看帖子详情
 func (m *defaultCommunity) ViewPostDetails(ctx context.Context, in *ViewPostDetailsRequest, opts ...grpc.CallOption) (*ViewPostDetailsResponse, error) {
 	client := community.NewCommunityClient(m.cli.Conn())
 	return client.ViewPostDetails(ctx, in, opts...)
+}
+
+// 查看未读的评论
+func (m *defaultCommunity) ViewUnreadComments(ctx context.Context, in *ViewUnreadCommentsRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.ViewUnreadComments(ctx, in, opts...)
 }

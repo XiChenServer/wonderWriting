@@ -1,6 +1,7 @@
 package svc
 
 import (
+	communityModel "calligraphy/apps/community/model"
 	"calligraphy/apps/user/model"
 	"calligraphy/apps/user/rpc/internal/config"
 	"calligraphy/common/app_redis"
@@ -26,7 +27,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	db.AutoMigrate(&model.User{}, &model.Follow{})
+	db.AutoMigrate(&model.User{}, &model.Follow{}, &communityModel.UserUnreadMessages{})
 
 	opt := option.DefaultOption{}
 	opt.Expires = 300              //缓存时间, 默认120秒。范围30-43200

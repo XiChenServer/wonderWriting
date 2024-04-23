@@ -105,6 +105,7 @@ func getReplyComments(db *gorm.DB, commentID, userID uint32, page, pageSize int)
 			ReplyUserId:   uint32(v.ReplyUserId),
 			LikeCount:     uint32(v.LikeCount),
 			CreateTime:    int32Time,
+			PostId:        int32(v.PostId),
 		}
 
 		replyCommentInfo = append(replyCommentInfo, newReplyComment)

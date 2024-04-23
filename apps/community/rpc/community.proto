@@ -281,6 +281,7 @@ message ReplyCommentInfo{
   uint32 reply_user_id = 8;
   uint32 like_count = 9;
   int32 CreateTime = 10;
+  int32 post_id = 11;
 }
 
 //查看回复
@@ -315,6 +316,34 @@ message LookCollectPostRequest{
 message LookCollectPostResponse{
   repeated PostInfo post_data = 1;
 }
+
+
+//查看未读的评论
+message ViewUnreadCommentsRequest{
+  uint32 user_id = 1;
+  // 当前页码
+  uint32 page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+}
+message ViewUnreadCommentsResponse{
+  repeated CommentInfo comments_data = 1;
+  repeated ReplyCommentInfo reply_comment_data = 2;
+  // 当前页码
+  uint32 current_page = 8;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
+
+
 
 // 定义社区服务
 service Community {
@@ -358,8 +387,10 @@ service Community {
   //用户是否收藏帖子
   rpc WhetherCollectPost(WhetherCollectPostRequest) returns (WhetherCollectPostResponse);
 
-
+  //查看帖子详情
   rpc ViewPostDetails(ViewPostDetailsRequest) returns (ViewPostDetailsResponse);
+  //查看未读的评论
+  rpc ViewUnreadComments(ViewUnreadCommentsRequest) returns (ViewUnreadCommentsResponse);
 }
 
 //  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

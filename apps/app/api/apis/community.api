@@ -86,7 +86,6 @@ type LikePostResponse struct {
 
 // 取消点赞请求消息
 type CancelLikePostRequest struct {
-
     PostId  uint   `json:"post_id"`
 }
 
@@ -219,6 +218,7 @@ type ReplyCommentInfo{
     ReplyUserId uint32 `json:"reply_user_id"`
     LikeCount uint32 `json:"like_count"`
     CreateTime int32 `json:"create_time"`
+    PostId int32  `json:"post_id"`
 }
 
 // 查看回复
@@ -230,6 +230,23 @@ type LookReplyCommentRequest{
 
 type LookReplyCommentResponse{
     ReplyCommentData []*ReplyCommentInfo `json:"comment_data"`
+    CurrentPage uint32     `json:"current_page"`
+    PageSize    uint32     `json:"page_size"`
+    Offset      uint32     `json:"offset"`
+    Overflow    bool       `json:"overflow"`
+    TotalPage   uint32     `json:"total_page"`
+    TotalCount  uint64     `json:"total_count"`
+}
+
+
+//用户处理自己的信息
+type ViewUnreadCommentsRequest{
+    Page uint `json:"page"`
+    PageSize uint32 `json:"page_size, optional"`
+}
+type  ViewUnreadCommentsResponse{
+    CommentData []*CommentInfo `json:"comment_data"`
+    ReplyCommentData []*ReplyCommentInfo `json:"reply_comment_data"`
     CurrentPage uint32     `json:"current_page"`
     PageSize    uint32     `json:"page_size"`
     Offset      uint32     `json:"offset"`
