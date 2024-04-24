@@ -197,6 +197,7 @@ type ReplyCommentInfo struct {
 	ReplyUserId   uint32 `json:"reply_user_id"`
 	LikeCount     uint32 `json:"like_count"`
 	CreateTime    int32  `json:"create_time"`
+	PostId        int32  `json:"post_id"`
 }
 
 type LookReplyCommentRequest struct {
@@ -213,6 +214,29 @@ type LookReplyCommentResponse struct {
 	Overflow         bool                `json:"overflow"`
 	TotalPage        uint32              `json:"total_page"`
 	TotalCount       uint64              `json:"total_count"`
+}
+
+type ViewUnreadCommentsRequest struct {
+	Page     uint   `json:"page"`
+	PageSize uint32 `json:"page_size, optional"`
+}
+
+type ViewUnreadCommentsResponse struct {
+	CommentData      []*CommentInfo      `json:"comment_data"`
+	ReplyCommentData []*ReplyCommentInfo `json:"reply_comment_data"`
+	CurrentPage      uint32              `json:"current_page"`
+	PageSize         uint32              `json:"page_size"`
+	Offset           uint32              `json:"offset"`
+	Overflow         bool                `json:"overflow"`
+	TotalPage        uint32              `json:"total_page"`
+	TotalCount       uint64              `json:"total_count"`
+}
+
+type ViewUnreadCommentCountRequest struct {
+}
+
+type ViewUnreadCommentCountResponse struct {
+	UnreadCommentCount uint64
 }
 
 type VerificationRequest struct {

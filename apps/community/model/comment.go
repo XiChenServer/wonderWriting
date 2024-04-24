@@ -337,6 +337,17 @@ func (m *ReplyComment) FindReplyCommentsByPage(db *gorm.DB, commentID, userID, p
 	return &res, nil
 }
 
+// UnReadMessageCount 查看有多少条消息未读
+func (*UserUnreadMessages) UnReadMessageCount(db *gorm.DB, userId uint) (uint, error) {
+	var userUnreadMessages UserUnreadMessages
+	err := db.Where("user_id = ?", userId).First(&userUnreadMessages).Error
+	if err != nil {
+		return 0, err
+	}
+	return userUnreadMessages.UnreadCount, nil
+
+}
+
 //// CommentPost 在数据库中创建一条评论记录并原子更新帖子的评论数量
 //func (*Comment) CommentPost(DB *gorm.DB, postID, userID, parentID uint, content string) (*Comment, error) {
 //	// 查询帖子是否存在

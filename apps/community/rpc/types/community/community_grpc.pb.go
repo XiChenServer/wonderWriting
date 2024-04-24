@@ -19,32 +19,36 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Community_LookCollectPost_FullMethodName        = "/community.Community/LookCollectPost"
-	Community_LookReplyComment_FullMethodName       = "/community.Community/LookReplyComment"
-	Community_ReplyComment_FullMethodName           = "/community.Community/ReplyComment"
-	Community_LikeComment_FullMethodName            = "/community.Community/LikeComment"
-	Community_CancelLikeComment_FullMethodName      = "/community.Community/CancelLikeComment"
-	Community_LikePost_FullMethodName               = "/community.Community/LikePost"
-	Community_CancelLikePost_FullMethodName         = "/community.Community/CancelLikePost"
-	Community_CollectPost_FullMethodName            = "/community.Community/CollectPost"
-	Community_CancelCollectPost_FullMethodName      = "/community.Community/CancelCollectPost"
-	Community_CommentPost_FullMethodName            = "/community.Community/CommentPost"
-	Community_CancelCommentPost_FullMethodName      = "/community.Community/CancelCommentPost"
-	Community_CommunityCreatePost_FullMethodName    = "/community.Community/CommunityCreatePost"
-	Community_CommunityDelPost_FullMethodName       = "/community.Community/CommunityDelPost"
-	Community_CommunityLookPostByOwn_FullMethodName = "/community.Community/CommunityLookPostByOwn"
-	Community_CommunityLookAllPosts_FullMethodName  = "/community.Community/CommunityLookAllPosts"
-	Community_LookComment_FullMethodName            = "/community.Community/LookComment"
-	Community_WhetherLikePost_FullMethodName        = "/community.Community/WhetherLikePost"
-	Community_WhetherCollectPost_FullMethodName     = "/community.Community/WhetherCollectPost"
-	Community_ViewPostDetails_FullMethodName        = "/community.Community/ViewPostDetails"
-	Community_ViewUnreadComments_FullMethodName     = "/community.Community/ViewUnreadComments"
+	Community_ViewUnreadCommentsCount_FullMethodName = "/community.Community/ViewUnreadCommentsCount"
+	Community_LookCollectPost_FullMethodName         = "/community.Community/LookCollectPost"
+	Community_LookReplyComment_FullMethodName        = "/community.Community/LookReplyComment"
+	Community_ReplyComment_FullMethodName            = "/community.Community/ReplyComment"
+	Community_LikeComment_FullMethodName             = "/community.Community/LikeComment"
+	Community_CancelLikeComment_FullMethodName       = "/community.Community/CancelLikeComment"
+	Community_LikePost_FullMethodName                = "/community.Community/LikePost"
+	Community_CancelLikePost_FullMethodName          = "/community.Community/CancelLikePost"
+	Community_CollectPost_FullMethodName             = "/community.Community/CollectPost"
+	Community_CancelCollectPost_FullMethodName       = "/community.Community/CancelCollectPost"
+	Community_CommentPost_FullMethodName             = "/community.Community/CommentPost"
+	Community_CancelCommentPost_FullMethodName       = "/community.Community/CancelCommentPost"
+	Community_CommunityCreatePost_FullMethodName     = "/community.Community/CommunityCreatePost"
+	Community_CommunityDelPost_FullMethodName        = "/community.Community/CommunityDelPost"
+	Community_CommunityLookPostByOwn_FullMethodName  = "/community.Community/CommunityLookPostByOwn"
+	Community_CommunityLookAllPosts_FullMethodName   = "/community.Community/CommunityLookAllPosts"
+	Community_LookComment_FullMethodName             = "/community.Community/LookComment"
+	Community_WhetherLikePost_FullMethodName         = "/community.Community/WhetherLikePost"
+	Community_WhetherCollectPost_FullMethodName      = "/community.Community/WhetherCollectPost"
+	Community_ViewPostDetails_FullMethodName         = "/community.Community/ViewPostDetails"
+	Community_ViewUnreadComments_FullMethodName      = "/community.Community/ViewUnreadComments"
 )
 
 // CommunityClient is the client API for Community service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommunityClient interface {
+	// 查看用户有多少未读的信息
+	ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error)
+	// 查看收藏的帖子
 	LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error)
 	// 查看回复
 	LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
@@ -85,6 +89,15 @@ type communityClient struct {
 
 func NewCommunityClient(cc grpc.ClientConnInterface) CommunityClient {
 	return &communityClient{cc}
+}
+
+func (c *communityClient) ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error) {
+	out := new(ViewUnreadCommentsCountResponse)
+	err := c.cc.Invoke(ctx, Community_ViewUnreadCommentsCount_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *communityClient) LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error) {
@@ -271,6 +284,9 @@ func (c *communityClient) ViewUnreadComments(ctx context.Context, in *ViewUnread
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
 type CommunityServer interface {
+	// 查看用户有多少未读的信息
+	ViewUnreadCommentsCount(context.Context, *ViewUnreadCommentsCountRequest) (*ViewUnreadCommentsCountResponse, error)
+	// 查看收藏的帖子
 	LookCollectPost(context.Context, *LookCollectPostRequest) (*LookCollectPostResponse, error)
 	// 查看回复
 	LookReplyComment(context.Context, *LookReplyCommentRequest) (*LookReplyCommentResponse, error)
@@ -310,6 +326,9 @@ type CommunityServer interface {
 type UnimplementedCommunityServer struct {
 }
 
+func (UnimplementedCommunityServer) ViewUnreadCommentsCount(context.Context, *ViewUnreadCommentsCountRequest) (*ViewUnreadCommentsCountResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewUnreadCommentsCount not implemented")
+}
 func (UnimplementedCommunityServer) LookCollectPost(context.Context, *LookCollectPostRequest) (*LookCollectPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LookCollectPost not implemented")
 }
@@ -381,6 +400,24 @@ type UnsafeCommunityServer interface {
 
 func RegisterCommunityServer(s grpc.ServiceRegistrar, srv CommunityServer) {
 	s.RegisterService(&Community_ServiceDesc, srv)
+}
+
+func _Community_ViewUnreadCommentsCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewUnreadCommentsCountRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).ViewUnreadCommentsCount(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_ViewUnreadCommentsCount_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).ViewUnreadCommentsCount(ctx, req.(*ViewUnreadCommentsCountRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Community_LookCollectPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -750,6 +787,10 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "community.Community",
 	HandlerType: (*CommunityServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ViewUnreadCommentsCount",
+			Handler:    _Community_ViewUnreadCommentsCount_Handler,
+		},
 		{
 			MethodName: "LookCollectPost",
 			Handler:    _Community_LookCollectPost_Handler,

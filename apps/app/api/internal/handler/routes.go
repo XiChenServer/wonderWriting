@@ -118,6 +118,16 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
+				Path:    "/view/unread_comment",
+				Handler: community.ViewUnreadCommentsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/view/unread_comment_count",
+				Handler: community.ViewUnreadCommentCountHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/reply/community",
 				Handler: community.ReplyCommunityHandler(serverCtx),
 			},

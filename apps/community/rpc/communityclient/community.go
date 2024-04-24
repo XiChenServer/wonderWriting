@@ -52,6 +52,8 @@ type (
 	UserSimpleInfo                     = community.UserSimpleInfo
 	ViewPostDetailsRequest             = community.ViewPostDetailsRequest
 	ViewPostDetailsResponse            = community.ViewPostDetailsResponse
+	ViewUnreadCommentsCountRequest     = community.ViewUnreadCommentsCountRequest
+	ViewUnreadCommentsCountResponse    = community.ViewUnreadCommentsCountResponse
 	ViewUnreadCommentsRequest          = community.ViewUnreadCommentsRequest
 	ViewUnreadCommentsResponse         = community.ViewUnreadCommentsResponse
 	WhetherCollectPostRequest          = community.WhetherCollectPostRequest
@@ -60,6 +62,9 @@ type (
 	WhetherLikePostResponse            = community.WhetherLikePostResponse
 
 	Community interface {
+		// 查看用户有多少未读的信息
+		ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error)
+		// 查看收藏的帖子
 		LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error)
 		// 查看回复
 		LookReplyComment(ctx context.Context, in *LookReplyCommentRequest, opts ...grpc.CallOption) (*LookReplyCommentResponse, error)
@@ -105,6 +110,13 @@ func NewCommunity(cli zrpc.Client) Community {
 	}
 }
 
+// 查看用户有多少未读的信息
+func (m *defaultCommunity) ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.ViewUnreadCommentsCount(ctx, in, opts...)
+}
+
+// 查看收藏的帖子
 func (m *defaultCommunity) LookCollectPost(ctx context.Context, in *LookCollectPostRequest, opts ...grpc.CallOption) (*LookCollectPostResponse, error) {
 	client := community.NewCommunityClient(m.cli.Conn())
 	return client.LookCollectPost(ctx, in, opts...)

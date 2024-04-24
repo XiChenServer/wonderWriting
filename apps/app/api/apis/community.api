@@ -254,3 +254,11 @@ type  ViewUnreadCommentsResponse{
     TotalPage   uint32     `json:"total_page"`
     TotalCount  uint64     `json:"total_count"`
 }
+
+//用户查看有多少个信息没有查看
+type ViewUnreadCommentCountRequest{
+
+}
+type ViewUnreadCommentCountResponse{
+     UnreadCommentCount uint64
+}

@@ -22,6 +22,13 @@ func NewCommunityServer(svcCtx *svc.ServiceContext) *CommunityServer {
 	}
 }
 
+// 查看用户有多少未读的信息
+func (s *CommunityServer) ViewUnreadCommentsCount(ctx context.Context, in *community.ViewUnreadCommentsCountRequest) (*community.ViewUnreadCommentsCountResponse, error) {
+	l := logic.NewViewUnreadCommentsCountLogic(ctx, s.svcCtx)
+	return l.ViewUnreadCommentsCount(in)
+}
+
+// 查看收藏的帖子
 func (s *CommunityServer) LookCollectPost(ctx context.Context, in *community.LookCollectPostRequest) (*community.LookCollectPostResponse, error) {
 	l := logic.NewLookCollectPostLogic(ctx, s.svcCtx)
 	return l.LookCollectPost(in)

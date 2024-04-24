@@ -342,12 +342,20 @@ message ViewUnreadCommentsResponse{
   // 总记录数
   uint64 total_count = 7;
 }
-
+//查看用户有多少未读的信息
+message ViewUnreadCommentsCountRequest{
+  uint32 user_id = 1;
+}
+message ViewUnreadCommentsCountResponse{
+  uint32 message_count = 1;
+}
 
 
 // 定义社区服务
 service Community {
-
+  //查看用户有多少未读的信息
+  rpc ViewUnreadCommentsCount(ViewUnreadCommentsCountRequest) returns (ViewUnreadCommentsCountResponse);
+  //查看收藏的帖子
   rpc LookCollectPost(LookCollectPostRequest) returns (LookCollectPostResponse);
 
   //查看回复

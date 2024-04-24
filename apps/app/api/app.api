@@ -93,6 +93,16 @@ service App{
 	jwt: Auth
 )
 service App{
+	// 用户处理自己的信息
+	@doc "用户处理自己的信息"
+	@handler ViewUnreadComments
+	post /view/unread_comment(ViewUnreadCommentsRequest) returns (ViewUnreadCommentsResponse)
+
+	// 查看有多少个信息未读
+	@doc "用户处理自己的信息"
+	@handler ViewUnreadCommentCount
+	post /view/unread_comment_count(ViewUnreadCommentCountRequest) returns (ViewUnreadCommentCountResponse)
+
 	//回复评论
 	@doc "回复评论"
 	@handler ReplyCommunity
