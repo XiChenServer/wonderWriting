@@ -28,7 +28,9 @@ func (l *CollectPostLogic) CollectPost(in *community.CommunityCollectPostRequest
 	Operations := &model.Collect{}
 	res, err := Operations.CollectPost(l.svcCtx.DB, uint(in.PostId), uint(in.UserId))
 	if err != nil {
+		l.Logger.Error("用户收藏帖子失败， err: ", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("用户收藏帖子成功，user_id:", in.UserId)
 	return &community.CommunityCollectPostResponse{CollectId: uint32(res.ID)}, nil
 }

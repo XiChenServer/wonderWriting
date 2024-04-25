@@ -1,4 +1,6 @@
 Name: grow.rpc
+Log:
+  Mode: file
 ListenOn: 0.0.0.0:11003
 Etcd:
   Hosts:

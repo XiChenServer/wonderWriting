@@ -29,7 +29,9 @@ func (l *CancelCommentPostLogic) CancelCommentPost(in *community.CommunityCancel
 	Operations := &model.Comment{}
 	err := Operations.CancelCommentPost(l.svcCtx.DB, uint(in.ContentId), uint(in.PostId))
 	if err != nil {
+		l.Logger.Error("rpc 用户删除评论的时候数据库的操作中出现了问题，err:", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("rpc 用户删除评论成功 userId:", in.UserId)
 	return &community.CommunityCancelContentPostResponse{}, nil
 }

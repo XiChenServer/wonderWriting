@@ -1,4 +1,6 @@
 Name: community.rpc
+Log:
+  Mode: file
 ListenOn: 0.0.0.0:11001
 Etcd:
   Hosts:

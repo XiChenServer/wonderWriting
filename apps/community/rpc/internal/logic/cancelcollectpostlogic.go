@@ -27,13 +27,14 @@ func NewCancelCollectPostLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 
 func (l *CancelCollectPostLogic) CancelCollectPost(in *community.CommunityCancelCollectPostRequest) (*community.CommunityCancelCollectPostResponse, error) {
 	// todo: add your logic here and delete this line
-
 	fmt.Println(in.PostId)
 	Operations := &model.Collect{}
 
 	err := Operations.CancelCollectPost(l.svcCtx.DB, uint(in.UserId), uint(in.PostId))
 	if err != nil {
+		l.Logger.Error("rpc 用户取消收藏的时候数据库出现问题，err:", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("rpc: cancelCollectPost successful")
 	return &community.CommunityCancelCollectPostResponse{}, nil
 }

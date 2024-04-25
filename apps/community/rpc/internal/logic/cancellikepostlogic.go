@@ -29,6 +29,7 @@ func (l *CancelLikePostLogic) CancelLikePost(in *community.CommunityCancelLikePo
 	Operations := &model.Like{}
 	err := Operations.CancelLikePost(l.svcCtx.DB, uint(in.LikeId), uint(in.PostId), uint(in.UserId))
 	if err != nil {
+		l.Logger.Error("rpc 用户取消点赞时出现问题 err:", err.Error())
 		return nil, err
 	}
 	return &community.CommunityCancelLikePostResponse{}, nil
