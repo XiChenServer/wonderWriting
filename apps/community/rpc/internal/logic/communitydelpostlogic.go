@@ -29,7 +29,9 @@ func (l *CommunityDelPostLogic) CommunityDelPost(in *community.CommunityDelPostR
 	postOperations := model.Post{}
 	_, err := postOperations.DeletePost(l.svcCtx.DB, in.PostId)
 	if err != nil {
+		l.Logger.Error("rpc 用户在删除帖子的时候，数据库操作出现了问题， err", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("rpc 用户删除帖子成功。postId:", in.PostId)
 	return &community.CommunityDelPostResponse{}, nil
 }

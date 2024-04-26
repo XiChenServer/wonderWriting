@@ -29,7 +29,9 @@ func (l *CommunityCreatePostLogic) CommunityCreatePost(in *community.CommunityCr
 	res, err := postOperations.CreatePost(l.svcCtx.DB, uint(in.UserId), in.Content, in.ImageUrls)
 
 	if err != nil {
+		l.Logger.Error("rpc 用户创建帖子的时候出现了问题,err", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("rpc 用户创建帖子成功")
 	return &community.CommunityCreatePostResponse{PostId: uint32(res.ID)}, nil
 }

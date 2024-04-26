@@ -26,6 +26,7 @@ func (l *LookCollectPostLogic) LookCollectPost(in *community.LookCollectPostRequ
 	// todo: add your logic here and delete this line
 	res, err := (&model.Collect{}).FindCollect(l.svcCtx.DB, uint(in.UserId))
 	if err != nil {
+		l.Error("rpc 用户查看自己收藏的帖子的时候出现问题，可能是没有数据，可能是数据库查询出现了问题，err:", err.Error())
 		return nil, err
 	}
 
@@ -61,6 +62,7 @@ func (l *LookCollectPostLogic) LookCollectPost(in *community.LookCollectPostRequ
 		// 将新的帖子信息添加到切片中
 		posts = append(posts, newPost)
 	}
+	l.Info("rpc 用户查看自己的收藏帖子成功。userId", in.UserId)
 	return &community.LookCollectPostResponse{
 		PostData: posts,
 	}, nil

@@ -46,6 +46,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	// 缓存未命中，查询数据库获取数据
 	posts, totalCount, err := (&model.Post{}).LookAllPostsWithPagination(l.svcCtx.DB, page, pageSize)
 	if err != nil {
+		l.Logger.Error("rpc LookAllPostsWithPagination 缓存之中没有该页的缓存，在从数据库中获取信息的时候出现问题")
 		return nil, err
 	}
 
@@ -63,6 +64,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		// 查询每个帖子的图片信息
 		urls, err := (&model.PostImage{}).FindImageByPostId(l.svcCtx.DB, v.ID)
 		if err != nil {
+			l.Logger.Error("rpc 在查找帖子的图片的时候，数据库操作出现了问题", err.Error())
 			return nil, err
 		}
 
@@ -70,7 +72,7 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 		userInfo, err := getUserInfo(l.svcCtx.DB, int(v.UserID))
 
 		if err != nil {
-			fmt.Println(v.UserID)
+			l.Logger.Error("rpc 在查找帖子的用户的信息的时候，数据库操作出现了问题", err.Error())
 			return nil, err
 		}
 
@@ -106,10 +108,10 @@ func (l *CommunityLookAllPostsLogic) CommunityLookAllPosts(in *community.Communi
 	// 将查询结果存入缓存
 	err = l.svcCtx.RDB.SetexCtx(l.ctx, cacheKey, toJson(resp), cacheTime) // 设置缓存过期时间为5分钟
 	if err != nil {
-
+		l.Logger.Error("rpc 这次没有将拿到的信息存放到缓存里面去，", err.Error())
 		fmt.Println("Failed to set cache:", err)
 	}
-
+	l.Logger.Info("rpc CommunityLookAllPosts 成功获取到了信息，返回给上层")
 	return resp, nil
 }
 

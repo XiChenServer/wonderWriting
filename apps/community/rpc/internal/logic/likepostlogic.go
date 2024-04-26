@@ -30,7 +30,9 @@ func (l *LikePostLogic) LikePost(in *community.CommunityLikePostRequest) (*commu
 	Operations := &model.Like{}
 	res, err := Operations.LikePost(l.svcCtx.DB, uint(in.PostId), uint(in.UserId))
 	if err != nil {
+		l.Error("rpc 用户对帖子点赞失败，数据库操作出现了问题", err.Error())
 		return nil, err
 	}
+	l.Infof("rpc 用户对帖子点赞成功. userId", in.UserId)
 	return &community.CommunityLikePostResponse{LikeId: uint32(res.ID)}, nil
 }

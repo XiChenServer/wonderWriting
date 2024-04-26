@@ -30,7 +30,9 @@ func (l *CommentPostLogic) CommentPost(in *community.CommunityContentPostRequest
 	Operations := &model.Comment{}
 	res, err := Operations.CreateComment(l.svcCtx.DB, uint(in.PostId), uint(in.UserId), in.Content)
 	if err != nil {
+		l.Logger.Error("rpc 用户在评论的时候，数据库操作出现问题，err:", err.Error())
 		return nil, err
 	}
+	l.Logger.Infof("rpc 用户对帖子创建评论成功")
 	return &community.CommunityContentPostResponse{ContentId: uint32(res.ID)}, nil
 }

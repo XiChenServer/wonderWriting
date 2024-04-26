@@ -30,7 +30,9 @@ func (l *ReplyCommentLogic) ReplyComment(in *community.ReplyCommunityRequest) (*
 	_, err := (&model.ReplyComment{}).ReplyComment(l.svcCtx.DB, uint(in.CommunityId), uint(in.UserId), uint(in.ReplyUserId), uint(in.PostId),
 		in.ReplyUserNickName, in.Content)
 	if err != nil {
+		l.Error("rpc 用户在回复评论的时候, 数据库操作出现了问题，err", err.Error())
 		return nil, err
 	}
+	l.Infof("rpc 用户回复评论成功")
 	return &community.ReplyCommunityResponse{}, nil
 }
