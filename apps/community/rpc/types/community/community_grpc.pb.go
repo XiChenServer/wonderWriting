@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
+	Community_ViewTheLatestPost_FullMethodName       = "/community.Community/ViewTheLatestPost"
 	Community_ViewUnreadCommentsCount_FullMethodName = "/community.Community/ViewUnreadCommentsCount"
 	Community_LookCollectPost_FullMethodName         = "/community.Community/LookCollectPost"
 	Community_LookReplyComment_FullMethodName        = "/community.Community/LookReplyComment"
@@ -46,6 +47,8 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CommunityClient interface {
+	// 查询最新的帖子
+	ViewTheLatestPost(ctx context.Context, in *ViewTheLatestPostRequest, opts ...grpc.CallOption) (*ViewTheLatestPostResponse, error)
 	// 查看用户有多少未读的信息
 	ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error)
 	// 查看收藏的帖子
@@ -89,6 +92,15 @@ type communityClient struct {
 
 func NewCommunityClient(cc grpc.ClientConnInterface) CommunityClient {
 	return &communityClient{cc}
+}
+
+func (c *communityClient) ViewTheLatestPost(ctx context.Context, in *ViewTheLatestPostRequest, opts ...grpc.CallOption) (*ViewTheLatestPostResponse, error) {
+	out := new(ViewTheLatestPostResponse)
+	err := c.cc.Invoke(ctx, Community_ViewTheLatestPost_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *communityClient) ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error) {
@@ -284,6 +296,8 @@ func (c *communityClient) ViewUnreadComments(ctx context.Context, in *ViewUnread
 // All implementations must embed UnimplementedCommunityServer
 // for forward compatibility
 type CommunityServer interface {
+	// 查询最新的帖子
+	ViewTheLatestPost(context.Context, *ViewTheLatestPostRequest) (*ViewTheLatestPostResponse, error)
 	// 查看用户有多少未读的信息
 	ViewUnreadCommentsCount(context.Context, *ViewUnreadCommentsCountRequest) (*ViewUnreadCommentsCountResponse, error)
 	// 查看收藏的帖子
@@ -326,6 +340,9 @@ type CommunityServer interface {
 type UnimplementedCommunityServer struct {
 }
 
+func (UnimplementedCommunityServer) ViewTheLatestPost(context.Context, *ViewTheLatestPostRequest) (*ViewTheLatestPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewTheLatestPost not implemented")
+}
 func (UnimplementedCommunityServer) ViewUnreadCommentsCount(context.Context, *ViewUnreadCommentsCountRequest) (*ViewUnreadCommentsCountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewUnreadCommentsCount not implemented")
 }
@@ -400,6 +417,24 @@ type UnsafeCommunityServer interface {
 
 func RegisterCommunityServer(s grpc.ServiceRegistrar, srv CommunityServer) {
 	s.RegisterService(&Community_ServiceDesc, srv)
+}
+
+func _Community_ViewTheLatestPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewTheLatestPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommunityServer).ViewTheLatestPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Community_ViewTheLatestPost_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommunityServer).ViewTheLatestPost(ctx, req.(*ViewTheLatestPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Community_ViewUnreadCommentsCount_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -787,6 +822,10 @@ var Community_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "community.Community",
 	HandlerType: (*CommunityServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ViewTheLatestPost",
+			Handler:    _Community_ViewTheLatestPost_Handler,
+		},
 		{
 			MethodName: "ViewUnreadCommentsCount",
 			Handler:    _Community_ViewUnreadCommentsCount_Handler,

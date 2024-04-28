@@ -350,9 +350,36 @@ message ViewUnreadCommentsCountResponse{
   uint32 message_count = 1;
 }
 
+// 查询最新的帖子
+message ViewTheLatestPostRequest{
+  // 当前页码
+  uint32 page = 1;
+  // 每页大小
+  uint32 page_size = 2;
+}
+message ViewTheLatestPostResponse{
+  // 帖子信息列表
+  repeated PostInfo post_data = 1;
+  // 当前页码
+  uint32 current_page = 2;
+  // 每页大小
+  uint32 page_size = 3;
+  // 偏移量
+  uint32 offset = 4;
+  // 是否溢出
+  bool overflow = 5;
+  // 总页数
+  uint32 total_pages = 6;
+  // 总记录数
+  uint64 total_count = 7;
+}
+
+
 
 // 定义社区服务
 service Community {
+  // 查询最新的帖子
+  rpc ViewTheLatestPost(ViewTheLatestPostRequest) returns (ViewTheLatestPostResponse);
   //查看用户有多少未读的信息
   rpc ViewUnreadCommentsCount(ViewUnreadCommentsCountRequest) returns (ViewUnreadCommentsCountResponse);
   //查看收藏的帖子
@@ -401,4 +428,4 @@ service Community {
   rpc ViewUnreadComments(ViewUnreadCommentsRequest) returns (ViewUnreadCommentsResponse);
 }
 
-//  goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc
+// goctl rpc protoc ./rpc/community.proto --go_out=./rpc/types --go-grpc_out=./rpc/types --zrpc_out=./rpc

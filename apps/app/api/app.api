@@ -84,6 +84,10 @@ service App{
 	@doc "查看评论请求"
 	@handler LookComment
 	post /look/comment(LookCommentRequest) returns (LookCommentResponse)
+	//查询最新的帖子
+	@doc "查询最新的帖子"
+	@handler ViewTheLatestPost
+	post /view/post/the_latest(ViewTheLatestPostRequest) returns (ViewTheLatestPostResponse)
 }
 
 //need login

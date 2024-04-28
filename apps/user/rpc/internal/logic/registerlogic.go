@@ -40,6 +40,7 @@ func (l *RegisterLogic) Register(in *user.UserRegisterRequest) (*user.UserRegist
 	res, err := (&model.User{}).FindOneByEmail(l.svcCtx.DB, email.String)
 	if err == nil {
 		if res != nil {
+			l.Error("rpc 用户在登录的时候发现，用户不存在，err", err, "email", email.String)
 			return nil, status.Error(100, "该用户已存在")
 		}
 

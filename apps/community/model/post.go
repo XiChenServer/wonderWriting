@@ -124,3 +124,24 @@ func (*Post) LookPostByPostId(dao *gorm.DB, postId uint) (*Post, error) {
 
 	return &posts, nil
 }
+
+// LatestPostsWithPagination 查询最新的帖子并分页
+func (p *Post) LatestPostsWithPagination(db *gorm.DB, page, pageSize int) ([]*Post, int64, error) {
+	var posts []*Post
+	var count int64
+
+	// 查询总记录数
+	if err := db.Model(p).Count(&count).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// 计算分页参数
+	offset := (page - 1) * pageSize
+
+	// 查询最新的帖子并分页
+	if err := db.Offset(offset).Limit(pageSize).Order("created_at desc").Find(&posts).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return posts, count, nil
+}

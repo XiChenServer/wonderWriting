@@ -1,0 +1,1 @@
+{"@timestamp":"2024-04-27T16:23:48.061+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}

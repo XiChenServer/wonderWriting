@@ -1,0 +1,3 @@
+{"@timestamp":"2024-04-27T16:18:13.019+08:00","caller":"prometheus/agent.go:40","content":"Starting prometheus agent at 0.0.0.0:14003","level":"info"}
+{"@timestamp":"2024-04-27T16:23:44.696+08:00","caller":"logic/checkinlogic.go:66","content":"rpc user CheckIn success, userId%!(EXTRA uint=3)","level":"info","span":"2ad5599a80500f24","trace":"2cd52e834406c0d3acdd2e32274d0bed"}
+{"@timestamp":"2024-04-27T16:23:44.696+08:00","caller":"serverinterceptors/statinterceptor.go:90","content":"192.168.0.146:50502 - /grow.Grow/CheckIn - {\"user_id\":3,\"content\":\"哈哈哈哈\",\"image\":\"FsfxNjNAF8--zMR7un1rJEC2ZCo2\",\"score\":80}","duration":"25.8ms","level":"info","span":"2ad5599a80500f24","trace":"2cd52e834406c0d3acdd2e32274d0bed"}

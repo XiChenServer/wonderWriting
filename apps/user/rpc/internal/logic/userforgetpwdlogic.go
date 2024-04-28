@@ -28,8 +28,10 @@ func (l *UserForgetPwdLogic) UserForgetPwd(in *user.UserForgetPwdRequest) (*user
 
 	res, err := (&model.User{}).FindOneByEmail(l.svcCtx.DB, in.Email)
 	if err != nil {
+		l.Error("rpc 用户查找邮箱出现问题， err", err.Error())
 		return nil, err
 	}
+	l.Info("rpc 用户忘记密码成功，有该邮箱，email", in.Email)
 	return &user.UserForgetPwdResponse{
 		Id: int64(res.UserID),
 	}, nil

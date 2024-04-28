@@ -56,6 +56,7 @@ func (l *UserFollowLogic) UserFollow(in *user.UserFollowRequest) (*user.UserFoll
 		return nil, err
 	}
 	if existingFollow != nil {
+
 		return nil, fmt.Errorf("user is already followed")
 	}
 
@@ -65,6 +66,7 @@ func (l *UserFollowLogic) UserFollow(in *user.UserFollowRequest) (*user.UserFoll
 		FollowedUserID: uint(in.OtherId),
 	}
 	if err := newFollow.CreateUserFollow(tx, newFollow); err != nil {
+
 		return nil, err
 	}
 

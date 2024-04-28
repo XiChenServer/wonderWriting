@@ -110,6 +110,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/look/comment",
 				Handler: community.LookCommentHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/view/post/the_latest",
+				Handler: community.ViewTheLatestPostHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/community"),
 	)

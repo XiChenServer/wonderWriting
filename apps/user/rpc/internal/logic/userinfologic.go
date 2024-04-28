@@ -32,11 +32,13 @@ func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoRespon
 	res, err := (&model.User{}).FindOne(l.svcCtx.DB, uint(in.Id))
 	if err != nil {
 		if res == nil {
+			l.Error("rpc 用户查看信息失败，该用户不存在")
 			return nil, status.Error(100, "用户不存在")
 		}
+		l.Error("rpc 用户查看信息时，数据库操作出现问题")
 		return nil, status.Error(500, err.Error())
 	}
-
+	l.Info("rpc 用户查看信息成功， user_id", in.Id)
 	return &user.UserInfoResponse{
 		Id:               int64(res.UserID),
 		NickName:         res.Nickname,

@@ -52,6 +52,8 @@ type (
 	UserSimpleInfo                     = community.UserSimpleInfo
 	ViewPostDetailsRequest             = community.ViewPostDetailsRequest
 	ViewPostDetailsResponse            = community.ViewPostDetailsResponse
+	ViewTheLatestPostRequest           = community.ViewTheLatestPostRequest
+	ViewTheLatestPostResponse          = community.ViewTheLatestPostResponse
 	ViewUnreadCommentsCountRequest     = community.ViewUnreadCommentsCountRequest
 	ViewUnreadCommentsCountResponse    = community.ViewUnreadCommentsCountResponse
 	ViewUnreadCommentsRequest          = community.ViewUnreadCommentsRequest
@@ -62,6 +64,8 @@ type (
 	WhetherLikePostResponse            = community.WhetherLikePostResponse
 
 	Community interface {
+		// 查询最新的帖子
+		ViewTheLatestPost(ctx context.Context, in *ViewTheLatestPostRequest, opts ...grpc.CallOption) (*ViewTheLatestPostResponse, error)
 		// 查看用户有多少未读的信息
 		ViewUnreadCommentsCount(ctx context.Context, in *ViewUnreadCommentsCountRequest, opts ...grpc.CallOption) (*ViewUnreadCommentsCountResponse, error)
 		// 查看收藏的帖子
@@ -108,6 +112,12 @@ func NewCommunity(cli zrpc.Client) Community {
 	return &defaultCommunity{
 		cli: cli,
 	}
+}
+
+// 查询最新的帖子
+func (m *defaultCommunity) ViewTheLatestPost(ctx context.Context, in *ViewTheLatestPostRequest, opts ...grpc.CallOption) (*ViewTheLatestPostResponse, error) {
+	client := community.NewCommunityClient(m.cli.Conn())
+	return client.ViewTheLatestPost(ctx, in, opts...)
 }
 
 // 查看用户有多少未读的信息

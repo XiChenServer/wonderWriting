@@ -22,6 +22,12 @@ func NewCommunityServer(svcCtx *svc.ServiceContext) *CommunityServer {
 	}
 }
 
+// 查询最新的帖子
+func (s *CommunityServer) ViewTheLatestPost(ctx context.Context, in *community.ViewTheLatestPostRequest) (*community.ViewTheLatestPostResponse, error) {
+	l := logic.NewViewTheLatestPostLogic(ctx, s.svcCtx)
+	return l.ViewTheLatestPost(in)
+}
+
 // 查看用户有多少未读的信息
 func (s *CommunityServer) ViewUnreadCommentsCount(ctx context.Context, in *community.ViewUnreadCommentsCountRequest) (*community.ViewUnreadCommentsCountResponse, error) {
 	l := logic.NewViewUnreadCommentsCountLogic(ctx, s.svcCtx)

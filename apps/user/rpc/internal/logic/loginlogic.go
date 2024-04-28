@@ -40,6 +40,7 @@ func (l *LoginLogic) Login(in *user.UserLoginRequest) (*user.UserLoginResponse, 
 	res, err := userModel.FindOneByEmail(l.svcCtx.DB, email.String)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
+			l.Error("rpc 用户在登录的时候，发现用户不存在。err", err, " email:", email.String)
 			return nil, status.Error(100, "用户不存在")
 		}
 		return nil, status.Error(500, err.Error())
@@ -48,9 +49,10 @@ func (l *LoginLogic) Login(in *user.UserLoginRequest) (*user.UserLoginResponse, 
 	// 判断密码是否正确
 	password := cryptx.PasswordEncrypt(l.svcCtx.Config.Salt, in.Password)
 	if password != res.Password {
+		l.Error("rpc 用户在登录的时候，出现密码错误的问题。err", err)
 		return nil, status.Error(100, "密码错误")
 	}
-
+	l.Info("rpc 用户成功登录， email", email.String)
 	return &user.UserLoginResponse{
 		Id: int64(res.UserID),
 	}, nil

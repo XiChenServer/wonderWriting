@@ -6,3 +6,14 @@
 {"@timestamp":"2024-04-25T21:17:44.251+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
 {"@timestamp":"2024-04-25T21:26:35.876+08:00","caller":"logic/cancelcollectpostlogic.go:35","content":"rpc 用户取消收藏的时候数据库出现问题errrecord not found","level":"error","span":"6268ffcebfe2d4a3","trace":"5e506af158807ef0996ab1e27a950c34"}
 {"@timestamp":"2024-04-25T21:26:38.715+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:20:56.590+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:21:01.589+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:21:21.592+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:21:26.593+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:21:41.595+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:22:16.597+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:22:26.597+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:22:41.600+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:23:01.602+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:23:06.602+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}
+{"@timestamp":"2024-04-27T16:23:26.603+08:00","caller":"trace/agent.go:145","content":"[otel] error: Post \"http://jaeger:14268/api/traces\": dial tcp: lookup jaeger: no such host","level":"error"}

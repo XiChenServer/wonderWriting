@@ -239,6 +239,21 @@ type ViewUnreadCommentCountResponse struct {
 	UnreadCommentCount uint64
 }
 
+type ViewTheLatestPostRequest struct {
+	Page     uint32 `json:"page"`
+	PageSize uint32 `json:"page_size, optional"`
+}
+
+type ViewTheLatestPostResponse struct {
+	PostData    []*PostInfo `json:"post_data"`
+	CurrentPage uint32      `json:"current_page"`
+	PageSize    uint32      `json:"page_size"`
+	Offset      uint32      `json:"offset"`
+	Overflow    bool        `json:"overflow"`
+	TotalPage   uint32      `json:"total_page"`
+	TotalCount  uint64      `json:"total_count"`
+}
+
 type VerificationRequest struct {
 	Email string `json:"email"`
 }
